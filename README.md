@@ -45,8 +45,10 @@ Check the launcher's app folder, data directory and local address before enterin
 ## Setup and controls
 
 - [Quick start](docs/QUICK-START.md)
+- [Detailed installation and accounting setup](docs/ACCOUNTING-SETUP.md)
 - [Model API-key setup](docs/MODEL-SETUP.md)
 - [QuickBooks authorization and refresh](docs/QUICKBOOKS-SETUP.md)
+- [Xero file inputs and API implementation requirements](docs/XERO-SETUP.md)
 - [Data formats and financial controls](docs/DATA-FORMAT.md)
 - [Data flow, credentials and recovery](docs/DATA-AND-PRIVACY.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
@@ -59,6 +61,8 @@ Check the launcher's app folder, data directory and local address before enterin
 This is local code with an optional single-device browser utility. CLI snapshots stay in their chosen output folders; the browser has separate local workspaces. There is no shared team login, accounting writeback, Vesper-hosted backend or automatic model-provider fallback. Optional accounting refresh runs only while the browser backend is running. Optional model usage is billed to your own provider account.
 
 Live provider access and Windows execution remain unverified; check the verification record for this build. Source repository: [vesper-13-week-cash-flow](https://github.com/owenbyram-spec/vesper-13-week-cash-flow). No software license has been added at this stage; [the release checklist](RELEASE-CHECKLIST.md) records publication verification.
+
+QuickBooks API acquisition is available only in the optional browser tool and requires your own Intuit app/grant. Xero API acquisition is not implemented; use reviewed file inputs. Accounting access needs no model key. See [accounting setup](docs/ACCOUNTING-SETUP.md) before creating provider credentials.
 
 ## Development
 

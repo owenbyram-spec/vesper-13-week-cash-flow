@@ -1,5 +1,13 @@
 # 13-Week Cash Flow verification — 2026-10-28
 
+## Detailed accounting setup documentation — 2026-10-28
+
+`repository-observation`: Added a CLI-first installation/accounting-input guide, expanded the QuickBooks guide with exact local fields and Save/Test/Confirm/Refresh checkpoints, and added a Xero guide. Repository inspection confirmed that QuickBooks acquisition exists only in the optional browser tool and that no Xero connector/callback/CLI command is implemented. Official Intuit and Xero references were reviewed for authorisation requirements. The Xero guide distinguishes the usable file-input path from future PKCE, granular-scope, tenant-binding and source-acquisition work. Documentation review does not establish a live connection.
+
+`synthetic`: The documented demo, fourteen-day preview and canonical-input commands were rerun in three new temporary output folders using Python 3.12 with `-S` and a child environment containing only PATH/Python UTF-8 settings. All three exited successfully, produced thirteen weekly rows and retained review-required/unapproved baselines ending at **$35,000**. The separate delay proposal remained `pending`, `applied: false`, with minimum cash **$15,500** and ending cash **$35,000**. No third-party packages, API credentials or browser server were used by these commands. Local Markdown target checks and diff whitespace checks passed. The full test suite was not rerun for this documentation-only change; the earlier 120-test result remains historical.
+
+`open`: Real model/QBO acquisition, actual OS credential-store behaviour, Windows execution and broad accounting formats remain unverified. Xero API support is unimplemented. No credentials or credential stores were accessed, and no API connection or token exchange was performed. The existing 8876 process and its isolated data were not operated on. No software license was added.
+
 ## Continuation: public download and bounded fixes
 
 `repository-observation`: Development resumed from a clean `main` at `9a7095baac0e8a9850cc03a6bacf875550c58d16`. A fresh unauthenticated download of the public [main ZIP](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/archive/refs/heads/main.zip) had SHA-256 `61a0bc0b9bb8fa7d180b7ea460a7cfe95dc979b3f44daa0c153ea0609232b977`; all 54 files matched that commit byte for byte. Python extraction restored the executable modes recorded in the archive. This check used the actual macOS `start.command` through a shell; Finder double-click and Windows extraction/execution were not exercised.

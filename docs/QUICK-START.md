@@ -16,6 +16,8 @@ Open `forecast.csv` in your spreadsheet tool or `forecast.html` as a local file.
 
 Use `--input my-inputs.json` for your own [canonical JSON inputs](DATA-FORMAT.md). Optional `--delay-days 14` writes `scenario-preview.json` alongside the unchanged baseline. This is a pending preview, not an approved change. No assistant or accounting connection is needed.
 
+For a step-by-step installation and client-data checklist, see [Accounting setup](ACCOUNTING-SETUP.md). QuickBooks API acquisition is an optional browser feature; Xero API acquisition is not implemented. Both systems can supply reviewed file inputs. Neither path requires an OpenAI key.
+
 ## Optional: local browser interface
 
 Choose this path for interactive editing, CSV imports, version comparison, explicit scenario approval, Excel export or an optional assistant. On macOS open `start.command`; on Windows open `start.bat`. Unlike the CLI, first browser launch creates a private `.venv` and downloads pinned packages from PyPI. No administrator access or global package installation is required.

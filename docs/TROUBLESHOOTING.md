@@ -9,6 +9,8 @@
 - **Save does not enable Test:** read the message beside the AI controls. Required fields and consent must be complete. A rejected model ID or storage choice must be corrected before retrying Save. The masked entry stays only in the open form until a save is confirmed or you close/change entity/remove it. Test deliberately stays disabled for pending, failed or unsaved entries. Debugging these local paths can use synthetic fixtures; it does not require sharing or supplying real keys.
 - **Credential storage unavailable:** choose session-only storage and re-enter credentials after restarting. There is no plaintext fallback.
 - **QuickBooks mismatch:** distinguish sandbox/production credentials; review and confirm the returned company. Reconnect revoked/expired authorizations through Intuit. Failed or incomplete imports cannot become zero financial data.
+- **QuickBooks setup is unclear:** follow [the detailed guide](QUICKBOOKS-SETUP.md). Save, Test company, explicit company confirmation and financial refresh are separate steps. The CLI has no direct QBO acquisition command and the local app URL is not an OAuth callback.
+- **Where do I enter a Xero key?** This release has no Xero API connector. Use reviewed file inputs; [the Xero guide](XERO-SETUP.md) distinguishes that working route from future API implementation requirements. Accounting inputs need no model key.
 - **Forecast timing looks wrong:** source due dates and expected cash dates differ. Review collections/payment timing and per-occurrence recurring amounts. Historical current-balance reconstructions are unsupported.
 
 A Windows launcher is supplied; Windows execution remains unverified until tested on Windows. See VERIFICATION.md for the checks actually run on this build.
