@@ -1,5 +1,13 @@
 # Forecast inputs and timing assumptions
 
+## CLI input and output
+
+The default source CLI accepts canonical JSON: `python3.12 forecast.py --input my-inputs.json --out ./exports/my-forecast`. Use `examples/synthetic-scenario.json` as the full shape reference, replacing its fictional names, inputs, source evidence and coverage decisions for your own work. Money must remain exact decimal strings; expected cash dates, recurring amounts per occurrence and missing coverage use the same validation and deterministic engine as the browser tool.
+
+CLI outputs are review-required input snapshots, not approvals. Each run has a new output folder and one immutable saved baseline. JSON backup, CSV and local HTML include its version and provenance. Optional `--delay-days N` creates a separate pending `scenario-preview.json` with comparison and `applied: false`; it leaves the baseline unchanged. To review/approve interactively, restore `backup.json` in the optional browser tool and regenerate the pending scenario against that restored version. Excel export and CSV input forms remain optional browser features.
+
+## CSV inputs for the optional browser tool
+
 Use UTF-8 CSV, ISO dates (`YYYY-MM-DD`) and exact decimal strings. The three CSVs have strict ordered headers:
 
 ```csv

@@ -1,6 +1,6 @@
 # Set up the embedded assistant
 
-The application runs locally. Its assistant sends your prompt and the selected workflow evidence to OpenAI when you explicitly ask it to use the real model. The model does not run on your computer. Synthetic rehearsal is clearly labelled and makes no model call.
+This is an optional connection in the local browser tool. The default CLI needs no model setup and makes no provider requests. The browser assistant sends your prompt and selected workflow evidence to OpenAI when you explicitly ask it to use the real model. The model does not run on your computer. Synthetic rehearsal is clearly labelled and makes no model call.
 
 1. Use your organization's approved OpenAI API account. Open the [API dashboard](https://platform.openai.com/) and its [project API keys](https://platform.openai.com/api-keys) page.
 2. Create a project key with the permissions needed for Responses requests. Review your organization's data-use policy and the provider's current terms before sending client information.

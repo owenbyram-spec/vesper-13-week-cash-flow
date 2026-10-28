@@ -1,20 +1,36 @@
 # Start here
 
-1. Extract the downloaded repository into a permanent folder.
+## Default: local Python script
+
+1. Extract the repository into a folder you control.
 2. Install Python 3.12 or newer from [python.org](https://www.python.org/downloads/) if needed. On Windows, enable the Python launcher when offered.
-3. macOS: open `start.command`. Windows: open `start.bat`. The first launch creates this tool's `.venv` and downloads pinned Python packages from PyPI. No administrator access or global package installation is required.
-4. Check the app folder, data directory and local address printed by the launcher. Choose the labelled synthetic example. Complete the workflow before adding financial data or credentials.
-5. Create a separate workspace for each client/entity. Use the CSV templates or follow [QuickBooks setup](QUICKBOOKS-SETUP.md).
-6. Follow [AI setup](MODEL-SETUP.md) to enable the embedded assistant. Normal calculations and exports also work without AI.
-7. Keep the launcher open while using the app or automatic refresh. Press Ctrl+C to stop; reopen the same folder to resume.
+3. In Terminal, change into that folder and run:
+
+```sh
+python3.12 forecast.py --demo --out ./exports/first-forecast
+```
+
+Windows equivalent: `py -3.12 forecast.py --demo --out .\exports\first-forecast`. The script needs no `.venv`, package download, API key, browser session or open port. It finishes after writing its output.
+
+Open `forecast.csv` in your spreadsheet tool or `forecast.html` as a local file. `forecast.json` preserves exact amounts and hashes; `backup.json` preserves the inputs, source evidence and immutable version. The `workspace` subfolder contains that run's SQLite snapshot. Review the output before relying on it. Use a new output folder for every run; existing folders are never overwritten. Without arguments, `forecast.py` creates a separate dated demo folder under `exports`.
+
+Use `--input my-inputs.json` for your own [canonical JSON inputs](DATA-FORMAT.md). Optional `--delay-days 14` writes `scenario-preview.json` alongside the unchanged baseline. This is a pending preview, not an approved change. No assistant or accounting connection is needed.
+
+## Optional: local browser interface
+
+Choose this path for interactive editing, CSV imports, version comparison, explicit scenario approval, Excel export or an optional assistant. On macOS open `start.command`; on Windows open `start.bat`. Unlike the CLI, first browser launch creates a private `.venv` and downloads pinned packages from PyPI. No administrator access or global package installation is required.
+
+Check the app folder, data directory and local address printed by the launcher. Start with its labelled synthetic example, or restore a CLI `backup.json` into a separate workspace. Pending CLI proposals stay in the backup as evidence; regenerate them against the restored version before approval. Use separate workspaces for each client/entity. Model and QuickBooks connections are separate opt-ins described in [AI setup](MODEL-SETUP.md) and [QuickBooks setup](QUICKBOOKS-SETUP.md).
+
+Keep this launcher open while using the browser tool or optional refresh. Press Ctrl+C to stop; reopen the same folder to resume.
 
 On macOS, if Finder treats the command file as text, use Terminal: `cd` into the extracted folder and run `python3.12 run.py`. Only run scripts from the source you reviewed. Windows terminal alternative: `py -3.12 run.py`.
 
-## Check which copy you are using
+## Check which browser copy you are using
 
 The default address is `http://127.0.0.1:8766`. If it is occupied, inspect the existing app's entity and Local data & privacy directory before deciding which copy to use. The launcher refuses an occupied port before preparing packages and never stops the other process.
 
-Downloading or extracting another copy does **not** create separate financial data: each copy uses the same OS application-data directory unless `--data-dir` is supplied. Changing only `--port` changes the address, not that directory. Avoid running multiple processes against the same directory.
+Downloading or extracting another copy does **not** create separate browser-workspace data: each browser launch uses the same OS application-data directory unless `--data-dir` is supplied. Changing only `--port` changes the address, not that directory. Avoid running multiple browser processes against the same directory. The CLI always uses its new output folder instead and never opens this browser data directory.
 
 For an isolated trial, run this from the extracted folder, replacing the example port if needed:
 
