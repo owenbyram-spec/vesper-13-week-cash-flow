@@ -1,0 +1,5 @@
+id,name,category,direction,amount,currency,due_date,expected_date,timing_basis,source
+ar-101,Synthetic client A • October invoice,ar,in,12000.00,USD,2026-10-20,2026-10-30,Synthetic collection commitment reviewed by the user,Synthetic AR snapshot
+ar-102,Synthetic client B • milestone,ar,in,8000.00,USD,2026-11-10,2026-11-13,Synthetic three-day collection lag,Synthetic AR snapshot
+ap-201,Synthetic annual insurance,ap,out,6000.00,USD,2026-11-02,2026-11-02,Synthetic scheduled payment,Synthetic AP snapshot
+tax-1,Synthetic quarterly taxes,assumption,out,4500.00,USD,2027-01-15,2027-01-15,Synthetic explicit tax assumption,Synthetic CFO assumptions

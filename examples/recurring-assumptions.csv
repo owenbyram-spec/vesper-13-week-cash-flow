@@ -1,0 +1,4 @@
+id,name,direction,amount,currency,cadence,anchor_date,start_date,end_date,timing_basis,source
+payroll,Payroll,out,1000.00,USD,biweekly,2026-10-30,2026-10-30,2027-01-24,"$1,000 per payday, every two weeks; synthetic teaching example",Synthetic payroll assumption
+rent,Office rent,out,2500.00,USD,monthly,2026-11-01,2026-11-01,2027-01-24,Synthetic lease: first day of each month,Synthetic rent assumption
+sales,Future service collections,in,1500.00,USD,weekly,2026-11-20,2026-11-20,2027-01-24,"Synthetic future sales net cash collections, excludes invoices above",Synthetic CFO assumptions
