@@ -36,7 +36,7 @@
 
 `primary-record`: The user requested finishing this debugging without keys. Further credential entry is not required for the completed local save-flow checks; real model access/scoped response remains unverified.
 
-`open`: Real model access and scoped response remain unverified. Real QuickBooks acquisition, actual OS credential-store behavior, Windows execution and broad real accounting formats remain open. These local source fixes have not been published as part of this continuation; the ZIP evidence above applies to the starting commit.
+`open`: Real model access and scoped response remain unverified. Real QuickBooks acquisition, actual OS credential-store behavior, Windows execution and broad real accounting formats remain open. The first ZIP evidence above applies to the starting commit; subsequent fixes publication is recorded below.
 
 ## Earlier verification record (historical baseline)
 
@@ -76,3 +76,13 @@ sh -n start.command
 `primary-record`: Owen authorized public publication under `owenbyram-spec` on 2026-10-28 without adding a license at this stage. Destination: [vesper-13-week-cash-flow](https://github.com/owenbyram-spec/vesper-13-week-cash-flow).
 
 `repository-observation`: Public GitHub visibility and default branch `main` were verified after upload on 2026-10-28. All 54 remote file hashes and modes matched the reviewed local source. The local `main` branch tracks `origin/main`; no LICENSE file was added. Publication checks are recorded in [the release checklist](../RELEASE-CHECKLIST.md).
+
+## Verified fixes publication — 2026-10-28
+
+`primary-record`: Owen requested: “Commit and push the verified fixes to GitHub, then confirm the public ZIP includes them. Keep the no-license decision.”
+
+`repository-observation`: Before committing, the current working source passed all **111 tests**, Ruff, JavaScript syntax, macOS launcher syntax and CRLF-aware diff whitespace checks. An independent read-only review found no publication blocker in the 23 changed/new files. A bounded scan of the 59 source files found no high-confidence private-key/provider-key patterns or disallowed local data/environment/export files; no credential store was inspected. No LICENSE/LICENCE file was added. GitHub reported a public repository, default branch `main`, and no detected license.
+
+`repository-observation`: Fixes were committed and pushed as [`f650f05ad9f4fe5df258f378ae7331e0183a2c8f`](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/commit/f650f05ad9f4fe5df258f378ae7331e0183a2c8f), advancing remote `main` from `9a7095baac0e8a9850cc03a6bacf875550c58d16` without force. A fresh unauthenticated download of [the public main ZIP](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/archive/refs/heads/main.zip) identified that exact fixes commit in its ZIP comment. All **59 file contents** matched the committed Git blobs byte for byte. The macOS launcher retained mode `100755`; ordinary non-executable files use the archive's default attributes. No license file, local workspace, environment or export was included.
+
+`repository-observation`: That fixes archive's SHA-256 was `441bfa5570a7fff956ef7361c84adc17800c0e53897e64857f4724dcb7195499`. All **111 tests passed from the extracted public ZIP** using the existing isolated Python 3.12 verification environment, with the source import path explicitly confirmed inside the extraction. This is an archive/source check, not another dependency installation or live-provider test. This record is a subsequent documentation update; the mutable main ZIP changes when later commits are pushed. Live model/QBO, actual OS credential-store behavior, Windows execution and broad real accounting formats remain unverified.

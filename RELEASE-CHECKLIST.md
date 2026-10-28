@@ -11,7 +11,14 @@ Publication destination: [vesper-13-week-cash-flow](https://github.com/owenbyram
 - [x] Upload the reviewed standalone Git source; verify public visibility, default branch `main` and all 54 remote file hashes/modes against the local commit.
 - [x] Download a fresh public main ZIP, match its 54 files to `9a7095baac0e8a9850cc03a6bacf875550c58d16`, install its production lock and walk the synthetic forecast through approval/comparison/exports on macOS in an isolated directory. See the continuation record in [verification](docs/VERIFICATION.md).
 
-The ZIP check covers the published starting commit. Subsequent local fixes require their own source publication before they will be included in a new public download; no later publication is implied by that check.
+The initial ZIP check covers the published starting commit. On 2026-10-28, Owen subsequently authorized committing and pushing the verified fixes while keeping the no-license decision.
+
+- [x] Rerun the 111-test suite, Ruff, JavaScript syntax, macOS launcher syntax and CRLF-aware whitespace checks before publication.
+- [x] Review the 23 changed/new files and exclude local data, environments, exports and credentials; a bounded pattern scan found no high-confidence secrets. No LICENSE/LICENCE file was added.
+- [x] Commit and push the fixes to `main` as [`f650f05ad9f4fe5df258f378ae7331e0183a2c8f`](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/commit/f650f05ad9f4fe5df258f378ae7331e0183a2c8f).
+- [x] Download the public main ZIP without authentication; verify its commit comment, all 59 file contents and executable macOS launcher against the pushed source. All 111 tests also passed from the extracted archive using the existing isolated verification runtime. See [the verification record](docs/VERIFICATION.md) for the archive hash and limits.
+
+This publication includes the save-flow, workspace-context, numeric-export and launcher fixes. Live model/QBO, real credential-store and Windows execution gates remain open; publishing the source does not close them.
 
 ## Checks that remain unverified
 
