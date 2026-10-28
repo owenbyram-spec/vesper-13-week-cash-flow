@@ -20,6 +20,14 @@ The initial ZIP check covers the published starting commit. On 2026-10-28, Owen 
 
 This publication includes the save-flow, workspace-context, numeric-export and launcher fixes. Live model/QBO, real credential-store and Windows execution gates remain open; publishing the source does not close them.
 
+## CLI-first publication
+
+- [x] Record Owen's instruction to publish the CLI-first code/docs, keep the browser optional, preserve 8876/data and retain the no-license decision.
+- [x] Rerun all 120 tests plus Ruff, syntax, documentation-link and whitespace checks; review source-only changes and exclude local data/credentials.
+- [x] Push CLI-first commit [`488702c45999e3d57ffbefb60449468d525e3a78`](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/commit/488702c45999e3d57ffbefb60449468d525e3a78) and download a fresh public ZIP; match all 61 file contents and confirm no license file.
+- [x] Run demo and fourteen-day preview from that extracted ZIP with Python `-S`, no supplied API credential variables and no package installation, server or browser. Reconcile the $35,000 baseline and pending/unapplied $15,500 minimum-cash preview. Guarded no-network/no-integration execution also passed.
+- [x] Confirm the existing 8876 process and exact data/state fingerprints remain unchanged. See [verification](docs/VERIFICATION.md) for archive hashes and limits.
+
 ## Checks that remain unverified
 
 - [ ] Observe a separately authorized real model request and QuickBooks sandbox/live connection before claiming those paths tested.
