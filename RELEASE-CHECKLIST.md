@@ -8,7 +8,7 @@ Publication destination: [vesper-13-week-cash-flow](https://github.com/owenbyram
 - [x] Inspect the tracked source and initial history for secrets, real client records, whole-platform code and unrelated history. The bounded audit found no high-confidence credential/private-key patterns or tracked client data, databases, exports or environments.
 - [x] Record local financial, security, connector-fixture and browser verification in [the verification record](docs/VERIFICATION.md).
 - [x] Review public setup wording and disclose current limitations.
-- [ ] Upload only the reviewed standalone Git source to the selected destination and verify public visibility, default branch and remote contents.
+- [x] Upload the reviewed standalone Git source; verify public visibility, default branch `main` and all 54 remote file hashes/modes against the local commit.
 
 ## Checks that remain unverified
 
