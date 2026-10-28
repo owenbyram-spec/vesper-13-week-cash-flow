@@ -31,3 +31,5 @@ Exactly thirteen explicit weeks roll forward opening cash + inflows − outflows
 Input/assumption/forecast versions are immutable. A scenario proposal refers to the exact base-version hash and shows before/after impact. Acceptance creates a new version; rejection changes nothing; stale proposals must be regenerated. Captured versions support historical comparison; current QuickBooks balances cannot reconstruct historical AR/AP.
 
 CSV/Excel and printable reports include the selected version and source/assumption context. JSON backup/restore preserves exact decimal values and provenance and excludes credentials. All shipped financial examples are synthetic.
+
+Excel monetary cells are numeric with the currency's decimal scale when Excel can preserve the amount. Values beyond Excel's precision or safe numeric conversion remain exact text with an explanatory cell comment. Use CSV or JSON for exact decimal processing of those exceptional values. IDs, dates and formula-like source text remain text. These display/export choices do not change the deterministic forecast.

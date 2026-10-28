@@ -1,19 +1,21 @@
 'use strict';
 const $ = id => document.getElementById(id);
-const state = { csrf: '', data: null, importPreview: null, assumptionPreview: null, editInputs: null, currentProposal: null, renderedScope: null };
+const state = { csrf: '', data: null, importPreview: null, assumptionPreview: null, editInputs: null, currentProposal: null, renderedScope: null, renderedWorkspace: null, settingsWorkspace: null, settingsGeneration: 0, modelConfigured: false, modelSaveState: 'idle', modelDraftDirty: false };
 let toastTimer;
 function node(tag, text, cls) { const el = document.createElement(tag); if (text !== undefined && text !== null) el.textContent = String(text); if (cls) el.className = cls; return el; }
 function clear(el) { el.replaceChildren(); }
 function notify(message, error = false) { const activeDialog=document.querySelector('dialog[open]'); if(activeDialog){let feedback=activeDialog.querySelector('.dialog-feedback');if(!feedback){feedback=document.createElement('p');feedback.className='dialog-feedback';feedback.setAttribute('role','alert');activeDialog.prepend(feedback);}feedback.textContent=message;}  const el = $('toast'); el.textContent = message; el.className = 'toast' + (error ? ' error' : ''); el.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => el.hidden = true, error ? 14000 : 6000); }
 async function api(url, options = {}) {
   const headers = { ...(options.headers || {}) };
-  if (state.data?.scope) headers['X-Vesper-Scope'] = JSON.stringify(state.data.scope);
+  const requestScope = state.data?.scope ? JSON.stringify(state.data.scope) : null;
+  if (requestScope) headers['X-Vesper-Scope'] = requestScope;
   if (options.body !== undefined && typeof options.body !== 'string') { headers['Content-Type'] = 'application/json'; options.body = JSON.stringify(options.body); }
   if (options.method && !['GET', 'HEAD'].includes(options.method)) headers['X-Vesper-CSRF'] = state.csrf;
   const response = await fetch(url, { credentials: 'same-origin', ...options, headers });
   const contentType = response.headers.get('content-type') || '';
   const data = contentType.includes('application/json') ? await response.json() : await response.text();
   if (!response.ok) throw new Error(typeof data === 'object' ? (typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail || data)) : data);
+  if (requestScope && url !== '/api/state' && requestScope !== JSON.stringify(state.data?.scope)) throw new Error('The displayed entity or forecast version changed while this request was running. Reopen the current workflow and retry.');
   return data;
 }
 function handle(callback) { return async event => { if (event) event.preventDefault(); try { await callback(event); } catch (error) { notify(error.message, true); } }; }
@@ -31,6 +33,8 @@ function tab(name) { for (const key of ['review','findings','versions']) { $('ta
 async function refresh() { state.data = await api('/api/state'); render(); }
 function render() {
   const data = state.data, current = data.workspace, version = data.version;
+  if (state.renderedWorkspace !== current?.id) resetSettingsContext();
+  state.renderedWorkspace = current?.id || null;
   const scopeKey = current ? `${current.id}:${version?.id || 'no-version'}` : null;
   if (state.renderedScope !== null && scopeKey !== state.renderedScope) { clear($('assistant-thread')); assistantMessage('Current entity or forecast version changed. New questions use the active version shown above. Earlier evidence remains tied to its original version.', 'system'); }
   state.renderedScope = scopeKey;
@@ -102,7 +106,106 @@ function renderEditRecurrences(){clear($('edit-recurrences'));state.editInputs.r
 function syncEditedInputs(){for(const input of $('edit-items').querySelectorAll('input'))state.editInputs.items[Number(input.dataset.index)][input.dataset.field]=input.dataset.field==='expected_date'?(input.value||null):input.value;for(const input of $('edit-recurrences').querySelectorAll('input,select'))state.editInputs.recurrences[Number(input.dataset.index)][input.dataset.field]=input.value||null;state.editInputs.coverage=readCoverage('assumptions-coverage');state.editInputs.notes=$('assumptions-notes').value;}
 function showProposal(proposal){state.currentProposal=proposal;const parent=$('proposal-review');clear(parent);const current=activeVersion();parent.append(node('p',proposal.label),node('p',`Base ${proposal.base_id} · ${proposal.base_hash}`,'small-note'));const list=node('div');for(const change of proposal.changes){const record=current.inputs.items.find(row=>row.id===change.id)||current.inputs.recurrences.find(row=>row.id===change.id);const oldValue=change.kind==='timing'?record?.expected_date:record?.amount;list.append(node('div',`${change.id}: ${oldValue||'Unreviewed'} → ${change.kind==='timing'?change.expected_date:change.amount} · ${change.timing_basis}`,'finding info'));}parent.append(list);const preview=node('div');showPreview(preview,proposal.preview,proposal.comparison,async()=>{await api('/api/proposals/resolve',{method:'POST',body:{id:proposal.id,proposal_hash:proposal.proposal_hash,approve:true}});closeDialog('proposal-dialog');await refresh();notify('Proposal approved as a new immutable forecast version.');},'Approve exact changes as a new version');parent.append(preview);const pending=proposal.status==='pending';if(!pending||proposal.stale||proposal.base_id!==current.id){for(const el of preview.querySelectorAll('button'))el.disabled=true;parent.append(node('p',!pending?`This proposal is ${proposal.status}.`:'This proposal is stale. Regenerate it using the active version.','finding'));}if(pending)parent.append(button('Reject proposal','button quiet',async()=>{await api('/api/proposals/resolve',{method:'POST',body:{id:proposal.id,proposal_hash:proposal.proposal_hash,approve:false}});closeDialog('proposal-dialog');await refresh();notify('Proposal rejected.');}));jsonDetails(parent,'Exact proposal bytes and hash',{changes:proposal.changes,proposal_hash:proposal.proposal_hash});openDialog('proposal-dialog');}
 async function download(url,name){const response=await fetch(url,{credentials:'same-origin',headers:state.data?.scope?{'X-Vesper-Scope':JSON.stringify(state.data.scope)}:{}});if(!response.ok){const err=await response.json();throw new Error(err.detail||'Export failed');}const blob=await response.blob(),link=node('a');link.href=URL.createObjectURL(blob);link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),1000);}
-async function settings(){requireWorkspace();const result=await api('/api/settings');$('settings-status').textContent=JSON.stringify(result,null,2);if(result.model?.model)$('model-form').elements.model.value=result.model.model;$('qbo-polling').checked=!!result.polling?.enabled;return result;}
+function resetSettingsContext(){
+  $('model-form').reset(); $('qbo-form').reset(); clear($('qbo-company'));
+  clearSettingsNotifications();
+  $('settings-status').textContent=''; $('settings-context').textContent='';
+  $('model-connection-status').textContent='';
+  state.settingsWorkspace=null; state.settingsGeneration++;
+  state.modelConfigured=false; state.modelSaveState='idle'; state.modelDraftDirty=false;
+  modelSaveFeedback(''); updateModelControls();
+  if($('settings-dialog').open)$('settings-dialog').close();
+}
+function requireSettingsWorkspace(){
+  requireWorkspace();
+  if(state.settingsWorkspace!==state.data.workspace.id)throw new Error('The connection form belongs to another entity. Reopen Connections & setup for the intended entity.');
+}
+function clearSettingsNotifications(){
+  for(const feedback of $('settings-dialog').querySelectorAll('.dialog-feedback'))feedback.remove();
+  clearTimeout(toastTimer); $('toast').hidden=true; $('toast').textContent='';
+}
+function modelSaveFeedback(message, failed=false){
+  const feedback=$('model-save-feedback'); feedback.textContent=message; feedback.hidden=!message;
+  feedback.className=failed?'finding':'finding info'; feedback.dataset.state=state.modelSaveState;
+}
+function updateModelControls(){
+  const saving=state.modelSaveState==='saving', unavailable=!state.settingsWorkspace;
+  for(const name of ['api_key','model','persist','consent'])$('model-form').elements[name].disabled=saving||unavailable;
+  $('save-model').disabled=saving||unavailable;
+  $('remove-model').disabled=saving||unavailable;
+  $('test-model').disabled=unavailable||saving||!state.modelConfigured||state.modelDraftDirty||state.modelSaveState==='failed';
+}
+function captureSettingsContext(){return {generation:state.settingsGeneration,workspace:state.settingsWorkspace,scope:JSON.stringify(state.data?.scope)};}
+function isSettingsContext(captured){return $('settings-dialog').open&&captured.generation===state.settingsGeneration&&captured.workspace===state.settingsWorkspace&&captured.workspace===state.data?.workspace?.id&&captured.scope===JSON.stringify(state.data?.scope);}
+function invalidModelSave(event){
+  if(!state.settingsWorkspace||!$('settings-dialog').open)return;
+  if(event)event.preventDefault();
+  clearSettingsNotifications();
+  const form=$('model-form'), missing=[];
+  if(form.elements.api_key.validity.valueMissing)missing.push('Enter your OpenAI API key.');
+  if(form.elements.model.validity.valueMissing)missing.push('Enter a model ID.');
+  if(form.elements.consent.validity.valueMissing)missing.push('Acknowledge the data-transfer and usage notice.');
+  state.modelSaveState='failed'; state.modelDraftDirty=true;
+  modelSaveFeedback('AI connection not saved. '+(missing.join(' ')||'Complete the required connection fields.')+' Nothing was sent.',true);
+  updateModelControls();
+}
+function modelDraftChanged(){
+  if(!state.settingsWorkspace||state.modelSaveState==='saving')return;
+  state.modelDraftDirty=true; state.modelSaveState='idle'; clearSettingsNotifications();
+  modelSaveFeedback('Unsaved AI connection changes. Save them before testing.'); updateModelControls();
+}
+async function settings(){
+  requireSettingsWorkspace(); const generation=state.settingsGeneration; const result=await api('/api/settings'); requireSettingsWorkspace();
+  if(generation!==state.settingsGeneration)throw new Error('The connection form changed while status was loading. Reopen Connections & setup.');
+  $('settings-status').textContent=JSON.stringify(result,null,2);
+  state.modelConfigured=result.model?.configured===true;
+  if(!state.modelDraftDirty&&state.modelSaveState!=='saving'&&result.model?.model)$('model-form').elements.model.value=result.model.model;
+  if(!state.modelDraftDirty&&!['saving','failed'].includes(state.modelSaveState))state.modelSaveState=state.modelConfigured?'confirmed':'idle';
+  const modelStatus=$('model-connection-status');
+  modelStatus.textContent=state.modelConfigured?`AI connection saved for ${state.data.workspace.name} · ${result.model.model}. Saving does not verify the connection or a scoped assistant response.`:`No AI connection saved for ${state.data.workspace.name}. Enter a key and save before testing.`;
+  modelStatus.className=state.modelConfigured?'finding info':'finding';
+  if(!state.modelConfigured&&!state.modelDraftDirty&&state.modelSaveState==='idle')modelSaveFeedback('Enter your key, model ID and consent, then save. Test is available after the save is confirmed.');
+  updateModelControls(); $('qbo-polling').checked=!!result.polling?.enabled; return result;
+}
+async function saveModel(){
+  requireSettingsWorkspace(); if(state.modelSaveState==='saving')return;
+  const form=$('model-form'); if(!form.checkValidity()){invalidModelSave();return;}
+  const captured=captureSettingsContext(), entity=state.data.workspace.name;
+  const payload={api_key:form.elements.api_key.value,model:form.elements.model.value,persist:form.elements.persist.checked,consent:form.elements.consent.checked};
+  clearSettingsNotifications(); state.modelSaveState='saving'; state.modelDraftDirty=true; modelSaveFeedback(`Saving AI connection for ${entity}…`); updateModelControls();
+  try{
+    const saved=await api('/api/settings/model',{method:'POST',body:payload}); if(!isSettingsContext(captured))return;
+    if(saved.model?.configured!==true)throw new Error('The app did not confirm the saved AI connection. Your entry is still in this form; retry Save.');
+    const confirmed=await settings(); if(!isSettingsContext(captured))return;
+    if(confirmed.model?.configured!==true)throw new Error('The connection was not available after saving. Your entry is still in this form; retry Save.');
+    form.elements.api_key.value=''; state.modelDraftDirty=false; state.modelSaveState='confirmed';
+    const storage=saved.storage_mode==='session-only'?' Session-only storage.':saved.storage_mode==='os-credential-store'?' OS credential storage.':'';
+    modelSaveFeedback(`AI connection saved and confirmed for ${entity}.${storage} Run the connection test, then verify a scoped assistant response separately.`);
+    notify(`AI connection saved for ${entity}. Run the connection test, then verify a scoped assistant response separately.`);
+  }catch(error){
+    if(isSettingsContext(captured)){state.modelSaveState='failed'; modelSaveFeedback(`AI connection save failed: ${error.message}`,true);}
+  }finally{if(isSettingsContext(captured))updateModelControls();}
+}
+async function testModel(){
+  requireSettingsWorkspace();
+  if(state.modelSaveState==='saving'||state.modelSaveState==='failed')return;
+  if(!state.modelConfigured||state.modelDraftDirty){modelSaveFeedback('Save and confirm the current AI connection entries before testing.',true);return;}
+  const captured=captureSettingsContext(),entity=state.data.workspace.name; clearSettingsNotifications();
+  try{
+    const result=await api('/api/settings/model/test',{method:'POST',body:{}}); if(!isSettingsContext(captured))return;
+    await settings(); if(!isSettingsContext(captured))return;
+    modelSaveFeedback(`Connection test succeeded for ${entity} · ${result.model||'selected model'}. This generic test does not verify a scoped assistant response.`);
+    notify(`Connection test succeeded for ${entity} · ${result.model||'selected model'}. This generic test does not verify a scoped assistant response.`);
+  }catch(error){if(isSettingsContext(captured))modelSaveFeedback(`AI connection test failed: ${error.message}`,true);}
+}
+
+async function openSettings(){
+  requireWorkspace(); resetSettingsContext(); state.settingsWorkspace=state.data.workspace.id;
+  $('settings-context').textContent=`Connections for ${state.data.workspace.name} · ${location.origin} · Data: ${state.data.data_directory}`;
+  $('model-connection-status').textContent=`Checking saved AI connection for ${state.data.workspace.name}…`;
+  $('model-connection-status').className='finding info';
+  openDialog('settings-dialog'); updateModelControls(); await settings();
+}
 function assistantMessage(text,cls=''){const item=node('div',text,'assistant-message '+cls);$('assistant-thread').append(item);$('assistant-thread').scrollTop=$('assistant-thread').scrollHeight;return item;}
 function assistantEvidence(result){if(result.mode)assistantMessage(`Mode: ${result.mode}`,'system');for(const item of result.evidence||[]){const el=assistantMessage('');el.append(node('span','VERIFIED TOOL EVIDENCE','evidence-tag'),node('strong',item.label||'Deterministic evidence'));jsonDetails(el,'Inspect scoped result',item.data||item);el.append(node('small',item.id||item.evidence_id||''));}for(const proposal of result.proposals||[]){const el=assistantMessage('Proposal awaiting your review');el.append(button('Review proposed changes','button outline',()=>showProposal(proposal)));}}
 async function submitAssistant(){activeVersion();const message=$('assistant-input').value.trim();if(!message)throw new Error('Enter a question for the assistant.');const rehearsal=$('rehearsal-mode').checked;assistantMessage(message,'user');$('assistant-input').value='';$('assistant-send').disabled=true;$('assistant-cancel').hidden=false;try{const result=await api('/api/assistant',{method:'POST',body:{message,rehearsal}});assistantMessage(result.message||'Inspect the verified evidence below.');assistantEvidence(result);await refresh();}finally{$('assistant-send').disabled=false;$('assistant-cancel').hidden=true;}}
@@ -132,15 +235,30 @@ $('assistant-form').addEventListener('submit',handle(submitAssistant));
 $('assistant-cancel').addEventListener('click',handle(async()=>{await api('/api/assistant/cancel',{method:'POST',body:{}});notify('Cancellation requested. An in-flight provider call may finish before the run stops.');}));
 for(const chip of document.querySelectorAll('[data-prompt]'))chip.addEventListener('click',()=>{$('assistant-input').value=chip.dataset.prompt;$('assistant-input').focus();});
 $('rehearsal-mode').addEventListener('change',()=>{$('assistant-mode-note').textContent=$('rehearsal-mode').checked?'Rehearsal uses deterministic tools and scripted text. No model call, API key or spend.':'Real assistant requests use your configured model and scoped financial context. Your API account pays for usage.';});
-for(const id of ['settings-open','first-connect'])$(id).addEventListener('click',handle(async()=>{await settings();openDialog('settings-dialog');}));
-$('model-form').addEventListener('submit',handle(async()=>{const form=$('model-form');const payload={api_key:form.elements.api_key.value,model:form.elements.model.value,persist:form.elements.persist.checked,consent:form.elements.consent.checked};form.elements.api_key.value='';await api('/api/settings/model',{method:'POST',body:payload});await settings();notify('AI connection saved locally. Test it before sending financial context.');}));
-$('test-model').addEventListener('click',handle(async()=>{const result=await api('/api/settings/model/test',{method:'POST',body:{}});await settings();notify(result.message||'Model connection test succeeded.');}));
-$('remove-model').addEventListener('click',handle(async()=>{await api('/api/settings/model',{method:'DELETE',body:{}});await settings();notify('AI connection removed.');}));
-$('qbo-form').addEventListener('submit',handle(async()=>{const form=$('qbo-form'),payload={};for(const key of ['client_id','client_secret','realm_id','refresh_token','environment'])payload[key]=form.elements[key].value;payload.persist=form.elements.persist.checked;for(const key of ['client_id','client_secret','realm_id','refresh_token'])form.elements[key].value='';await api('/api/settings/qbo',{method:'POST',body:payload});clear($('qbo-company'));await settings();notify('QBO credentials saved locally. Test and confirm the returned company next.');}));
-$('test-qbo').addEventListener('click',handle(async()=>{const result=await api('/api/settings/qbo/test',{method:'POST',body:{}});const parent=$('qbo-company');clear(parent);jsonDetails(parent,'Returned company — review before binding',result.company||result);if(result.requires_confirmation&&result.company?.id)parent.append(button('Confirm this company for the active entity','button primary',async()=>{await api('/api/settings/qbo/test',{method:'POST',body:{confirm_company_id:result.company.id}});clear(parent);parent.append(node('p','Company confirmed for this entity.','finding info'));await settings();notify('Company binding confirmed.');}));await settings();}));
-$('qbo-sync').addEventListener('click',handle(async()=>{await api('/api/qbo/sync',{method:'POST',body:{as_of:state.data.today}});await refresh();await settings();notify('Current QBO source imported. Review timing and missing assumptions.');}));
-$('qbo-polling').addEventListener('change',handle(async()=>{await api('/api/qbo/polling',{method:'POST',body:{enabled:$('qbo-polling').checked,interval_seconds:900,params:{as_of:state.data.today}}});await settings();notify('Local refresh preference saved. Polling requires this process to keep running.');}));
-$('remove-qbo').addEventListener('click',handle(async()=>{await api('/api/settings/qbo',{method:'DELETE',body:{}});$('qbo-polling').checked=false;clear($('qbo-company'));await settings();notify('QBO disconnected and local polling stopped.');}));
+$('settings-dialog').addEventListener('close',()=>{if(!$('settings-dialog').open)resetSettingsContext();});
+for(const id of ['settings-open','first-connect'])$(id).addEventListener('click',handle(openSettings));
+$('model-form').addEventListener('invalid',invalidModelSave,true);
+$('model-form').addEventListener('input',modelDraftChanged);
+$('model-form').addEventListener('change',modelDraftChanged);
+$('model-form').addEventListener('submit',handle(saveModel));
+$('test-model').addEventListener('click',handle(testModel));
+$('remove-model').addEventListener('click',handle(async()=>{
+  requireSettingsWorkspace(); if(state.modelSaveState==='saving')return;
+  const captured=captureSettingsContext(),entity=state.data.workspace.name; clearSettingsNotifications();
+  try{
+    await api('/api/settings/model',{method:'DELETE',body:{}}); if(!isSettingsContext(captured))return;
+    $('model-form').reset(); state.modelDraftDirty=false; state.modelSaveState='idle'; state.modelConfigured=false;
+    await settings(); if(!isSettingsContext(captured))return;
+    modelSaveFeedback(`AI connection removed for ${entity}. Enter a key and save to reconnect.`);
+    notify(`AI connection removed for ${entity}.`);
+  }catch(error){if(isSettingsContext(captured))modelSaveFeedback(`AI connection removal failed: ${error.message}`,true);}
+  finally{if(isSettingsContext(captured))updateModelControls();}
+}));
+$('qbo-form').addEventListener('submit',handle(async()=>{requireSettingsWorkspace();const form=$('qbo-form'),payload={};for(const key of ['client_id','client_secret','realm_id','refresh_token','environment'])payload[key]=form.elements[key].value;payload.persist=form.elements.persist.checked;for(const key of ['client_id','client_secret','realm_id','refresh_token'])form.elements[key].value='';await api('/api/settings/qbo',{method:'POST',body:payload});clear($('qbo-company'));await settings();notify('QBO credentials saved locally. Test and confirm the returned company next.');}));
+$('test-qbo').addEventListener('click',handle(async()=>{requireSettingsWorkspace();const testedScope=JSON.stringify(state.data.scope),generation=state.settingsGeneration;const result=await api('/api/settings/qbo/test',{method:'POST',body:{}});const parent=$('qbo-company');clear(parent);jsonDetails(parent,'Returned company — review before binding',result.company||result);if(result.requires_confirmation&&result.company?.id)parent.append(button('Confirm this company for the active entity','button primary',async()=>{requireSettingsWorkspace();if(generation!==state.settingsGeneration||testedScope!==JSON.stringify(state.data.scope))throw new Error('The company confirmation is stale. Test again in the intended entity.');await api('/api/settings/qbo/test',{method:'POST',body:{confirm_company_id:result.company.id}});clear(parent);parent.append(node('p','Company confirmed for this entity.','finding info'));await settings();notify('Company binding confirmed.');}));await settings();}));
+$('qbo-sync').addEventListener('click',handle(async()=>{requireSettingsWorkspace();await api('/api/qbo/sync',{method:'POST',body:{as_of:state.data.today}});await refresh();await settings();notify('Current QBO source imported. Review timing and missing assumptions.');}));
+$('qbo-polling').addEventListener('change',handle(async()=>{requireSettingsWorkspace();await api('/api/qbo/polling',{method:'POST',body:{enabled:$('qbo-polling').checked,interval_seconds:900,params:{as_of:state.data.today}}});await settings();notify('Local refresh preference saved. Polling requires this process to keep running.');}));
+$('remove-qbo').addEventListener('click',handle(async()=>{requireSettingsWorkspace();await api('/api/settings/qbo',{method:'DELETE',body:{}});$('qbo-polling').checked=false;clear($('qbo-company'));await settings();notify('QBO disconnected and local polling stopped.');}));
 $('data-details').addEventListener('click',()=>{$('data-path').textContent=state.data?.data_directory||'';$('delete-confirmation').value='';openDialog('privacy-dialog');});
 $('delete-workspace').addEventListener('click',handle(async()=>{requireWorkspace();await api('/api/workspaces/active',{method:'DELETE',body:{confirmation:$('delete-confirmation').value}});closeDialog('privacy-dialog');await refresh();notify('Active entity’s local financial data removed.');}));
 (async()=>{try{const response=await fetch('/',{credentials:'same-origin'});if(!response.ok)throw new Error('Unable to establish the local session');const boot=await api('/api/bootstrap');state.csrf=boot.csrf_token;await refresh();}catch(error){notify(error.message,true);}})();

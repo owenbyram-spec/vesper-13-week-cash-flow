@@ -2,12 +2,13 @@
 
 - **Python missing/too old:** install Python 3.12+ from python.org; reopen the terminal/launcher. No system Python is modified.
 - **Package download failed:** check network/proxy access to PyPI and rerun. The private environment is reused; saved application data is separate.
-- **Port already used:** close the other app copy or run `python run.py --port 8875` (choose a free port). The launcher never kills an unrelated process.
+- **Port already used:** inspect the other copy's entity and data directory first. Use a free port and an explicit `--data-dir` for an isolated trial, for example `python3.12 run.py --port 8876 --data-dir ./local-data/trial`. A new port alone still shares the default directory. The launcher never kills another process.
 - **Browser session expired:** reopen the app's root address and retry. Keep the local backend running.
 - **AI unavailable:** verify the key, approved model, API billing/usage limits and data consent in settings. Provider errors preserve work. Synthetic rehearsal is available only on a labelled synthetic workspace.
+- **Test succeeded but this app has no AI connection:** compare Connections & setup's entity, address and data directory with the copy where you saved/tested. Check the prominent saved-connection status (`configured: true` in details). “Save an AI connection in this workspace first” means this process has no saved connection for the displayed entity; enter/save directly in that form before testing. Share only the exact error/status text when asking for help. Session-only setup must be repeated after process restart. Then turn rehearsal off and verify a scoped response separately; a generic connection test does not establish that result.
+- **Save does not enable Test:** read the message beside the AI controls. Required fields and consent must be complete. A rejected model ID or storage choice must be corrected before retrying Save. The masked entry stays only in the open form until a save is confirmed or you close/change entity/remove it. Test deliberately stays disabled for pending, failed or unsaved entries. Debugging these local paths can use synthetic fixtures; it does not require sharing or supplying real keys.
 - **Credential storage unavailable:** choose session-only storage and re-enter credentials after restarting. There is no plaintext fallback.
 - **QuickBooks mismatch:** distinguish sandbox/production credentials; review and confirm the returned company. Reconnect revoked/expired authorizations through Intuit. Failed or incomplete imports cannot become zero financial data.
-- **Bank statement will not pass:** compare account, period, currency, source rows and opening/activity/closing controls. Resolve exceptions against independent sources; do not force a balancing plug.
 - **Forecast timing looks wrong:** source due dates and expected cash dates differ. Review collections/payment timing and per-occurrence recurring amounts. Historical current-balance reconstructions are unsupported.
 
 A Windows launcher is supplied; Windows execution remains unverified until tested on Windows. See VERIFICATION.md for the checks actually run on this build.

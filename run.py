@@ -41,6 +41,20 @@ def main():
         raise SystemExit("Choose a local port from 1024 through 65535.")
     if args.testing and not args.data_dir:
         raise SystemExit("Verification mode requires an explicit --data-dir.")
+    # Fail before creating an environment or downloading packages for another copy.
+    try:
+        with socket.socket() as probe:
+            if os.name != "nt":
+                # Match the server on Unix: a recently closed connection's
+                # TIME_WAIT state must not prevent reopening this same app.
+                probe.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            probe.bind(("127.0.0.1", args.port))
+    except OSError:
+        raise SystemExit(
+            f"Local port {args.port} is in use. Check the other copy's entity and data directory, "
+            "or use --port with another number. A different port still uses the same default data "
+            "directory unless you also choose --data-dir. No process was stopped."
+        )
     env_root = ROOT / ".venv"
     python = env_root / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
     lock = ROOT / "requirements.lock"
@@ -72,17 +86,11 @@ def main():
     if Path(sys.prefix).resolve() != env_root.resolve():
         result = subprocess.run([str(python), str(ROOT / "run.py"), *sys.argv[1:]], cwd=ROOT)
         raise SystemExit(result.returncode)
-    try:
-        probe = socket.socket()
-        probe.bind(("127.0.0.1", args.port))
-        probe.close()
-    except OSError:
-        raise SystemExit(
-            f"Local port {args.port} is in use. Close the other copy or use --port with another number. No process was stopped."
-        )
-    create_app = importlib.import_module(PACKAGE + "." + MODULE).create_app
-    app = create_app(data_dir=args.data_dir, port=args.port, testing=args.testing)
+    web = importlib.import_module(PACKAGE + "." + MODULE)
+    directory = (args.data_dir if args.data_dir is not None else web.default_data_dir()).expanduser().resolve()
     url = f"http://127.0.0.1:{args.port}"
+    print(f"App folder: {ROOT}\nData directory: {directory}\nLocal address: {url}", flush=True)
+    app = web.create_app(data_dir=directory, port=args.port, testing=args.testing)
     print(f"13-Week Cash Flow is opening at {url}. Keep this window open; press Ctrl+C to stop.", flush=True)
     if not args.no_browser:
 

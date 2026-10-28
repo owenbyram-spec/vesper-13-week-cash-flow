@@ -5,7 +5,10 @@ from __future__ import annotations
 import csv
 import io
 import re
+from decimal import Decimal
 from html import escape
+
+from .domain.money import Money
 
 
 def safe_cell(value: object) -> str:
@@ -116,11 +119,17 @@ def csv_export(workspace: dict, version: dict) -> bytes:
 
 def excel_export(workspace: dict, version: dict) -> bytes:
     from openpyxl import Workbook
+    from openpyxl.comments import Comment
     from openpyxl.styles import Font, PatternFill, Alignment
     from openpyxl.utils import get_column_letter
 
     workbook = Workbook()
     workbook.remove(workbook.active)
+    places = Money.MINOR_UNITS.get(version["inputs"]["currency"], 2)
+    quantum = Decimal(1).scaleb(-places)
+    money_format = "#,##0" + ("." + "0" * places if places else "")
+    money_format += ";[Red](" + money_format + ")"
+    money_headers = {"amount", "beginning_cash", "cash_in", "cash_out", "ending_cash"}
     names = [
         "Version",
         "Forecast",
@@ -134,9 +143,40 @@ def excel_export(workspace: dict, version: dict) -> bytes:
     for sheet_name, (_, headers, rows) in zip(names, tables(workspace, version)):
         sheet = workbook.create_sheet(sheet_name)
         sheet.append(headers)
-        for row in rows:
-            # Strings preserve Decimal precision and dates exactly; no numeric float conversion.
-            sheet.append([safe_cell(value) for value in row])
+        for row_number, row in enumerate(rows, start=2):
+            for column, value in enumerate(row, start=1):
+                cell = sheet.cell(row_number, column)
+                is_money = headers[column - 1] in money_headers or (
+                    sheet_name == "Version" and column == 2 and row[0] in {"Opening cash", "Minimum cash"}
+                )
+                if is_money:
+                    exact = Decimal(value)
+                    # Both Excel's 15-digit precision and the XLSX writer's
+                    # binary conversion must preserve the amount at currency scale.
+                    # str(float) alone hides cent changes near the precision limit.
+                    numeric_safe = (
+                        len(exact.normalize().as_tuple().digits) <= 15
+                        and Decimal.from_float(float(exact)).quantize(quantum) == exact
+                        and Decimal("%.16g" % exact) == exact
+                    )
+                    if numeric_safe:
+                        cell.value = exact
+                        cell.number_format = money_format
+                    else:
+                        cell.value = safe_cell(value)
+                        cell.comment = Comment(
+                            "Exact amount stored as text to preserve currency precision beyond Excel's "
+                            "15 significant digits or safe binary numeric conversion. "
+                            "Use the raw CSV or JSON backup for exact decimal processing.",
+                            "Vesper & Co",
+                        )
+                elif headers[column - 1] in {"number", "ordinal"} or (
+                    sheet_name == "Version" and column == 2 and row[0] in {"Sequence", "Coverage complete"}
+                ):
+                    cell.value = value
+                else:
+                    # IDs, dates and user text stay text, including formula-like text.
+                    cell.value = safe_cell(value)
         for cell in sheet[1]:
             cell.font = Font(color="FFFFFF", bold=True)
             cell.fill = PatternFill("solid", fgColor="142D3D")

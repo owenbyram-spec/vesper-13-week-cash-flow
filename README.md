@@ -16,6 +16,8 @@ python3.12 run.py
 
 Open [http://127.0.0.1:8766](http://127.0.0.1:8766) if the browser does not open. Keep the launcher running. Begin with the labelled synthetic example; no credentials are needed for that financial workflow.
 
+Check the launcher's app folder, data directory and local address before entering client data or credentials. Another downloaded copy uses the same default data directory. For an isolated trial, choose both a free port and an explicit `--data-dir`; see [Quick start](docs/QUICK-START.md). Connections & setup displays the current entity, address and data directory.
+
 ## Your first useful result
 
 1. Run the synthetic example and inspect its inputs and controls.

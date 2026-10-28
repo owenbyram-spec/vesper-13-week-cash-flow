@@ -234,8 +234,10 @@ def test_selected_version_exports_exact_data_and_neutralizes_injection(tmp_path)
     workbook = load_workbook(BytesIO(excel_export(current, changed)))
     assert workbook["Cash items"]["B2"].data_type == "s"
     assert workbook["Cash items"]["B2"].value.startswith("'=")
-    assert workbook["Cash items"]["E2"].value == "12000.00"
-    assert workbook["Forecast"]["G14"].value == "35000.00"
+    assert workbook["Cash items"]["E2"].value == 12000
+    assert workbook["Cash items"]["E2"].data_type == "n"
+    assert workbook["Forecast"]["G14"].value == 35000
+    assert workbook["Forecast"]["G14"].data_type == "n"
     html = printable_export(current, changed)
     assert "&quot;unsafe&quot;" in html and "SYNTHETIC" in html
     assert base["input_hash"] in csv_export(current, store.get_version(base["id"])).decode()

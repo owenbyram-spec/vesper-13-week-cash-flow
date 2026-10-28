@@ -167,7 +167,7 @@ def install_common(
     def set_model(body: dict, request: Request):
         scope = displayed_scope(request)
         storage = settings.set_model(scope["id"], body)
-        return {"ok": True, "storage": storage, **settings.public(scope["id"])}
+        return {"ok": True, "storage_mode": storage, **settings.public(scope["id"])}
 
     @app.delete("/api/settings/model")
     def remove_model(request: Request):
@@ -204,7 +204,7 @@ def install_common(
             storage = settings.set_qbo(scope["id"], body)
         return {
             "ok": True,
-            "storage": storage,
+            "storage_mode": storage,
             "message": "Connection saved. Test it, then confirm the displayed company.",
             **settings.public(scope["id"]),
         }

@@ -114,7 +114,7 @@ def synthetic_demo() -> dict:
                 "currency": "USD",
                 "due_date": "2026-10-20",
                 "expected_date": "2026-10-30",
-                "timing_basis": "Synthetic collection commitment reviewed by the user",
+                "timing_basis": "Fictional collection commitment for this synthetic example",
                 "source": "Synthetic AR snapshot",
             },
             {
@@ -205,7 +205,7 @@ def synthetic_demo() -> dict:
             "financing": "not_applicable",
             "future_sales": "complete",
         },
-        "notes": "SYNTHETIC: fictional entity and assumptions. All amounts are examples. Financing was explicitly reviewed as not applicable.",
+        "notes": "SYNTHETIC: fictional entity and assumptions. All amounts are examples. Financing is assumed not applicable in this fictional example.",
     }
     payload["sources"] = [
         {

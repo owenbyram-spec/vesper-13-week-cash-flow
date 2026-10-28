@@ -9,6 +9,9 @@ Publication destination: [vesper-13-week-cash-flow](https://github.com/owenbyram
 - [x] Record local financial, security, connector-fixture and browser verification in [the verification record](docs/VERIFICATION.md).
 - [x] Review public setup wording and disclose current limitations.
 - [x] Upload the reviewed standalone Git source; verify public visibility, default branch `main` and all 54 remote file hashes/modes against the local commit.
+- [x] Download a fresh public main ZIP, match its 54 files to `9a7095baac0e8a9850cc03a6bacf875550c58d16`, install its production lock and walk the synthetic forecast through approval/comparison/exports on macOS in an isolated directory. See the continuation record in [verification](docs/VERIFICATION.md).
+
+The ZIP check covers the published starting commit. Subsequent local fixes require their own source publication before they will be included in a new public download; no later publication is implied by that check.
 
 ## Checks that remain unverified
 

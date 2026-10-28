@@ -2,6 +2,8 @@
 
 Financial workspaces live in the operating system's application-data directory, outside this source repository. A custom `--data-dir` can be supplied explicitly. Back up/export data to a location you control. Exported financial files may contain sensitive business information and are your responsibility to protect.
 
+All downloaded copies share that default directory. A different port alone does not isolate data. Check the launcher's resolved app/data paths and Connections & setup's entity/address/directory before entering credentials; use a separate `--data-dir` for an isolated trial. Session-only credentials last only in that running app process. Connections and persistent credential namespaces are bound to the local data directory and entity; moving a finance backup does not transfer credentials.
+
 The backend binds to `127.0.0.1`. Host, browser origin, session and CSRF checks protect local API requests. This is a single-device utility; it is not hosted team software. Local user access and disk/backups still require normal device protection.
 
 Model keys, Intuit credentials and tokens use the operating system credential store when explicitly requested, otherwise session memory. No plaintext persistence fallback is used. Local connection metadata records only hashed names of credential entries known absent; it contains no keys or tokens and is excluded from finance backups. A locked credential store must be unlocked before an existing saved credential can be removed. Do not commit workspaces, exports, `.env` files or credentials. The `.gitignore` is a convenience and is not a substitute for inspecting files before publishing.
