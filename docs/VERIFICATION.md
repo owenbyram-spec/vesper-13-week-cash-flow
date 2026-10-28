@@ -1,5 +1,26 @@
 # 13-Week Cash Flow verification — 2026-10-28
 
+## Latest public-ZIP CLI recheck — 2026-10-28
+
+`repository-observation`: A new unauthenticated download of [the public main ZIP](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/archive/refs/heads/main.zip) identified commit [`154039808d24a728b8b688a01179d918266bf134`](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/commit/154039808d24a728b8b688a01179d918266bf134). All **63 files** matched the committed Git blobs; the executable macOS launcher attribute was retained, and no license, environment, workspace data or exports were included. Archive SHA-256: `850bac591982ecec7559ced7a002a99759cffa6c92f8f0e10433937e9987db23`. The archive was extracted into a new temporary folder. This section records that tested archive; subsequent documentation-only commits change the mutable main ZIP.
+
+`repository-observation`: Using the existing **Python 3.12.13** on macOS, these two direct CLI executions exited 0 from the downloaded source with site-packages disabled:
+
+```sh
+python3.12 -S forecast.py --demo --out ./exports/first-forecast
+python3.12 -S forecast.py --demo --delay-days 14 --out ./exports/delay-preview
+```
+
+**No third-party packages were installed and no API credentials were supplied.** The supplied child environment contained PATH and Python UTF-8 configuration; macOS added locale metadata. No `.venv`, browser backend or provider connection was created. This verifies execution with an existing Python installation, not installation on a new machine or Windows execution.
+
+`synthetic`: Both baselines remained review-required and unapproved, with opening/minimum cash **$25,000** and ending cash **$35,000** across thirteen weeks. The separate fourteen-day proposal remained `pending`, `applied: false`, with minimum cash **$15,500 on 2026-11-08** and ending cash **$35,000**. It referenced the exact baseline ID/hash; the saved baseline remained unchanged. JSON, CSV and parsed HTML reconciled all thirteen weekly rows, totals, roll-forwards and selected-version metadata. Input/result/source and backup hashes, credential-field exclusions and SQLite integrity checks passed. Each backup retained one baseline and no approval event. Recurrences retained seven full **$1,000** payroll payments, three **$2,500** rent payments and ten **$1,500** service collections. Inputs/results matched the earlier independently reconciled source/schedule results; this recheck did not repeat that independent source-schedule calculation.
+
+`repository-observation`: One additional guarded `-S` delay execution passed, making **three output folders** in this recheck. Guards were configured to reject network/socket activity, subprocess/browser launches, optional provider/keyring imports and access to protected 8876 data/OS credential-store paths. The guarded run imported no optional or third-party modules, and its source imports resolved inside the fresh extraction. Its financial/export checks also passed, with baseline input/result hashes identical across all three outputs.
+
+`repository-observation`: The **8876 listener remained the same process**; before/after read-only fingerprints matched every row in workspaces, versions, proposals, events and state in `local-data/public-zip-data`. No restart, restore or financial write was performed against that app. The repository stayed clean and no software license was added.
+
+`open`: **Xero API acquisition remains unimplemented.** Real model access, real QuickBooks sandbox/production acquisition, actual OS credential-store behaviour, Windows execution and broad accounting formats remain **unverified**. No credential store was inspected or live integration exercised. The historical full-suite result was not rerun for this bounded CLI recheck or documentation update.
+
 ## Published-guide fresh-ZIP CLI walkthrough — 2026-10-28
 
 `primary-record`: Owen requested a fresh public ZIP walkthrough of the published CLI demo and collection-delay preview without packages or API keys, preserving 8876/data, the Xero/live-integration limits and the no-license decision.
