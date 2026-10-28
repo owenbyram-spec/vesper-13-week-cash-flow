@@ -29,4 +29,10 @@ sh -n start.command
 
 ## External gates still open
 
-`open`: Real model response and account access; real QBO sandbox/production authorization and report acquisition; actual OS-keychain behavior with a user's credentials; Windows execution; broad real-world accounting formats; GitHub owner and distribution-license selection; public publication. Do not treat the local commits, tests or screenshots as production, compliance, market or ownership proof.
+`open`: Real model response and account access; real QBO sandbox/production authorization and report acquisition; actual OS-keychain behavior with a user's credentials; Windows execution; broad real-world accounting formats. Do not treat the local commits, tests or screenshots as production, compliance, market or ownership proof.
+
+## Public-source publication
+
+`primary-record`: Owen authorized public publication under `owenbyram-spec` on 2026-10-28 without adding a license at this stage. Destination: [vesper-13-week-cash-flow](https://github.com/owenbyram-spec/vesper-13-week-cash-flow).
+
+`open`: Public visibility, default branch and uploaded source contents must be verified after upload and recorded in [the release checklist](../RELEASE-CHECKLIST.md). Local test results alone do not establish that publication succeeded.

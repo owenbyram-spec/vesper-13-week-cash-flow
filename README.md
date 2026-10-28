@@ -41,7 +41,7 @@ Open [http://127.0.0.1:8766](http://127.0.0.1:8766) if the browser does not open
 
 This is a single-device utility with separate local workspaces. It has no shared team login, accounting writeback, Vesper-hosted backend or automatic model-provider fallback. Automatic accounting refresh runs only while the local process is running. Model usage is billed to your own provider account.
 
-Live provider access and Windows execution need their own observed verification; check the verification record for this build. Public publication and license selection remain pending in [the release checklist](RELEASE-CHECKLIST.md).
+Live provider access and Windows execution remain unverified; check the verification record for this build. Source repository: [vesper-13-week-cash-flow](https://github.com/owenbyram-spec/vesper-13-week-cash-flow). No software license has been added at this stage; [the release checklist](RELEASE-CHECKLIST.md) records publication verification.
 
 ## Development
 

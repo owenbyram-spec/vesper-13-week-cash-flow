@@ -1,11 +1,18 @@
 # Release checklist
 
-- [ ] Owen selects the exact GitHub owner and distribution license.
-- [ ] Confirm rights to release the selected source; inspect source/archive for secrets, real client records, whole-platform code and unrelated history.
-- [ ] Record complete local financial, security, connector-fixture and browser verification.
-- [ ] Observe a separately authorized real model request and QuickBooks sandbox/live connection before claiming those paths tested.
-- [ ] Test the Windows launcher on Windows before claiming Windows support verified.
-- [ ] Review client-facing wording, support/contact path and actual limitations.
-- [ ] Publish only the reviewed standalone source after the release gate closes.
+`primary-record`: On 2026-10-28, Owen authorized public GitHub publication under `owenbyram-spec` and chose: “Publish publicly without adding a license yet.”
 
-This initial build plan authorizes local repositories/commits, not public upload or deployment.
+Publication destination: [vesper-13-week-cash-flow](https://github.com/owenbyram-spec/vesper-13-week-cash-flow). No LICENSE file is added in this release. Publication authorization is not a legal ownership finding; source provenance is recorded in [the provenance note](docs/PROVENANCE.md).
+
+- [x] Record Owen's exact owner, public-visibility instruction and no-added-license choice.
+- [x] Inspect the tracked source and initial history for secrets, real client records, whole-platform code and unrelated history. The bounded audit found no high-confidence credential/private-key patterns or tracked client data, databases, exports or environments.
+- [x] Record local financial, security, connector-fixture and browser verification in [the verification record](docs/VERIFICATION.md).
+- [x] Review public setup wording and disclose current limitations.
+- [ ] Upload only the reviewed standalone Git source to the selected destination and verify public visibility, default branch and remote contents.
+
+## Checks that remain unverified
+
+- [ ] Observe a separately authorized real model request and QuickBooks sandbox/live connection before claiming those paths tested.
+- [ ] Test the Windows launcher on Windows before claiming Windows execution verified.
+
+The initial build plan covered local repositories and commits. Owen's subsequent publication instruction authorizes this public-source step. These repositories do not include source-platform history, local workspaces, exports or credentials.

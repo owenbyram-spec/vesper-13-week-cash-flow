@@ -4,6 +4,10 @@
 
 Only the scoped application code and synthetic examples belong in this repository. There is no runtime dependency on the source platforms. Their SaaS identity, billing, broader module catalog, queues, hosted setup, client evidence and Git history are excluded.
 
-`open`: Public repository owner and distribution license must be selected before release. No license or legal ownership conclusion is inferred from source availability or this provenance note. All demonstration businesses and financial records are synthetic.
+`primary-record`: On 2026-10-28, Owen selected GitHub owner `owenbyram-spec`, authorized public publication and instructed: “Publish publicly without adding a license yet.” The publication destination is [vesper-13-week-cash-flow](https://github.com/owenbyram-spec/vesper-13-week-cash-flow).
+
+`repository-observation`: This release adds no LICENSE file. No license or legal ownership conclusion is inferred from source availability, publication authorization or this provenance note.
+
+`synthetic`: All demonstration businesses and financial records are fictional.
 
 `inferred/provisional`: These tools demonstrate one complete finance workflow. Broader workflows, additional integrations, consolidation, shared team access and bespoke implementation remain separate Vesper & Co service opportunities. No conversion, savings, compliance or production-readiness outcome is claimed.
