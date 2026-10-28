@@ -1,5 +1,30 @@
 # 13-Week Cash Flow verification — 2026-10-28
 
+## Published-guide fresh-ZIP CLI walkthrough — 2026-10-28
+
+`primary-record`: Owen requested a fresh public ZIP walkthrough of the published CLI demo and collection-delay preview without packages or API keys, preserving 8876/data, the Xero/live-integration limits and the no-license decision.
+
+`repository-observation`: A fresh unauthenticated [public main ZIP](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/archive/refs/heads/main.zip), downloaded with curl's default configuration disabled, identified commit [`42ad8f2fbb7c241b3a8acd626f6064d22b59f00b`](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/commit/42ad8f2fbb7c241b3a8acd626f6064d22b59f00b) in its ZIP comment. All **63 file contents** matched the committed Git blobs. Archive SHA-256: `466c6354e0563f22b92d49cfbce7d5ef60b3155add5553f7614bf1fac41dd35f`. It was extracted into a new temporary folder with no existing `.venv`, exports or application data. No license file was present. This section records that tested archive; subsequent documentation-only commits change the mutable main ZIP.
+
+`repository-observation`: Using the host's existing **Python 3.12.13** on macOS, both commands copied from the downloaded `docs/ACCOUNTING-SETUP.md` exited 0 from the extracted source root:
+
+```sh
+python3.12 forecast.py --demo --out ./exports/first-forecast
+python3.12 forecast.py --demo --delay-days 14 --out ./exports/delay-preview
+```
+
+The child environment was supplied only PATH and Python UTF-8 configuration, with no API credential variables; macOS added locale metadata. **No third-party packages were installed and no API keys were supplied.** Neither a browser backend nor a provider connection was started. Python was already installed; this does not verify first-time Python installation or Windows execution.
+
+`synthetic`: Both saved baselines remained review-required and unapproved, with opening/minimum cash **$25,000** and ending cash **$35,000** across thirteen weeks, **2026-10-26 through 2027-01-24**. The separate fourteen-day collection-delay proposal remained `pending`, `applied: false`, with minimum cash **$15,500 on 2026-11-08** and ending cash **$35,000**. Minimum-cash change was **−$9,500**; ending-cash change was **$0**. The proposal referenced its exact baseline ID/hash; it did not change source due dates, amounts, recurring assumptions or the saved baseline.
+
+`synthetic`: Independent calculations from the source inputs and schedules reconciled all thirteen weekly rows, totals, date boundaries and cash roll-forwards. Recurrences included seven full **$1,000** payroll payments, three **$2,500** rent payments and ten **$1,500** service collections. JSON, CSV and parsed HTML rows/version metadata reconciled; input/result/source and backup hashes passed. Each backup contained exactly one baseline and no approval event; delay backups retained only the pending proposal. Credential fields were absent, and each output SQLite integrity check returned `ok`.
+
+`repository-observation`: Two additional executions from the same downloaded source repeated the demo and delay preview with **`-S`**, disabling site-packages. Audit guards were configured to reject network/socket activity, subprocess/browser launches, optional provider/keyring imports and access to the protected 8876 data and OS credential-store paths; both executions passed. Neither run imported optional or third-party modules; source imports resolved inside the fresh extraction. Their outputs passed the same independent reconciliation, with identical baseline input/result hashes across all four runs. No `.venv` or browser application-data directory was created in the extraction.
+
+`repository-observation`: The existing **8876 listener remained the same process**, and before/after read-only fingerprints matched every row in workspaces, versions, proposals, events and state in `local-data/public-zip-data`. No restart, restore or financial write was performed against that app. The repository working tree stayed clean; no software license was added.
+
+`open`: This was actual downloaded-CLI execution, separate from the historical full-suite results and from live integrations. **Xero API acquisition remains unimplemented.** Real model access, real QuickBooks sandbox/production acquisition, actual OS credential-store behaviour, Windows execution and broad accounting formats remain **unverified**. No credential store was inspected and no live integration was exercised.
+
 ## Detailed accounting setup documentation — 2026-10-28
 
 `repository-observation`: Added a CLI-first installation/accounting-input guide, expanded the QuickBooks guide with exact local fields and Save/Test/Confirm/Refresh checkpoints, and added a Xero guide. Repository inspection confirmed that QuickBooks acquisition exists only in the optional browser tool and that no Xero connector/callback/CLI command is implemented. Official Intuit and Xero references were reviewed for authorisation requirements. The Xero guide distinguishes the usable file-input path from future PKCE, granular-scope, tenant-binding and source-acquisition work. Documentation review does not establish a live connection.
