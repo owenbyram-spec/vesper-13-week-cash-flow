@@ -1,5 +1,26 @@
 # 13-Week Cash Flow verification — 2026-10-28
 
+## Public ZIP 35356da CLI verification — 2026-10-28
+
+`repository-observation`: A fresh unauthenticated [public main ZIP](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/archive/refs/heads/main.zip), downloaded with curl's default configuration disabled, identified commit [`35356da370f94c1f387193ae17b59e6bbca8a15a`](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/commit/35356da370f94c1f387193ae17b59e6bbca8a15a). All **63 file contents** matched the committed Git blobs; the macOS launcher retained its executable attribute. Archive SHA-256: `0481854ea45d31008a694f72e16867359f9d57a6b21ec038c5ccb86763e0802c`. No license, environment, workspace data or exports were included. The source and outputs used a new temporary folder. This section records that tested archive; subsequent documentation-only commits change the mutable main ZIP.
+
+`repository-observation`: These direct executions exited 0 with the host's existing **Python 3.12.13** on macOS and site-packages disabled:
+
+```sh
+python3.12 -S forecast.py --demo --out ./exports/first-forecast
+python3.12 -S forecast.py --demo --delay-days 14 --out ./exports/delay-preview
+```
+
+**No third-party packages were installed and no API keys were supplied.** The supplied child environment contained PATH and Python UTF-8 configuration; macOS added locale metadata. No `.venv`, browser backend or provider connection was created. First-time Python installation and Windows execution remain unverified.
+
+`synthetic`: Baselines stayed review-required and unapproved, with opening/minimum cash **$25,000** and ending cash **$35,000** across thirteen weeks. The fourteen-day preview stayed `pending`, `applied: false`, with minimum cash **$15,500 on 2026-11-08** and ending cash **$35,000**, bound to its exact unchanged baseline. Fresh independent source/schedule calculations reconciled dates, totals and weekly roll-forwards, including seven full **$1,000** payroll payments, three **$2,500** rent payments and ten **$1,500** sales collections. JSON/CSV/parsed HTML, input/result/source/preview/proposal/backup hashes, credential-field exclusions and SQLite integrity passed. Backups retained one baseline and no approval event. SQLite reads used immutable mode only after absent/empty WAL verification; output bytes remained unchanged and no reader sidecars were created by the checks.
+
+`repository-observation`: One additional guarded `-S` delay repeat passed, giving **three output folders**. Guards were configured to reject network/socket activity, subprocess/browser launches, optional provider/keyring imports and access to protected original data/OS credential-store paths. No optional or third-party modules were imported; imports resolved inside the fresh extraction. All three outputs passed financial/export checks with identical baseline input/result hashes. Extracted source files stayed byte-identical to the ZIP.
+
+`repository-observation`: Initial and intermediate read-only checks detected **8876 listener PID 36477**; final checks, including a host check outside the sandbox, detected **no listener**. Listener state therefore changed during the walkthrough; uninterrupted listener preservation is not claimed. This verification performed **no original-app launch, stop, restart or restore**, and did not attempt to reverse the observed change. The cause was not established. Read-only fingerprints of every row in workspaces, versions, proposals, events and state in `local-data/public-zip-data` remained unchanged. The repository stayed clean and no software license was added.
+
+`open`: **Xero API acquisition remains unimplemented.** Real model access, real QuickBooks sandbox/production acquisition, actual OS credential-store behaviour, Windows execution and broad accounting formats remain **unverified**. No credential store was inspected or live integration exercised. No new full-suite run is claimed for this bounded CLI walkthrough or documentation update.
+
 ## Public ZIP 42ca223 CLI verification — 2026-10-28
 
 `repository-observation`: A fresh unauthenticated [public main ZIP](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/archive/refs/heads/main.zip), downloaded with curl's default configuration disabled, identified commit [`42ca223528f3f6762b4a462d90cf8da38a2a7738`](https://github.com/owenbyram-spec/vesper-13-week-cash-flow/commit/42ca223528f3f6762b4a462d90cf8da38a2a7738). All **63 file contents** matched the committed Git blobs; the macOS launcher retained its executable attribute. Archive SHA-256: `2117668d34b41f51eba39ac7dcc9a5591757a431489d4ebacd667bcb8f28ea48`. No license, environment, workspace data or exports were included. A new temporary folder held the extracted source and isolated outputs. This section records that tested archive; subsequent documentation-only commits change the mutable main ZIP.
