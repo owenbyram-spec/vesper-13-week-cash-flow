@@ -198,7 +198,7 @@ def resolve_written_status(
     ``DRAFT`` (unposted — it still populates the amortization table and the grid
     projection, it just isn't asserted-as-recognized). A period ``<=`` the
     current period keeps the requested status (genuine catch-up / historical
-    recognition on a pre-Peregrine schedule is legitimate). A non-POSTED
+    recognition on a pre-Vesper Bot schedule is legitimate). A non-POSTED
     requested status is returned unchanged — this only ever DOWNGRADES a POSTED
     write, never upgrades anything.
     """
@@ -1441,7 +1441,7 @@ def propose_over_amortization_corrections(
 def _finalize_disposal(db: Session, action, *, actor: str | None = None) -> None:
     """
     Phase-B AC-2 (plan 20260702-phase-b-fa-lifecycle): when an EXECUTED
-    JOURNAL_ENTRY proposal carries the ``peregrine_disposal`` payload marker
+    JOURNAL_ENTRY proposal carries the ``vesper_bot_disposal`` payload marker
     (written by je_builder.build_disposal_je), flip the schedule to DISPOSED
     and freeze it. Runs INSIDE run_post_execution_schedule_hook's loud-failure
     contract. Idempotent: an already-DISPOSED schedule is a no-op (at-least-
@@ -1457,7 +1457,7 @@ def _finalize_disposal(db: Session, action, *, actor: str | None = None) -> None
     from ..models import AccountingSchedule
     from . import audit
 
-    disposal = (action.payload or {}).get("peregrine_disposal")
+    disposal = (action.payload or {}).get("vesper_bot_disposal")
     if not disposal:
         return
 
@@ -1518,7 +1518,7 @@ def run_post_execution_schedule_hook(db: Session, action, *, actor: str | None =
     """
     After a proposal executes successfully, mark its linked ScheduleEntry rows
     POSTED (mark_entry_posted), then finalize a disposal if the payload
-    carries the ``peregrine_disposal`` marker (_finalize_disposal). LOUD
+    carries the ``vesper_bot_disposal`` marker (_finalize_disposal). LOUD
     failure contract: a hook failure leaves the proposal EXECUTED but the
     schedule ledger inconsistent, so it must never be a silent warning — it
     writes a SCHEDULE_POST_HOOK_FAILED audit row, stamps a warning into the
@@ -1533,7 +1533,7 @@ def run_post_execution_schedule_hook(db: Session, action, *, actor: str | None =
         _finalize_disposal(db, action, actor=actor)
         # PLAN-EXEMPT: ratified plan 20260702-phase-c-asc842 (AC-3/AC-4 — the
         # lease leg of the existing post-execution rail; a no-op for payloads
-        # without a peregrine_lease marker. This hook is the single seam all
+        # without a vesper_bot_lease marker. This hook is the single seam all
         # four executor call sites share, so the lease delegation lives here.)
         from .lease_engine import run_post_execution_lease_hook
         run_post_execution_lease_hook(db, action, actor=actor)
@@ -1886,7 +1886,7 @@ def decompose_recognition(
       * unstamped_reflected_months — how many reflected months carry a
                     NONZERO recognition claim with NO posted_at stamp (a
                     status-only POSTED claim). This is the count the DH-flip
-                    banner teaches as "N months are recognized in Peregrine
+                    banner teaches as "N months are recognized in Vesper Bot
                     but have no QuickBooks journal entry" (AC-T2, ratified
                     wording); zero-amount padding rows never inflate it.
     A SKIPPED base entry (human declined the period) lands in NO bucket: it
@@ -2046,7 +2046,7 @@ def compute_tie_out_schedule_side(
     for s in schedules:
         if s.start_date and s.start_date.strftime("%Y-%m") <= view_period:
             original_as_of_view += float(s.original_amount or 0)
-            # AC-T1: pre-Peregrine recognition (accumulated_amount) joins the
+            # AC-T1: pre-Vesper Bot recognition (accumulated_amount) joins the
             # reflected side in BOTH modes — same eligibility gate as original.
             accumulated_as_of_view += float(getattr(s, "accumulated_amount", 0) or 0)
         # Plain dict lookups (not DB queries) — entries batched in ONE query above.
@@ -2080,12 +2080,12 @@ def compute_tie_out_schedule_side(
 
     if is_depreciable:
         # cumulative_vs_contra: the totals ARE cumulative recognition;
-        # pre-Peregrine accumulated joins the reflected side (AC-T1).
+        # pre-Vesper Bot accumulated joins the reflected side (AC-T1).
         schedule_total = round(display_rec, 2)
         posted_total = round(accumulated_as_of_view + reflected_rec, 2)
     else:
         # remaining_vs_bs: original (for schedules acquired by the view
-        # period) minus pre-Peregrine accumulated minus reflected recognition
+        # period) minus pre-Vesper Bot accumulated minus reflected recognition
         # (AC-T1); the display total keeps the legacy walk-only form.
         schedule_total = round(original_as_of_view - display_rec, 2)
         posted_total = round(
@@ -2333,7 +2333,7 @@ def build_balance_check(
         # unconfirmed-history diagnostics in every verdict state.
         if not in_balance and unstamped_months:
             details += (
-                f" | {unstamped_months} months are recognized in Peregrine "
+                f" | {unstamped_months} months are recognized in Vesper Bot "
                 f"but have no QuickBooks journal entry"
             )
         if header_drift:
@@ -2410,7 +2410,7 @@ def build_contra_groups(
     group against ITS account. Returns None unless ≥2 distinct groups exist
     (today's single-contra world keeps the flat balance_check shape). Group
     verdicts ride the QBO-REFLECTED basis (AC-T1) — the caller's per-schedule
-    ``sched_posted_cum`` values include pre-Peregrine ``accumulated_amount``
+    ``sched_posted_cum`` values include pre-Vesper Bot ``accumulated_amount``
     plus reflected recognition (AC-T3, the same accumulated-joins-the-posted-
     side rule as the aggregate); the display-basis cumulative is kept per
     group as ``schedule_total`` for the register columns.
@@ -2756,7 +2756,7 @@ def generate_entries(schedule, db: Session) -> list:
 def posted_basis_remaining(db: Session, schedule) -> Decimal:
     """The ONE basis every ``remaining_amount`` writer uses:
 
-        original − accumulated (pre-Peregrine) − Σ POSTED entries
+        original − accumulated (pre-Vesper Bot) − Σ POSTED entries
 
     POSTED "-REV" correctives are included (they are recognition too).
     DRAFT / PENDING_APPROVAL entries are unrecognized projections awaiting
@@ -2821,10 +2821,10 @@ def recompute(schedule, db: Session) -> list:
     db.commit()
     logger.info(f"[ScheduleEngine] Deleted {deleted} unposted entries before recompute for schedule {schedule.id}")
 
-    # Recompute remaining_amount from posted entries AND the pre-Peregrine
+    # Recompute remaining_amount from posted entries AND the pre-Vesper Bot
     # accumulated_amount (AC-T3, plan 20260716-batch5-remediation): the
     # legacy form dropped accumulated, restating an imported schedule's
-    # remaining UP by its pre-Peregrine recognition on every recompute —
+    # remaining UP by its pre-Vesper Bot recognition on every recompute —
     # generate_entries below already seeds its pool with the same subtraction.
     refresh_remaining_from_posted(db, schedule)
     db.commit()

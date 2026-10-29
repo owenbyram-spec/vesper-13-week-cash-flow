@@ -2,7 +2,7 @@
 # (SYNTHESIS GAP-C1; user-directed hardening pass, audited doorway).
 """Deterministic verification of numeric claims in user-visible AI answers.
 
-Peregrine's provenance was tool-grain (which tools ran), never claim-grain (does THIS
+Vesper Bot's provenance was tool-grain (which tools ran), never claim-grain (does THIS
 dollar figure in the prose appear in ANY tool evidence). The eval scorer's
 ``numeric_correctness`` sub-score (weight 0.25) read a ``numeric_claim_count`` that had
 no producer anywhere — always 0, always a perfect score. This module is the producer.

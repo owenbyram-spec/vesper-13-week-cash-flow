@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 
 const links = [
     { href: "/cash-flow-forecast", label: "Cash Flow", icon: Wallet },
-    { href: "/assistant", label: "Assistant", icon: Bot },
+    { href: "/assistant", label: "Vesper Bot", icon: Bot },
     { href: "/actions", label: "Proposal review", icon: CheckSquare },
     { href: "/settings/connections", label: "Connections", icon: Settings },
 ];

@@ -546,7 +546,7 @@ class AgentStreamState:
 
 
 class AnthropicRuntimeLoop:
-    """Canonical provider-neutral tool loop for Peregrine agent runtime sessions.
+    """Canonical provider-neutral tool loop for Vesper Bot agent runtime sessions.
 
     The class name remains for compatibility with existing imports; provider
     behavior is delegated to ``ModelAdapter`` implementations.
@@ -1596,7 +1596,7 @@ class AnthropicRuntimeLoop:
 
     def _fallback_answer(self, tool_events: list[dict[str, Any]]) -> str:
         # PLAN-EXEMPT: plan 20260711-agentic-workflow-hardening B4 — fence gap G3: this path
-        # previously presented RAW tool text verbatim as Peregrine's own words ("Here's what I
+        # previously presented RAW tool text verbatim as Vesper Bot's own words ("Here's what I
         # found") — adversarial memo/vendor text could render as the assistant's voice, persist
         # as an assistant turn, and re-enter later prompts unfenced. Now: structural tags are
         # neutralized, the snippets are explicitly labeled raw + unverified, and the framing is

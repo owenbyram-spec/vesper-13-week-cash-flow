@@ -30,7 +30,7 @@ PROPOSAL_STAMP_KEY = "_stamp_proposal_id"
 def stamp_journal_entry_payload(payload: dict, proposal_id: int | None) -> dict:
     """A copy of ``payload`` that ``create_journal_entry`` posts with the stamp.
 
-    The executor posts every journal entry with ``Peregrine proposal #<id>`` in
+    The executor posts every journal entry with ``Vesper Bot proposal #<id>`` in
     its PrivateNote (the A/R lane's stamp format), so an uncertain post can be
     found by identity, not by a same-day same-total coincidence. The approved
     memo is left as is (the writer appends the stamp when it builds the

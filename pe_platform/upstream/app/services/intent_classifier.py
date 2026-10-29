@@ -71,7 +71,7 @@ _KEYWORD_RULES: list[tuple[str, tuple[str, ...]]] = [
     (
         "memory",
         (
-            "remember that", "remember this", "teach peregrine", "always classify",
+            "remember that", "remember this", "teach vesper bot", "always classify",
             "always categorize", "standing instruction", "from now on", "make a note",
             "note that we", "accounting policy", "our policy is", "going forward",
         ),
@@ -114,7 +114,7 @@ _KEYWORD_RULES: list[tuple[str, tuple[str, ...]]] = [
             # keyword "billing" hijacked operational requests that merely DESCRIBE an expense —
             # "accrue ... for Collective RCM's billing services" matched here (billing precedes
             # close_management) and routed to the EMPTY billing bundle (no JE tool). Billing is
-            # the user's OWN Peregrine subscription; require a subscription-context phrase, not the
+            # the user's OWN Vesper Bot subscription; require a subscription-context phrase, not the
             # bare noun, so a vendor's "billing services" no longer hijacks the accrual.
             "subscription", "billing plan", "billing portal", "billing settings",
             "billing cycle", "my billing", "stripe", "pricing plan",
@@ -233,7 +233,7 @@ _KEYWORD_RULES: list[tuple[str, tuple[str, ...]]] = [
         # ("have we invoiced Acme", "did we bill the client", "who owes us") routes
         # here instead of falling through to the broad reporting_analysis catch-all
         # or to general. "invoice for" was removed from the billing rule (which is
-        # the user's OWN Peregrine subscription) so a customer invoice no longer
+        # the user's OWN Vesper Bot subscription) so a customer invoice no longer
         # hijacks to the empty billing bundle. Word-boundary matched (re.search
         # \b<keyword>) like every rule here — see classify_intent_keyword.
         "receivables",

@@ -185,7 +185,7 @@ class AnthropicMessagesAdapter:
         return _normalize_terminal_reason(getattr(response, "stop_reason", None))
 
     def supports_temperature(self, model: str) -> bool:
-        # Standard (non-extended-thinking) Claude accepts temperature 0-1. Peregrine does not
+        # Standard (non-extended-thinking) Claude accepts temperature 0-1. Vesper Bot does not
         # enable extended thinking on this lane; revisit in the same edit that ever does.
         return True
 

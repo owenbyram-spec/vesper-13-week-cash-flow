@@ -113,13 +113,13 @@ PROPOSAL_TOOLS = {
     "update_budget_line",
     # PLAN-EXEMPT: ratified plan 20260713-wave1-learning-flywheel C2 (marker
     # RATIFICATION-2026-07-13.md on disk; active-plan.json sidecar absent in this worktree).
-    # teach_peregrine MOVED to PROPOSAL_ONLY_WRITE_TOOLS: MEMORY_UPDATE now carries an
+    # teach_vesper_bot MOVED to PROPOSAL_ONLY_WRITE_TOOLS: MEMORY_UPDATE now carries an
     # ACTION_TYPE_TO_TOOL executor row (approvals execute — AC-4), and registry-integrity
     # check #5 requires every executor-row tool to be a PROPOSAL_ONLY_WRITE_TOOLS member.
     # The two sets produce IDENTICAL risk metadata (DRAFT_ONLY / ANALYST / mutates_state /
     # creates_proposed_action), and chat routing is unchanged — ToolExecutor.execute
-    # intercepts teach_peregrine by NAME into _propose_memory_update before any lane logic.
-    # Its safety_expectation AgentEvalFixture teach_peregrine_proposal (app/agent/evals.py)
+    # intercepts teach_vesper_bot by NAME into _propose_memory_update before any lane logic.
+    # Its safety_expectation AgentEvalFixture teach_vesper_bot_proposal (app/agent/evals.py)
     # keeps proving proposal-only routing behaviorally; no fixture change needed (AP-T09).
     # C3-TOOLS wave 3.2b row 17: dispose_schedule is a HANDLER-lane proposal tool — its OWN
     # handler self-drafts a PENDING JOURNAL_ENTRY ProposedAction (like the two above), so it is
@@ -251,7 +251,7 @@ SAFE_INTERNAL_WRITE_TOOLS = {
 # their handler, so ToolExecutor must run the handler at chat time instead of routing through the
 # internal-DB proposer. Previously an inline set literal in tool_executor.py — hand-copied sets
 # drift; registry_integrity validates this constant (members ⊆ PROPOSAL_TOOLS, and none may carry
-# an ACTION_TYPE_TO_TOOL executor row). teach_peregrine is deliberately absent: it routes through
+# an ACTION_TYPE_TO_TOOL executor row). teach_vesper_bot is deliberately absent: it routes through
 # ToolExecutor._propose_memory_update, not its handler. Every member already carries its own
 # safety_expectation AgentEvalFixture in app/agent/evals.py (create_journal_entry_je_proposal /
 # update_budget_line / dispose_schedule_proposal / reclassify_transaction_proposal) proving
@@ -353,11 +353,11 @@ PROPOSAL_ONLY_WRITE_TOOLS = {
     # PLAN-EXEMPT: ratified plan 20260713-wave1-learning-flywheel C2 (RATIFICATION-2026-07-13.md).
     # Moved from PROPOSAL_TOOLS (identical metadata) because MEMORY_UPDATE gained its
     # ACTION_TYPE_TO_TOOL executor row (approved memory proposals now execute
-    # _handle_teach_peregrine → agent_memory.remember) and integrity check #5 requires the
+    # _handle_teach_vesper_bot → agent_memory.remember) and integrity check #5 requires the
     # membership. Chat routing unchanged (name-intercepted into _propose_memory_update).
-    # safety_expectation AgentEvalFixture teach_peregrine_proposal (app/agent/evals.py)
+    # safety_expectation AgentEvalFixture teach_vesper_bot_proposal (app/agent/evals.py)
     # continues to prove proposal-only routing (AP-T09).
-    "teach_peregrine",
+    "teach_vesper_bot",
     "set_budget_months",
     "create_close_task",
     "add_covenant",
@@ -786,7 +786,7 @@ INTENT_BUNDLES: dict[str, list[str]] = {
         # moved to SCHEDULES too — as a tier-1 PROPOSAL_TOOLS member it would enter
         # the offer and break the 15-exact list, so its close-lane policy access is
         # carried by the explicit allowed_intents supplement in _metadata_for_tool
-        # (the teach_peregrine precedent), not by membership.
+        # (the teach_vesper_bot precedent), not by membership.
     ],
     # PLAN-EXEMPT: ratified plan 20260713-wave2-6-tool-hardening chunk C1 (marker
     # RATIFICATION-2026-07-13.md on disk). Decision 1: the amortization-schedules
@@ -852,7 +852,7 @@ INTENT_BUNDLES: dict[str, list[str]] = {
         # C3-DELETES row 18: single taught-knowledge delete, ordered FIRST (H3 precedent).
         "delete_knowledge",
         "get_module_context",
-        "teach_peregrine",
+        "teach_vesper_bot",
     ],
     # RATIFIED 2026-06-25 (plan 20260625-intent-routing-receivables): billing and admin
     # stay deliberately EMPTY. The agent must not be promptable to add/delete a user or
@@ -1028,7 +1028,7 @@ def _inject_dry_run_property(input_schema: dict[str, object]) -> dict[str, objec
 
 
 _MATERIAL_PROPOSAL_PREFIX = (
-    "Draft a ProposedAction for human review. Peregrine will not directly write this change "
+    "Draft a ProposedAction for human review. Vesper Bot will not directly write this change "
     "from chat; nothing changes until an editor approves it. "
 )
 _ROUTINE_PROPOSAL_PREFIX = (
@@ -1091,7 +1091,7 @@ def _metadata_for_tool(name: str, schema: dict[str, Any], handler: Optional[Tool
         intent for intent, names in INTENT_BUNDLES.items() if name in names
     } or {AgentIntent.GENERAL.value}
 
-    if name in {"teach_peregrine"}:
+    if name in {"teach_vesper_bot"}:
         allowed_intents.update({AgentIntent.MEMORY.value, AgentIntent.GENERAL.value})
 
     # PLAN-EXEMPT: ratified plan 20260713-wave2-6-tool-hardening chunk C1 (marker
@@ -1102,7 +1102,7 @@ def _metadata_for_tool(name: str, schema: dict[str, Any], handler: Optional[Tool
     # member-only tail writes: as a PROPOSAL_TOOLS member it sorts into selection
     # tier 1, so membership would force it INTO the close offer and break the
     # decision-1 fifteen-exact list. The explicit allowed_intents supplement (the
-    # teach_peregrine precedent above) grants the intent without the offer.
+    # teach_vesper_bot precedent above) grants the intent without the offer.
     if name in {"dispose_schedule"}:
         allowed_intents.update({AgentIntent.CLOSE_MANAGEMENT.value})
 
@@ -1115,7 +1115,7 @@ def _metadata_for_tool(name: str, schema: dict[str, Any], handler: Optional[Tool
     # any other intent (offered-but-rejected). Its two lane siblings already carry
     # "general" (both GENERAL members), so reverse_journal_entry is the ONE lane-core write
     # needing this supplement. It grants the intent WITHOUT bundle membership (the
-    # teach_peregrine/dispose_schedule precedent above): the offer comes from the lane, not
+    # teach_vesper_bot/dispose_schedule precedent above): the offer comes from the lane, not
     # from GENERAL-bundle membership (which would trim the pinned get_executive_briefing).
     # No new write capability — the tool is unchanged, only more intents may propose it; its
     # proposal-only routing stays proven by the existing safety_expectation

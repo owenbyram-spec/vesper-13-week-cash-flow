@@ -51,7 +51,7 @@ SENSITIVE_KEYS = {"access_token", "refresh_token", "password", "secret", "api_ke
 _INTERNAL_DB_ACTION_TYPE_BY_TOOL = {tool: action for action, tool in ACTION_TYPE_TO_TOOL.items()}
 
 _INTERNAL_DB_APPROVAL_EFFECT = (
-    "Approval executes this change in Peregrine immediately; the outcome is recorded "
+    "Approval executes this change in Vesper Bot immediately; the outcome is recorded "
     "honestly as EXECUTED or FAILED on the action."
 )
 _REVIEW_ONLY_APPROVAL_EFFECT = (
@@ -151,7 +151,7 @@ class ToolExecutor:
             self.policy_gate.require_allowed(tool, tool_input, context)
             prepared_input = self._prepare_input(tool_input, context)
             self._require_sources(tool, context, prepared_input)
-            if tool.name == "teach_peregrine":
+            if tool.name == "teach_vesper_bot":
                 result = self._propose_memory_update(context, prepared_input)
             elif (
                 tool.creates_proposed_action
@@ -219,7 +219,7 @@ class ToolExecutor:
             }
             if step_cm:
                 step_cm.finish(status="blocked", output_payload=output_payload, error=exc.reason)
-            return ToolExecutionOutcome(text=f"Tool call blocked by Peregrine policy: {exc.reason}", status="blocked", code="policy_denied")
+            return ToolExecutionOutcome(text=f"Tool call blocked by Vesper Bot policy: {exc.reason}", status="blocked", code="policy_denied")
         except Exception as exc:
             self.db.rollback()
             safe_error = redact_to_string(str(exc), max_length=500)
@@ -503,15 +503,15 @@ class ToolExecutor:
         # RATIFICATION-2026-07-13.md on disk) — decision 4 / AC-3: the teach dry branch.
         # Validation above ran (an empty fact reports the same error a real call would);
         # a dry run drafts NOTHING (zero MEMORY_UPDATE rows) and names no proposal id.
-        # teach_peregrine's proposal-only routing stays behaviorally proven by its
-        # safety_expectation AgentEvalFixture teach_peregrine_proposal (app/agent/evals.py);
+        # teach_vesper_bot's proposal-only routing stays behaviorally proven by its
+        # safety_expectation AgentEvalFixture teach_vesper_bot_proposal (app/agent/evals.py);
         # this branch adds no write capability — it removes the write for previews.
         if bool(tool_input.get("_dry_run")):
             return (
                 "DRY RUN — nothing was written and no memory proposal was drafted. A real "
-                "teach_peregrine call would draft a MEMORY_UPDATE ProposedAction to remember "
+                "teach_vesper_bot call would draft a MEMORY_UPDATE ProposedAction to remember "
                 f"under '{category}': {fact[:500]} — an editor must approve it before "
-                "Peregrine stores permanent knowledge."
+                "Vesper Bot stores permanent knowledge."
             )
         action = ProposedAction(
             company_id=context.company_id,
@@ -877,7 +877,7 @@ class ToolExecutor:
                 },
                 "required_role": "EDITOR",
             },
-            reasoning=f"Drafted by Peregrine assistant for review: {tool.description[:500]}",
+            reasoning=f"Drafted by Vesper Bot assistant for review: {tool.description[:500]}",
             confidence_score=0.8,
             status="PENDING",
             source="ai_assistant",
@@ -904,5 +904,5 @@ class ToolExecutor:
         return DraftedToolResult((
             f"I drafted this change for approval instead of writing it directly. "
             f"ProposedAction #{action.id} ({action_type}) affects {affected_entity}. "
-            "An editor must review and approve it before Peregrine changes financial records."
+            "An editor must review and approve it before Vesper Bot changes financial records."
         ), proposal_id=action.id)

@@ -2010,7 +2010,7 @@ export default function CashFlowForecastPage() {
                             )}
                         </p>
                         <div className="mt-2 rounded-lg border border-border bg-surfaceAlt/70 px-3 py-2 text-xs text-textMuted max-w-3xl">
-                            Need to spread an accrued or deferred balance without overwriting the base forecast? Ask Peregrine AI something like:
+                            Need to spread an accrued or deferred balance without overwriting the base forecast? Ask Vesper Bot something like:
                             {" "}
                             <span className="text-text">
                                 &quot;Spread $24,000 of insurance accrual over the next 6 weeks as cash out starting May 1.&quot;

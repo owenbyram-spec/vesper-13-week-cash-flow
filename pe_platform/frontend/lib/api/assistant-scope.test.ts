@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { waitFor } from "@testing-library/react";
-import { streamAssistantMessage, formatAssistantError, type AssistantStreamEvent } from "./assistant";
+import { streamAssistantMessage, formatAssistantError, assistantMessageForStatus, type AssistantStreamEvent } from "./assistant";
 import { apiClient, setCsrfFallbackToken } from "./client";
 import { useAppStore } from "../store";
 import { StaleWorkspaceError } from "../workspace-scope";
@@ -9,6 +9,12 @@ function adopt(id = "a", revision = 1) {
 }
 beforeEach(() => { adopt(); setCsrfFallbackToken("fixture-csrf"); });
 describe("real assistant transport scope adapter", () => {
+    it("uses Vesper Bot identity in connection and permission errors", () => {
+        for (const status of [401, 403, undefined]) {
+            expect(assistantMessageForStatus(status)).toContain("Vesper Bot");
+        }
+    });
+
     it("aborts and suppresses old-workspace events without fallback after selection changes", async () => {
         let controller!: ReadableStreamDefaultController<Uint8Array>;
         const encoder = new TextEncoder();

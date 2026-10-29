@@ -1,1 +1,1 @@
-"""Bank reconciliation service package (Peregrine-owned, read-and-compare)."""
+"""Bank reconciliation service package (Vesper Bot-owned, read-and-compare)."""

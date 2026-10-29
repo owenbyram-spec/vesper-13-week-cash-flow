@@ -301,8 +301,8 @@ ${message}` : message,
             <Button
                 onClick={() => setOpen(true)}
                 className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg shadow-primary/30 flex items-center justify-center hover:scale-110 transition-transform"
-                aria-label="Open AI Assistant"
-                title="Open AI Assistant"
+                aria-label="Open Vesper Bot"
+                title="Open Vesper Bot"
             >
                 <Bot className="h-6 w-6" />
             </Button>
@@ -319,14 +319,14 @@ ${message}` : message,
                         <Bot className="h-4 w-4 text-primaryText" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-semibold text-text">Peregrine AI</h3>
+                        <h3 className="text-sm font-semibold text-text">Vesper Bot</h3>
                         <p className="text-[9px] text-textMuted truncate max-w-[170px]">{latestRunLabel}</p>
                     </div>
                 </div>
                 <button
                     onClick={() => setOpen(false)}
                     className="p-1.5 rounded-lg text-textMuted hover:text-text hover:bg-surfaceAlt transition-colors"
-                    aria-label="Minimize AI Assistant"
+                    aria-label="Minimize Vesper Bot"
                     title="Minimize"
                 >
                     <X className="h-4 w-4" />

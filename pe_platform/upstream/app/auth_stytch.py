@@ -116,7 +116,7 @@ def _stytch_member_management_error(exc: StytchB2BError) -> str:
     if error_type == "invalid_organization_id":
         return (
             "This tenant is not linked to a valid Stytch B2B organization. "
-            "Link the Peregrine tenant to the Stytch organization before inviting members."
+            "Link the Vesper Bot tenant to the Stytch organization before inviting members."
         )
     message = detail.get("error_message") if isinstance(detail.get("error_message"), str) else None
     lowered_message = (message or "").lower()

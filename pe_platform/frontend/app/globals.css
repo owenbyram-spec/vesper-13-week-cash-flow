@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Light theme (default) — Peregrine brand palette ───
-   Mirrors the theperegrine.ai landing page design tokens
+/* ─── Light theme (default) — Vesper & Co workspace palette ───
+   Local cash-flow workspace design tokens
    (white / indigo #4F46E5 / emerald #10B981, soft #E6EAF0 borders). */
 :root {
   --color-background: #F7F8FA;

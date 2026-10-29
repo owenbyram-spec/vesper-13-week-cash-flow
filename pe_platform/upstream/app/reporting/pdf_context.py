@@ -107,7 +107,7 @@ class PdfContext:
 
         # ── Bound metadata (display strings) ───────────────────────────────
         metadata = report_payload.get("metadata", {})
-        self.company = metadata.get("company_name") or "Peregrine Report"
+        self.company = metadata.get("company_name") or "Vesper Bot Report"
         self.period = metadata.get("period_label") or metadata.get("period", "—")
         self.gen_at = metadata.get("generated_at", "—")
         self.title = metadata.get("title", "Board Financial Report")

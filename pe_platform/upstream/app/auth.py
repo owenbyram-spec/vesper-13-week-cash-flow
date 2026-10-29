@@ -429,7 +429,7 @@ def _serialize_user(db: Session, user: User, organization: Optional[Organization
     if user.is_priority_admin:
         # Platform (priority) admins manage every tenant, even ones they hold no
         # membership in. Without this, an explicit membership (e.g. the internal
-        # Peregrine org) shadows cross-tenant access: the membership-only list above
+        # Vesper Bot org) shadows cross-tenant access: the membership-only list above
         # collapses the switcher to that single org. Mirror list_companies: union all
         # other active orgs in as internal_super_admin. Membership orgs keep their
         # real role; this only ADDS the tenants the admin isn't a member of.
@@ -686,7 +686,7 @@ def require_admin_context(ctx: AuthContext = Depends(get_current_auth_context)) 
 
 def require_platform_admin_context(ctx: AuthContext = Depends(get_current_auth_context)) -> AuthContext:
     if not ctx.user.is_priority_admin:
-        raise HTTPException(status_code=403, detail="Peregrine platform admin role required")
+        raise HTTPException(status_code=403, detail="Vesper Bot platform admin role required")
     return ctx
 
 

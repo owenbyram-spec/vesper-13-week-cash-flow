@@ -15,7 +15,7 @@ from .ai_metric_builder import _fallback_covenant, _fallback_custom_kpi, draft_c
 from .context_service import ContextCacheService
 
 
-logger = logging.getLogger("peregrine.onboarding_planner")
+logger = logging.getLogger("vesper_bot.onboarding_planner")
 
 
 def _safe_draft(

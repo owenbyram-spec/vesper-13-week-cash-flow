@@ -1,6 +1,6 @@
 """Transaction-amount anomaly detector — TWO-SIDED modified z-score (median + MAD).
 
-One-shot cutover (plan 20260711-peregrine-finance-os, FOS-1 AC-1.5) from the legacy
+One-shot cutover (plan 20260711-vesper_bot-finance-os, FOS-1 AC-1.5) from the legacy
 one-sided ``mean + pstdev`` z-score to the robust statistical shape already proven in
 app/analysis/je_structure.py (DEC-CAR-C-7 / AP-FIN-06, financial-modeling-correctness
 SKILL principle 7). The legacy path is REMOVED, not flag-gated:

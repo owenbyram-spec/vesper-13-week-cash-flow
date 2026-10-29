@@ -26,7 +26,7 @@ ACTION_TO_TOOL = {
     "CASHFLOW_ACTUALS_CATEGORIZATION": "categorize_cashflow_actuals",
     "CASHFLOW_SPREAD": "spread_cashflow_balance",
     "CASHFLOW_OVERRIDE_DELETE": "delete_cashflow_override",
-    "MEMORY_UPDATE": "teach_peregrine",
+    "MEMORY_UPDATE": "teach_vesper_bot",
 }
 _NO_PROVIDER = ContextVar("local_pe_preview_no_provider", default=False)
 _FALLBACK_LOCK = threading.RLock()

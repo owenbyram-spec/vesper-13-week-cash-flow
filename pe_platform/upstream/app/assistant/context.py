@@ -2,7 +2,7 @@
 app/assistant/context.py
 ────────────────────────
 Module context builders and intent classification.
-Gathers structured context from every Peregrine module for the AI assistant.
+Gathers structured context from every Vesper Bot module for the AI assistant.
 """
 import logging
 from contextvars import ContextVar
@@ -138,7 +138,7 @@ def _build_agreement_context(db: Session, company_id: str) -> str:
 
 
 def build_module_context(db: Session, company_id: str, module: str) -> str:
-    """Return the assistant-readable context block for a named Peregrine module."""
+    """Return the assistant-readable context block for a named Vesper Bot module."""
     module_key = (module or "").strip().lower().replace("-", "_")
     aliases = {
         "agreements": "agreements",

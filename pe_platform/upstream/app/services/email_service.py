@@ -189,7 +189,7 @@ def _send_email_detailed(smtp: Dict[str, Any], subject: str, html_body: str, *, 
     try:
         msg = MIMEMultipart("alternative")
         msg["Subject"] = subject
-        msg["From"] = smtp["user"] or "peregrine@noreply.com"
+        msg["From"] = smtp["user"] or "vesper-bot@example.invalid"
         recipients = [part.strip() for part in smtp["recipient"].split(",") if part.strip()]
         msg["To"] = ", ".join(recipients)
         if message_id:
@@ -240,7 +240,7 @@ def _debug_notification_subject(payload: dict[str, Any]) -> str:
     project = str(payload.get("project_slug") or "unknown")
     environment = str(payload.get("environment") or "unknown")
     title = str(payload.get("title") or "Debug incident")
-    return f"Peregrine debug alert: {level} {project}/{environment} - {title[:80]}"
+    return f"Vesper Bot debug alert: {level} {project}/{environment} - {title[:80]}"
 
 
 def _debug_notification_html(payload: dict[str, Any]) -> str:
@@ -257,7 +257,7 @@ def _debug_notification_html(payload: dict[str, Any]) -> str:
     )
     return f"""
     <html><body style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
-      <h2>Peregrine debug alert</h2>
+      <h2>Vesper Bot debug alert</h2>
       <p>{html.escape(str(payload.get("title") or "Debug incident"))}</p>
       <table cellpadding="6" cellspacing="0" style="border-collapse: collapse;">{rows}</table>
       <p><strong>Triage:</strong> {html.escape(str(payload.get("triage_summary") or ""))}</p>
@@ -267,7 +267,7 @@ def _debug_notification_html(payload: dict[str, Any]) -> str:
 
 def _debug_notification_slack_text(payload: dict[str, Any]) -> str:
     return (
-        f"*Peregrine debug alert* "
+        f"*Vesper Bot debug alert* "
         f"{str(payload.get('level') or 'error').upper()} "
         f"{payload.get('project_slug') or 'unknown'}/{payload.get('environment') or 'unknown'}\n"
         f">{payload.get('title') or 'Debug incident'}\n"
@@ -351,7 +351,7 @@ def send_approval_email(
     html = f"""
     <html><body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <div style="background: #1e3a5f; padding: 24px; border-radius: 8px 8px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 20px;">🦅 Peregrine — Action Requires Approval</h1>
+        <h1 style="color: white; margin: 0; font-size: 20px;">🦅 Vesper Bot — Action Requires Approval</h1>
       </div>
       <div style="border: 1px solid #e0e0e0; border-top: none; padding: 24px; border-radius: 0 0 8px 8px;">
         <p style="color: #333; font-size: 15px;">{action_summary}</p>
@@ -368,19 +368,19 @@ def send_approval_email(
         </div>
         <p style="margin-top: 20px; font-size: 12px; color: #999;">
           This link expires in 7 days. You can also review this proposal in the
-          <a href="{base}/actions" style="color: #1e3a5f;">Peregrine dashboard</a>.
+          <a href="{base}/actions" style="color: #1e3a5f;">Vesper Bot dashboard</a>.
         </p>
       </div>
     </body></html>
     """
 
-    subject = f"Peregrine: Action Requires Approval — {action_summary[:60]}"
+    subject = f"Vesper Bot: Action Requires Approval — {action_summary[:60]}"
     sent = _send_email(smtp, subject, html)
 
     # Also send Slack notification
     if smtp.get("slack_webhook"):
         slack_msg = (
-            f"🦅 *Peregrine Action Requires Approval*\n"
+            f"🦅 *Vesper Bot Action Requires Approval*\n"
             f">{action_summary}\n"
             f"*Reasoning:* {reasoning}\n"
             f"<{approve_url}|✅ Approve> | <{reject_url}|❌ Reject>"
@@ -470,7 +470,7 @@ def send_weekly_digest(
     html = f"""
     <html><body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <div style="background: #1e3a5f; padding: 24px; border-radius: 8px 8px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 20px;">🦅 Peregrine Weekly Summary — {period}</h1>
+        <h1 style="color: white; margin: 0; font-size: 20px;">🦅 Vesper Bot Weekly Summary — {period}</h1>
       </div>
       <div style="border: 1px solid #e0e0e0; border-top: none; padding: 24px; border-radius: 0 0 8px 8px;">
         <h2 style="color: #1e3a5f; font-size: 16px;">Key Metrics</h2>
@@ -484,14 +484,14 @@ def send_weekly_digest(
         {anomaly_item}
         <div style="margin-top: 24px;">
           <a href="{base}/dashboard" style="background:#1e3a5f; color:white; padding:12px 24px; border-radius:6px; text-decoration:none; font-weight:bold;">
-            Open Peregrine Dashboard →
+            Open Vesper Bot Dashboard →
           </a>
         </div>
       </div>
     </body></html>
     """
 
-    subject = f"Peregrine Weekly Summary — {period}"
+    subject = f"Vesper Bot Weekly Summary — {period}"
     return _send_email(smtp, subject, html)
 
 
@@ -549,7 +549,7 @@ def send_report_email(
     html = f"""
     <html><body style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px;">
       <div style="background: linear-gradient(135deg, #1e3a5f, #2c5282); padding: 28px; border-radius: 10px 10px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 22px;">🦅 Peregrine — {schedule_name}</h1>
+        <h1 style="color: white; margin: 0; font-size: 22px;">🦅 Vesper Bot — {schedule_name}</h1>
         <p style="color: #a0c4e8; margin: 8px 0 0; font-size: 14px;">Period: {period}</p>
       </div>
       <div style="border: 1px solid #e0e0e0; border-top: none; padding: 28px; border-radius: 0 0 10px 10px;">
@@ -578,12 +578,12 @@ def send_report_email(
 
         <div style="margin-top: 24px;">
           <a href="{base}/reports" style="background:#1e3a5f; color:white; padding:12px 28px; border-radius:6px; text-decoration:none; font-weight:bold;">
-            View in Peregrine →
+            View in Vesper Bot →
           </a>
         </div>
 
         <p style="margin-top: 24px; font-size: 12px; color: #999;">
-          This report was automatically generated by Peregrine CFO.
+          This report was automatically generated by Vesper Bot.
           You can manage your report schedules in
           <a href="{base}/reports" style="color: #1e3a5f;">Settings</a>.
         </p>
@@ -591,7 +591,7 @@ def send_report_email(
     </body></html>
     """
 
-    subject = f"Peregrine: {schedule_name} — {period}"
+    subject = f"Vesper Bot: {schedule_name} — {period}"
 
     # Send to each recipient
     sent_count = 0
@@ -599,7 +599,7 @@ def send_report_email(
         try:
             msg = MIMEMultipart("mixed")
             msg["Subject"] = subject
-            msg["From"] = smtp["user"] or "peregrine@noreply.com"
+            msg["From"] = smtp["user"] or "vesper-bot@example.invalid"
             msg["To"] = recipient
 
             # HTML body
@@ -635,7 +635,7 @@ def send_report_email(
     if smtp.get("slack_webhook") and sent_count > 0:
         att_names = ", ".join(a["filename"] for a in (attachments or []))
         slack_msg = (
-            f"🦅 *Peregrine Report Delivered*\n"
+            f"🦅 *Vesper Bot Report Delivered*\n"
             f"> *{schedule_name}* for {period}\n"
             f"> Sent to {sent_count} recipient(s)\n"
             f"> Attachments: {att_names or 'None'}"
@@ -751,7 +751,7 @@ def _send_morning_briefing_transport(
     <div style="font-family:'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;background:#f8fafc;padding:24px">
         <!-- Header -->
         <div style="background:linear-gradient(135deg,#1e293b 0%,#334155 100%);color:white;padding:24px;border-radius:12px 12px 0 0">
-            <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:4px">Peregrine CFO</div>
+            <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:4px">Vesper Bot</div>
             <h1 style="margin:0;font-size:22px;font-weight:600">Morning Briefing</h1>
             <div style="font-size:13px;opacity:0.8;margin-top:4px">{company_name} — {briefing_date}</div>
         </div>
@@ -786,7 +786,7 @@ def _send_morning_briefing_transport(
 
         <!-- Footer -->
         <div style="text-align:center;margin-top:16px;color:#9ca3af;font-size:11px">
-            Peregrine CFO — AI-Powered Financial Intelligence<br>
+            Vesper Bot — AI-Powered Financial Intelligence<br>
             Generated at {briefing.data_freshness_at.strftime('%I:%M %p UTC') if briefing.data_freshness_at else 'N/A'}
         </div>
     </div>

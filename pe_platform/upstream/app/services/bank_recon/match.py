@@ -8,7 +8,7 @@ and forward-only from the clean-start anchor, and returns three PROPOSAL buckets
 plus a diagnostics payload. `find_matches` NEVER mutates; a match becomes real
 only when a human confirms it via `confirm_match` (sets LOCAL cleared flags +
 persists a `ReconciliationMatch`). No QBO API call, no auto-clear, no write-back
-(DEC-BREC-1: QBO has no reconcile-write path — Peregrine owns its recon ledger
+(DEC-BREC-1: QBO has no reconcile-write path — Vesper Bot owns its recon ledger
 locally). Decision is SEPARATED from execution (agentic-writeback-safety §3
 Controls 1+2): `find_matches` is the pure read-only proposer; the human-supplied
 `(bank_item_id, book_txn_id)` pair IS the out-of-band approval `confirm_match`

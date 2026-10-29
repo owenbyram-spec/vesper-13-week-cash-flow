@@ -90,7 +90,7 @@ class AgentRuntimeSession:
                     },
                     error=f"Tool '{tool_name}' is not available in this run",
                 )
-            return f"Tool call blocked by Peregrine policy: Tool '{tool_name}' is not available in this run"
+            return f"Tool call blocked by Vesper Bot policy: Tool '{tool_name}' is not available in this run"
         if tool.requires_confirmation and tool.name in self.used_confirmation_tools:
             with self.tracker.step(
                 step_type="tool_call",
@@ -111,7 +111,7 @@ class AgentRuntimeSession:
                     },
                     error="Confirmation for this tool has already been consumed in this run",
                 )
-            return "Tool call blocked by Peregrine policy: Confirmation for this tool has already been consumed in this run"
+            return "Tool call blocked by Vesper Bot policy: Confirmation for this tool has already been consumed in this run"
         if tool.requires_confirmation:
             fingerprint_block = self._verify_action_fingerprint(tool, tool_input)
             if fingerprint_block is not None:
@@ -170,7 +170,7 @@ class AgentRuntimeSession:
                 output_payload={"allowed": False, "block_reason": block_reason},
                 error=block_reason,
             )
-        return f"Tool call blocked by Peregrine policy: {block_reason}"
+        return f"Tool call blocked by Vesper Bot policy: {block_reason}"
 
 
 class AgentRuntime:

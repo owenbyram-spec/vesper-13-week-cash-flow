@@ -179,7 +179,7 @@ def format_results(query: str, results: list[dict]) -> str:
         "FRF for SMEs); ASC applies only on a GAAP basis — specifically US "
         "GAAP. Non-US financial-reporting frameworks — IFRS, ASPE, and "
         "FRS 102 — are OUT OF SCOPE for this triage layer (ADR 0003: "
-        "Peregrine's standards knowledge is US-GAAP-only). If the tenant's "
+        "Vesper Bot's standards knowledge is US-GAAP-only). If the tenant's "
         "reporting basis is a non-US-GAAP framework (IFRS, ASPE, FRS 102, or "
         "another national framework), REFUSE to triage under ASC and say why: "
         "applying US-GAAP guidance to a different framework is a mis-triage, "

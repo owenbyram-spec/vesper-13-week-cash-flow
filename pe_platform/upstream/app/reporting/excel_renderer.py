@@ -1,7 +1,7 @@
 """
 app/reporting/excel_renderer.py
 ────────────────────────────────
-Section-driven board-pack Excel (.xlsx) renderer for Peregrine CFO reports.
+Section-driven board-pack Excel (.xlsx) renderer for Vesper Bot reports.
 
 `render_excel(payload, definition=None)` builds one `ExcelContext` and LOOPS the
 definition's sections: for each, it looks up the `SectionType` in the registry,

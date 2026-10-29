@@ -6,6 +6,8 @@
 
 `repository-observation`: The new kernel is pinned to PE commit `6667bc5b73173d83400a8d269c23f30942e4f00a`. [The backend manifest](../pe_platform/source-manifest.json) records copied Git blobs/content hashes; [the frontend manifest](../pe_platform/frontend/SOURCE-MANIFEST.json) distinguishes verbatim files from explicit adapters. Shared transitive backend definitions remain where required by monolithic source imports, while only cash-flow and supporting platform/assistant routes and UI are exposed. PE itself remains a read-only source. Local identity, SQLite/runtime transport, workspace-bound credentials, cash-only tool selection, stream freshness and stronger preview/approval guards are adapter differences, not claims of identical hosted infrastructure.
 
+`primary-record`: Owen named the assistant **Vesper Bot**. Source identity is retained through original Git blobs and SHA-256 values; current content hashes and adaptation notes identify the branding/namespace changes. The deterministic cash-flow modules remain source-identical. Re-vendoring refuses to overwrite reviewed local adaptations. No source repository or existing financial record is renamed or migrated.
+
 `open`: Code origin does not establish ownership, production readiness or live integrations. No new license terms are added. This local adoption is separate from the historical publication/verification records below.
 
 ## Legacy extraction and publication

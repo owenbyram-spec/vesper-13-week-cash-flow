@@ -96,7 +96,7 @@ def _create_runtime(directory, port, frontend_origin, testing):
     for name in tuple(os.environ):
         if name.startswith(prefixes) or name in {
             "DATABASE_URL",
-            "PEREGRINE_DOTENV_PATH",
+            "VESPER_BOT_DOTENV_PATH",
             "SECRET_KEY",
             "FERNET_KEY",
         }:
@@ -111,7 +111,7 @@ def _create_runtime(directory, port, frontend_origin, testing):
             "CELERY_BROKER_URL": "memory://",
             "CELERY_RESULT_BACKEND": "cache+memory://",
             "CORS_ORIGINS": frontend_origin or f"http://127.0.0.1:{port}",
-            "PEREGRINE_REALM_STMT_MODE": "deny",
+            "VESPER_BOT_REALM_STMT_MODE": "deny",
         }
     )
     upstream = Path(__file__).resolve().parents[1] / "upstream"

@@ -261,7 +261,7 @@ def render_pnl_detail(ctx: PdfContext, story: Story, data: Payload) -> None:
 
     if not budget_map:
         story.append(Paragraph(
-            '<font size="8" color="#6b7280"><i>No Peregrine budget available for this period. '
+            '<font size="8" color="#6b7280"><i>No Vesper Bot budget available for this period. '
             'Showing actuals only.</i></font>', ctx.S_BODY))
         story.append(Spacer(1, 4))
 

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Copy a pinned, read-only PE source dependency graph, never its data/history."""
+"""Copy a pinned PE dependency graph, never its data/history or local adaptations.
+
+Existing branding-adapted files are intentionally refused rather than silently
+overwritten. Incorporate upstream changes through explicit adaptation review.
+"""
 from __future__ import annotations
 
 import argparse
@@ -87,7 +91,9 @@ def main():
             raise SystemExit("Refusing to overwrite an existing different source file: " + path)
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(content)
-        records.append({"path": path, "blob": tree[path][1], "sha256": hashlib.sha256(content).hexdigest(), "adaptation": "none"})
+        checksum = hashlib.sha256(content).hexdigest()
+        records.append({"path": path, "blob": tree[path][1], "source_sha256": checksum,
+                        "sha256": checksum, "adaptation": "none"})
     manifest = {
         "source_repository": "PE Workflow Builder",
         "source_revision": revision,

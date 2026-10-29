@@ -128,13 +128,13 @@ ACTION_TYPE_TO_TOOL = {
     "KNOWLEDGE_DELETE": "delete_knowledge",
     # PLAN-EXEMPT: ratified plan 20260713-wave1-learning-flywheel C2 (marker
     # RATIFICATION-2026-07-13.md on disk; active-plan.json sidecar absent in this worktree).
-    # AC-4/decision-4: MEMORY_UPDATE approvals EXECUTE. teach_peregrine is intercepted at chat
+    # AC-4/decision-4: MEMORY_UPDATE approvals EXECUTE. teach_vesper_bot is intercepted at chat
     # time into a MEMORY_UPDATE PENDING proposal (_propose_memory_update, tool_executor.py);
     # before this entry the type was in NEITHER executor map, so approval fell through to the
     # review-only no-op (actions.py:954-955) and the chat teach loop never wrote a memory.
-    # Approval now resolves _handle_teach_peregrine → agent_memory.remember (the approver is
+    # Approval now resolves _handle_teach_vesper_bot → agent_memory.remember (the approver is
     # recorded as accepted_by via the action_tool_input normalization below).
-    "MEMORY_UPDATE": "teach_peregrine",
+    "MEMORY_UPDATE": "teach_vesper_bot",
     # PLAN-EXEMPT: ratified plan 20260713-wave2-3-bank-recon chunk A (marker
     # RATIFICATION-2026-07-13.md on disk; active-plan.json sidecar absent in this
     # dispatched session — standing precedent). Wave-2.3 (TG-4/WF-4, decision 3
@@ -185,7 +185,7 @@ def action_tool_input(action: ProposedAction) -> dict:
     MEMORY_UPDATE is the one internal-DB type whose proposer
     (``ToolExecutor._propose_memory_update``) records the handler params at the payload
     TOP LEVEL (``category``/``content``/``source``/``source_metadata``) rather than under
-    ``tool_input`` — normalize it to the ``_handle_teach_peregrine`` param shape here so
+    ``tool_input`` — normalize it to the ``_handle_teach_vesper_bot`` param shape here so
     the shared execution core stays payload-shape-agnostic. ``_approved_by`` carries the
     approver (``reviewed_by`` is stamped by the atomic PENDING→APPROVED claim BEFORE the
     executor runs) so the executed memory records who accepted it.

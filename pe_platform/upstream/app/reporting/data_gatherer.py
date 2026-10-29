@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 def build_budget_map(
     db: Session, company_id: str, year: "int | None", month: "int | None"
 ) -> dict[str, float]:
-    """account_name (lower) → that month's budget amount, from the Peregrine
+    """account_name (lower) → that month's budget amount, from the Vesper Bot
     BudgetLine table (top-level lines only). The exact query + month-key logic
     the month-end gather has always used; callers own the try/except (the
     gather records a partial-data error, the board pack an honest empty state)."""
@@ -521,7 +521,7 @@ def gather_report_data(db: Session, company_id: str, period: str) -> Dict[str, A
                 )
             )
 
-    # ── Budget from Peregrine BudgetLine table ──
+    # ── Budget from Vesper Bot BudgetLine table ──
     # PLAN-EXEMPT: ratified plan 20260702-qa-remediation W-7 — the inline budget-map
     # query is EXTRACTED (verbatim semantics) into build_budget_map so the board_pack
     # builder reuses the same deterministic budget source; behavior unchanged here.
@@ -581,7 +581,7 @@ def gather_report_data(db: Session, company_id: str, period: str) -> Dict[str, A
         # ── Account-level detail for full statements ──
         "pnl_detail": pnl_detail,
         "bs_detail": bs_detail,
-        # ── NEW: Budget map from Peregrine ──
+        # ── NEW: Budget map from Vesper Bot ──
         "budget_map": budget_map,
         # ── NEW: Rolling 12-month detail ──
         "rolling_pnl_columns": rolling_pnl_columns,

@@ -16,8 +16,8 @@ READ from the TB — never scaffolded with a fabricated balance).
 
 Every result carries ``requires_preparer_review=True`` (unconditional) + a fixed
 preparer-review notice + per-section source provenance (mirrors
-``going_concern.py``). The trial-balance label carries the no-Peregrine-adjustments
-caveat (E3): "as posted in QuickBooks … no Peregrine-computed adjustments".
+``going_concern.py``). The trial-balance label carries the no-Vesper Bot-adjustments
+caveat (E3): "as posted in QuickBooks … no Vesper Bot-computed adjustments".
 """
 from __future__ import annotations
 
@@ -40,22 +40,22 @@ logger = logging.getLogger(__name__)
 # the artifact payload so a downstream narrator inherits the boundary.
 TAX_PACKAGE_NOTICE = (
     "Tax-package HANDOFF for a licensed preparer only — book-side facts assembled "
-    "from QuickBooks + Peregrine's already-computed schedules. Peregrine computes "
+    "from QuickBooks + Vesper Bot's already-computed schedules. Vesper Bot computes "
     "NO tax liability, provision, book-tax difference, or tax position; the "
     "books-to-tax mapping is an UNMAPPED scaffold for the preparer to complete. "
     "requires_preparer_review never lifts."
 )
 
-# E3: the trial-balance label makes the no-Peregrine-adjustments caveat explicit —
+# E3: the trial-balance label makes the no-Vesper Bot-adjustments caveat explicit —
 # "Adjusted" here means the book adjusting entries ALREADY posted in QuickBooks are
-# reflected, NOT a Peregrine-computed adjustment.
+# reflected, NOT a Vesper Bot-computed adjustment.
 TRIAL_BALANCE_LABEL = (
     "Trial Balance (as posted in QuickBooks — reflects book adjusting entries "
-    "already recorded; no Peregrine-computed adjustments)"
+    "already recorded; no Vesper Bot-computed adjustments)"
 )
 PRIOR_YEAR_TRIAL_BALANCE_LABEL = (
     "Prior-Year Comparative Trial Balance (as posted in QuickBooks — reflects book "
-    "adjusting entries already recorded; no Peregrine-computed adjustments)"
+    "adjusting entries already recorded; no Vesper Bot-computed adjustments)"
 )
 
 # The load-bearing refuse-over-fabricate literal: every stub row is UNMAPPED and
@@ -377,7 +377,7 @@ def _build_books_to_tax_stub(trial_balance_section: dict[str, object]) -> dict[s
         "status": "OK",
         "note": (
             "Every account is UNMAPPED — the licensed preparer assigns the tax "
-            "treatment and any book-to-tax adjustment. Peregrine computes none."
+            "treatment and any book-to-tax adjustment. Vesper Bot computes none."
         ),
         "entries": entries,
     }
@@ -476,6 +476,6 @@ def build_tax_package(
             "assembler": "app/services/tax_package.build_tax_package",
             "boundary": "handoff to a licensed tax preparer — no tax computed",
             "fiscal_year_source": periods["current"]["fy_start_source"],
-            "trial_balance_caveat": "reflects QuickBooks book adjustments only; no Peregrine-computed adjustments",
+            "trial_balance_caveat": "reflects QuickBooks book adjustments only; no Vesper Bot-computed adjustments",
         },
     }

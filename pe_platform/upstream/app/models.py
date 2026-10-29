@@ -3380,7 +3380,7 @@ class BankFeedItem(Base):
     qbo_result_txn_id = Column(String)   # ID of the created Purchase/Deposit in QBO
 
     # QBO cleared / reconciliation tracking
-    cleared_in_qbo = Column(Boolean, default=False)  # DEC-BREC-1 (2026-07-01): QBO exposes NO reconcile / ClearedStatus write API — reconciliation state is Peregrine-local and is NEVER pushed to QBO. Legacy For-Review-feed field; not written by the bank-reconciliation feature.
+    cleared_in_qbo = Column(Boolean, default=False)  # DEC-BREC-1 (2026-07-01): QBO exposes NO reconcile / ClearedStatus write API — reconciliation state is Vesper Bot-local and is NEVER pushed to QBO. Legacy For-Review-feed field; not written by the bank-reconciliation feature.
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
@@ -4483,10 +4483,10 @@ class AccountingSchedule(Base):
     # Financials
     original_amount = Column(Numeric(precision=18, scale=2), nullable=False)
     remaining_amount = Column(Numeric(precision=18, scale=2), nullable=False)
-    accumulated_amount = Column(Numeric(precision=18, scale=2), default=0)  # Depr/amort taken BEFORE Peregrine
+    accumulated_amount = Column(Numeric(precision=18, scale=2), default=0)  # Depr/amort taken BEFORE Vesper Bot
 
     # Onboarding
-    implementation_date = Column(Date, nullable=True)  # Date the company was brought onto Peregrine
+    implementation_date = Column(Date, nullable=True)  # Date the company was brought onto Vesper Bot
 
     # Schedule dates
     start_date = Column(Date, nullable=False)
@@ -4677,7 +4677,7 @@ class ScheduleAccountCoverage(Base):
     AccountingSchedule maps the account, or a ScheduleCreditMapping targets it
     as the credit/contra account of a type with active schedules). This table
     persists ONLY the human judgment the data cannot derive: "this
-    balance-sheet account is reconciled outside Peregrine" (bank rec, external
+    balance-sheet account is reconciled outside Vesper Bot" (bank rec, external
     subledger, equity rollforward in the GL, …). Absence of a row = not
     flagged.
     """
@@ -4704,7 +4704,7 @@ class ScheduleAccountCoverage(Base):
     # conflict). Set by the contract-activation service (Chunk 3) so the ASC-606 engine
     # and the AccountingSchedule DEFERRED_REVENUE engine cannot both recognize the SAME
     # account for the SAME source. reconciled_elsewhere stays the human "reconciled
-    # outside Peregrine" judgment the tie-out (Chunk 4) reads; this ref is the machine
+    # outside Vesper Bot" judgment the tie-out (Chunk 4) reads; this ref is the machine
     # exclusive-ownership partition. Nullable FK, SET NULL on contract delete.
     owning_contract_id = Column(
         Integer,
@@ -4772,7 +4772,7 @@ class LeaseSchedule(Base):
         explicit in the remeasure request (ASC 842 modification semantics).
       * short_term_exempt (term ≤ 12 months, ASC 842-20-25-2 election —
         binding US GAAP): NO rows, NO commencement JE; rent is expensed as
-        incurred outside Peregrine (documented expense-as-incurred).
+        incurred outside Vesper Bot (documented expense-as-incurred).
     """
     __tablename__ = "lease_schedules"
 
@@ -5023,8 +5023,8 @@ class CashForecastActual(Base):
 
     Workflow:
       1. Accountant categorizes bank feeds in QBO
-      2. Peregrine pulls bank transactions for the prior week
-      3. User confirms/adjusts entity mapping in Peregrine
+      2. Vesper Bot pulls bank transactions for the prior week
+      3. User confirms/adjusts entity mapping in Vesper Bot
       4. Categorized actuals populate the lookback column(s)
 
     For Bill.com payments: a parent row holds the lump-sum amount and child
@@ -5511,7 +5511,7 @@ class Document(Base):
     Generalized document & contract manager.
     Any important document (lease, insurance, vendor contract, loan agreement, etc.)
     can be uploaded. The LLM extracts key terms, dates, and a summary.
-    Documents can be tagged and linked to Peregrine modules for cross-module context.
+    Documents can be tagged and linked to Vesper Bot modules for cross-module context.
     """
     __tablename__ = "documents"
 
@@ -5546,7 +5546,7 @@ class Document(Base):
 
     tags            = Column(JSON, nullable=True, default=[])  # User-defined tags ["insurance", "2026"]
 
-    # Cross-module context — which Peregrine modules can use this knowledge
+    # Cross-module context — which Vesper Bot modules can use this knowledge
     context_modules = Column(JSON, nullable=True, default=[])
     # ["budget", "cashflow", "covenants", "lbo", "assistant"]
 
@@ -5784,7 +5784,7 @@ class PBCTemplate(Base):
 class DebtCovenant(Base):
     """
     A financial covenant tied to a loan or credit facility.
-    Peregrine computes the metric each period and flags breaches.
+    Vesper Bot computes the metric each period and flags breaches.
     """
     __tablename__ = "debt_covenants"
 
@@ -5887,7 +5887,7 @@ class CompanyCeclConfig(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
-# ── Company finance profile (plan 20260711-peregrine-finance-os, FOS-1 Wave A) ──
+# ── Company finance profile (plan 20260711-vesper_bot-finance-os, FOS-1 Wave A) ──
 # `validates` is imported HERE rather than at the top of the file because models.py
 # is append-only under this plan (the existing import lines stay byte-unchanged);
 # a mid-module import executes once at import time exactly like a top-of-file one.
@@ -6757,7 +6757,7 @@ class ReviewPolicyCheckOverride(Base):
 
 
 # NOTE (merge reconciliation 2026-07-12): this file's canonical CompanyFinanceProfile is
-# the one defined ABOVE by plan 20260711-peregrine-finance-os FOS-1 Wave A (migration
+# the one defined ABOVE by plan 20260711-vesper_bot-finance-os FOS-1 Wave A (migration
 # f3b8d1c6a2e9, service app/services/company_profile.py, wired into app/analysis/ratios.py).
 # The 20260712-agentic-finance-os W1 defined a SECOND, incompatible CompanyFinanceProfile here
 # (migration e8b3f6a1d9c4) — a duplicate `__tablename__` that crashed `import app.models` and

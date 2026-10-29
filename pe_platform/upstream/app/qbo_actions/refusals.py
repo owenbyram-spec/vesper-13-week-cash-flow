@@ -4,7 +4,7 @@ An arm raises ``QBOActionRefused`` when it decides, BEFORE any QuickBooks write,
 that the approved payload cannot be posted correctly (a reclassification that
 names no line on a multi-line transaction, a journal-entry line with no account,
 an A/R line with no customer). The executor records it as a confirmed failure
-and shows ``user_message`` to the reviewer. The message is composed by Peregrine
+and shows ``user_message`` to the reviewer. The message is composed by Vesper Bot
 from its own vocabulary, never from provider response text, so it is safe to
 surface verbatim.
 """

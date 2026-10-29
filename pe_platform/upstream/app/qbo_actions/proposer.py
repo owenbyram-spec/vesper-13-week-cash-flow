@@ -79,7 +79,7 @@ def propose_journal_entry(
     if stamp_memo_linkage:
         stamped = dict(action.payload or {})
         base_memo = str(stamped.get("memo") or "").strip()
-        linkage = f"Peregrine proposal #{action.id}"
+        linkage = f"Vesper Bot proposal #{action.id}"
         stamped["memo"] = f"{base_memo} | {linkage}" if base_memo else linkage
         # Reassigning a new dict marks the JSON column dirty for SQLAlchemy.
         action.payload = stamped
@@ -385,7 +385,7 @@ def _propose_ar_action(
     if stamp_private_note:
         stamped = dict(action.payload or {})
         base_note = str(stamped.get("PrivateNote") or "").strip()
-        linkage = f"Peregrine proposal #{action.id}"
+        linkage = f"Vesper Bot proposal #{action.id}"
         stamped["PrivateNote"] = f"{base_note} | {linkage}" if base_note else linkage
         # Reassigning a new dict marks the JSON column dirty for SQLAlchemy.
         action.payload = stamped

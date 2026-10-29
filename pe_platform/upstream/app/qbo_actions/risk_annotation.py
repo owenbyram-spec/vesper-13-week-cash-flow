@@ -58,7 +58,7 @@ class RiskAnnotation(TypedDict):
 
 
 # ── (a) The engine-backed topic register ─────────────────────────────────────
-# Topics Peregrine has REAL computational support for (plan decision 3 register:
+# Topics Vesper Bot has REAL computational support for (plan decision 3 register:
 # "842 lease engine, 250 schedule engine, 606/855 cutoff check,
 # schedule/depreciation math"). A JE touching only these clusters gets NO
 # annotation — an engine, not just a prompt, stands behind the treatment.

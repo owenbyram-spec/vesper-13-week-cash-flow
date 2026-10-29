@@ -39,8 +39,8 @@ from slowapi import Limiter
 
 from . import config as app_config
 
-CLIENT_IP_HEADER = "x-peregrine-client-ip"
-CLIENT_IP_SIGNATURE_HEADER = "x-peregrine-client-ip-signature"
+CLIENT_IP_HEADER = "x-vesper-bot-client-ip"
+CLIENT_IP_SIGNATURE_HEADER = "x-vesper-bot-client-ip-signature"
 CLIENT_IP_SIGNATURE_MAX_AGE_SECONDS = 300
 
 # Per-account budgets for the pre-session credential routes. They mirror the

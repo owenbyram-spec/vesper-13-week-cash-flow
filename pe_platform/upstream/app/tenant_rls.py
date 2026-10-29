@@ -10,7 +10,7 @@ EXC-qbo-agent-api-001 CLOSED). These GUCs are load-bearing — they decide row
 visibility on every tenant query, so a leaked/stale GUC is a real isolation defect
 (``tenant_scope_live`` restores/clears the GUC on exit for exactly this reason).
 
-Peregrine keys RLS on TWO server-resolved, transaction-scoped GUCs (decision:
+Vesper Bot keys RLS on TWO server-resolved, transaction-scoped GUCs (decision:
 two-GUC, key-on-existing-column — 67 of 102 tenant tables carry only the QBO
 realm string, so a single org_id key would force a 67-table backfill):
   - ``app.current_org_id``    → tables with ``organization_id``
@@ -845,13 +845,13 @@ def install_realm_bound_statement_listener(engine, *, mode: str | None = None) -
     """Register the realm-bound statement check.
 
     ``mode``: ``deny`` raises, ``collect`` records to ``realm_unbound_statements``, ``off``
-    disables. Env override: ``PEREGRINE_REALM_STMT_MODE``.
+    disables. Env override: ``VESPER_BOT_REALM_STMT_MODE``.
 
     A statement with no compiled construct (raw ``text()`` SQL) cannot be analysed and is
     NOT silently passed: it is treated as unanalysable and reported, so raw SQL against a
     guard table has to be made explicit rather than becoming an invisible hole.
     """
-    resolved = mode or os.environ.get("PEREGRINE_REALM_STMT_MODE", "deny")
+    resolved = mode or os.environ.get("VESPER_BOT_REALM_STMT_MODE", "deny")
 
     if resolved == "collect":
         import atexit
@@ -866,7 +866,7 @@ def install_realm_bound_statement_listener(engine, *, mode: str | None = None) -
                 if key not in seen:
                     seen.add(key)
                     unique.append(record)
-            out = os.environ.get("PEREGRINE_REALM_STMT_OUT", "realm-unbound-statements.json")
+            out = os.environ.get("VESPER_BOT_REALM_STMT_OUT", "realm-unbound-statements.json")
             with open(out, "w", encoding="utf-8") as handle:
                 _json.dump({"total_hits": len(realm_unbound_statements),
                             "unique": len(unique), "records": unique}, handle, indent=2)
@@ -983,7 +983,7 @@ def install_realm_bound_orm_listener(target=None, *, mode: str | None = None) ->
     """
     from sqlalchemy.orm import Session as _Session
 
-    resolved = mode or os.environ.get("PEREGRINE_REALM_STMT_MODE", "deny")
+    resolved = mode or os.environ.get("VESPER_BOT_REALM_STMT_MODE", "deny")
 
     @event.listens_for(target if target is not None else _Session, "before_flush")
     def _on_before_flush(session, flush_context, instances) -> None:

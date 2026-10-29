@@ -42,7 +42,7 @@ from ..models import (
 from .onboarding_planner import build_onboarding_plan
 from .tenant_companies import organization_company_for_realm, organization_for_company
 
-logger = logging.getLogger("peregrine.realm_context_builder")
+logger = logging.getLogger("vesper_bot.realm_context_builder")
 
 PROFILE_VERSION = "v1"
 

@@ -1,6 +1,6 @@
 # Local cash-flow platform frontend
 
-This frontend reuses the actual cash-flow workspace and assistant presentation from PE Workflow Builder at `6667bc5b73173d83400a8d269c23f30942e4f00a`. `SOURCE-MANIFEST.json` records the exact source files and the explicit local adapters. The broader module catalog, SaaS identity and billing interfaces are excluded.
+This frontend reuses the actual cash-flow workspace and assistant presentation from PE Workflow Builder at `6667bc5b73173d83400a8d269c23f30942e4f00a`. The assistant is named **Vesper Bot** throughout its presentation and error messages; theme/package names use the Vesper namespace. `SOURCE-MANIFEST.json` retains the original source hashes and identifies branding and local adapters explicitly. Financial calculations and event handling retain the native implementation. The broader module catalog, SaaS identity and billing interfaces are excluded.
 
 For normal setup, follow [the complete platform guide](../../docs/PE-PLATFORM-SETUP.md). From the repository root, this command prepares the locked dependencies and starts both local processes with an explicit, separate data directory:
 
@@ -34,7 +34,7 @@ HOSTNAME=127.0.0.1 PORT=8770 BACKEND_URL=http://127.0.0.1:8771 npm start
 
 The native workspace currently uses **USD** and the source platform's Friday-ending cash calendar. It does not reinterpret the legacy CLI's snapshots. Existing 8876/data stays separate; do not start this frontend or backend on 8876 or reuse its data directory.
 
-The platform shell includes Cash Flow, Assistant, Proposal review and Connections. Company scope comes from the local backend. Switching workspaces clears native page state/query caches and aborts in-flight assistant streams. Successful financial mutations and proposal approvals reset the assistant conversation and abort its old streams without remounting the native grid; failed or non-financial requests retain valid chat context. Model proposals require an actual deterministic forecast preview and explicit human approval of its exact token. Missing/stale previews disable approval.
+The platform shell includes Cash Flow, Vesper Bot, Proposal review and Connections. Company scope comes from the local backend. Switching workspaces clears native page state/query caches and aborts in-flight assistant streams. Successful financial mutations and proposal approvals reset the assistant conversation and abort its old streams without remounting the native grid; failed or non-financial requests retain valid chat context. Model proposals require an actual deterministic forecast preview and explicit human approval of its exact token. Missing/stale previews disable approval.
 
 Verification commands:
 

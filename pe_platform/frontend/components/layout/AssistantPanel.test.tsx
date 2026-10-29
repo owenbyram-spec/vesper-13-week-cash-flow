@@ -46,6 +46,13 @@ async function send() {
 }
 
 describe('assistant verification presentation', () => {
+    it('identifies the assistant and its controls as Vesper Bot', async () => {
+        await act(async () => { render(<AssistantPanel />); });
+        expect(screen.getByRole('heading', { name: 'Vesper Bot' })).toBeInTheDocument();
+        fireEvent.click(screen.getByRole('button', { name: 'Minimize Vesper Bot' }));
+        expect(screen.getByRole('button', { name: 'Open Vesper Bot' })).toBeInTheDocument();
+    });
+
     it.each([
         ['conflict', 'Numeric conflict — review required'],
         ['limited', 'Limited numeric checks'],

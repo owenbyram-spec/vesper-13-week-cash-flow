@@ -1,7 +1,7 @@
 """
 app/assistant/main.py
 ─────────────────────
-FastAPI endpoints for the Peregrine AI Assistant.
+FastAPI endpoints for the Vesper Bot.
 Prepares canonical agent-runtime sessions and persists chat history.
 """
 from __future__ import annotations
@@ -64,7 +64,7 @@ from .errors import AssistantError
 from .context import _classify_intent, count_correction_exemplars
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/assistant", tags=["Peregrine CFO Assistant"])
+router = APIRouter(prefix="/assistant", tags=["Vesper Bot Assistant"])
 
 _TOOL_EXPLANATION_LABELS = {
     "search_finance_records": "QuickBooks search index",
@@ -75,7 +75,7 @@ _TOOL_EXPLANATION_LABELS = {
     "search_documents": "Uploaded documents",
     "search_agreements": "Material agreements",
     "get_agreement_context": "Agreement context",
-    "get_module_context": "Peregrine module state",
+    "get_module_context": "Vesper Bot module state",
     "generate_financial_report": "Generated report pack",
     "check_close_status": "Close checklist",
 }
@@ -778,7 +778,7 @@ def create_assistant_confirmation(
 
 @router.post("/query")
 @limiter.limit("10/minute")  # expensive LLM/tool loop ($ cost) — per-user/per-tenant key (_rate_limit_key)
-def ask_peregrine(
+def ask_vesper_bot(
     body: AssistantQuery,
     request: Request,
     db: Session = Depends(get_db),
@@ -792,7 +792,7 @@ def ask_peregrine(
 
     # /query is synchronous and runs entirely within the live request scope, so
     # both the request-phase writes AND the run loop execute on the request `db`.
-    # (The streaming endpoint must split these — see stream_peregrine.)
+    # (The streaming endpoint must split these — see stream_vesper_bot.)
     phase = _run_assistant_request_phase(
         body=body,
         request=request,
@@ -996,7 +996,7 @@ def _finalize_stream_run(
 
 @router.post("/stream")
 @limiter.limit("10/minute")  # expensive streaming LLM/tool loop ($ cost) — per-user/per-tenant key (_rate_limit_key)
-def stream_peregrine(body: AssistantQuery, request: Request, db: Session = Depends(get_db), current_user: User = Depends(get_current_user_from_token)) -> StreamingResponse:
+def stream_vesper_bot(body: AssistantQuery, request: Request, db: Session = Depends(get_db), current_user: User = Depends(get_current_user_from_token)) -> StreamingResponse:
     """
     Streaming version of /query. Returns Server-Sent Events (SSE) so the
     frontend can display text as it's generated.

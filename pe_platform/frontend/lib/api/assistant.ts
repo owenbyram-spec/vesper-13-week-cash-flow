@@ -121,10 +121,10 @@ export function assistantMessageForErrorCode(errorCode?: string | null): string 
 
 export function assistantMessageForStatus(status?: number) {
     if (status === 401) {
-        return 'Your Peregrine session expired. Please sign in again, then retry.';
+        return 'Your Vesper Bot session expired. Please sign in again, then retry.';
     }
     if (status === 403) {
-        return 'Peregrine blocked this assistant request for security or permission reasons. Check your company access and refresh the page.';
+        return 'Vesper Bot blocked this assistant request for security or permission reasons. Check your company access and refresh the page.';
     }
     if (status === 404) {
         return 'The assistant API route is unavailable in this deployment. Check that the backend service is current.';
@@ -135,7 +135,7 @@ export function assistantMessageForStatus(status?: number) {
     if (status && status >= 500) {
         return 'The assistant service is having trouble right now. Try again in a moment.';
     }
-    return 'Peregrine cannot reach the API service. Check that the backend is running and that NEXT_PUBLIC_BACKEND_URL points to the API.';
+    return 'Vesper Bot cannot reach the API service. Check that the backend is running and that NEXT_PUBLIC_BACKEND_URL points to the API.';
 }
 
 // Error envelope shape shared by the stream's non-2xx JSON body and the axios

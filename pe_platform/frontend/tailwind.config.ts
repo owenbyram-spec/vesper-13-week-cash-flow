@@ -11,7 +11,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        // Inter — the brand typeface (theperegrine.ai); --font-inter is set by next/font in app/layout.tsx
+        // Inter — the workspace typeface; --font-inter is set by next/font in app/layout.tsx
         sans: ['var(--font-inter)', 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
       },
       colors: {

@@ -389,7 +389,7 @@ def run_analysis_pipeline(db: Session, company_id: str, period: str) -> Dict[str
     else:
         # 6a. Transaction anomalies (two-sided modified z-score on Invoice/Purchase amounts)
         try:
-            # Threshold re-based (plan 20260711-peregrine-finance-os FOS-1 AC-1.5): the old
+            # Threshold re-based (plan 20260711-vesper_bot-finance-os FOS-1 AC-1.5): the old
             # z_threshold=2.5 was tuned to the removed one-sided mean+pstdev z-scale; the
             # detector is now two-sided median+MAD modified-z (Iglewicz-Hoaglin standard 3.5,
             # the detector default). Carrying 2.5 onto the new scale would be substantially

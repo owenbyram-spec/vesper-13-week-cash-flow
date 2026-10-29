@@ -252,7 +252,7 @@ def build_disposal_je(
     a full month for one day of use); the caller enforces it by blocking
     disposal while unposted entries exist at/after the disposal month.
 
-    The payload carries a ``peregrine_disposal`` marker; on execution the
+    The payload carries a ``vesper_bot_disposal`` marker; on execution the
     schedule-engine post-execution hook flips the schedule to DISPOSED and
     freezes it (_finalize_disposal).
     """
@@ -328,7 +328,7 @@ def build_disposal_je(
         "schedule_type": schedule.schedule_type,
         "schedule_name": schedule.name,
         # The disposal marker the post-execution hook keys off.
-        "peregrine_disposal": {
+        "vesper_bot_disposal": {
             "schedule_id": schedule.id,
             "disposal_date": disposal_date.isoformat(),
             "cost": float(cost),
@@ -382,7 +382,7 @@ def build_disposal_je(
 # {account_id, account_name, vendor_name, debit, credit, description} with
 # every amount POSITIVE on exactly one side (the executor drops non-positive
 # lines, which would silently unbalance a JE). Payload carries a
-# ``peregrine_lease`` marker the post-execution lease hook keys off.
+# ``vesper_bot_lease`` marker the post-execution lease hook keys off.
 #
 # CASH CONVENTION (documented, AC-3): the JE books the ACCOUNTING, never the
 # cash movement — the actual payment is expected to be coded to the lease
@@ -441,7 +441,7 @@ def _lease_proposal(
             "lease_id": lease.id,
             "lease_name": lease.name,
             "lease_classification": lease.classification,
-            "peregrine_lease": marker,
+            "vesper_bot_lease": marker,
         },
         reasoning=reasoning,
         confidence_score=0.99,  # computed, not predicted
@@ -960,7 +960,7 @@ def build_revenue_recognition_je(
             "source_module": "accounting",
             "obligation_id": obligation.id,
             "obligation_name": obligation.name,
-            "peregrine_revenue": {
+            "vesper_bot_revenue": {
                 "kind": "recognition",
                 "obligation_id": obligation.id,
                 "row_id": row.id,
@@ -1068,7 +1068,7 @@ def build_revenue_modification_je(
             "source_module": "accounting",
             "obligation_id": obligation.id,
             "obligation_name": obligation.name,
-            "peregrine_revenue": {
+            "vesper_bot_revenue": {
                 "kind": "modification",
                 "obligation_id": obligation.id,
                 "period": period,

@@ -566,7 +566,7 @@ def format_gl_lines_for_assistant(
     *,
     start_date: str,
     end_date: str,
-    source: str = "Peregrine local GL cache",
+    source: str = "Vesper Bot local GL cache",
     max_lines: int = 80,
 ) -> str:
     lines = [f"General Ledger ({start_date} to {end_date})", f"Source: {source}"]

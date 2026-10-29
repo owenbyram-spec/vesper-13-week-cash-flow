@@ -241,7 +241,7 @@ def _known_non_transaction_line(source_text: str) -> bool:
     stripped = source_text.strip()
     return (
         not stripped
-        or stripped == "PEREGRINE SYNTHETIC BANK STATEMENT"
+        or stripped == "VESPER BOT SYNTHETIC BANK STATEMENT"
         or stripped.startswith("Fixture:")
         or stripped.startswith("Account:")
         or stripped.lower().startswith("statement period:")

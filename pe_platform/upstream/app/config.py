@@ -11,21 +11,21 @@ def _load_development_dotenv() -> None:
     There is no implicit search: python-dotenv's default walks up from this file
     to the repository root, whose .env may hold production values (and the
     Compose stack bind-mounts the repository at /app). The file must be named by
-    PEREGRINE_DOTENV_PATH while ENVIRONMENT is development; python-dotenv itself
+    VESPER_BOT_DOTENV_PATH while ENVIRONMENT is development; python-dotenv itself
     honours PYTHON_DOTENV_DISABLED. Variables already in the process win.
     """
     environment = os.getenv("ENVIRONMENT", "development").strip().lower()
-    path = os.getenv("PEREGRINE_DOTENV_PATH", "").strip()
+    path = os.getenv("VESPER_BOT_DOTENV_PATH", "").strip()
     if environment not in ("development", "dev") or not path:
         return
     if not os.path.isfile(path):
-        raise RuntimeError(f"PEREGRINE_DOTENV_PATH does not name a readable file: {path}")
+        raise RuntimeError(f"VESPER_BOT_DOTENV_PATH does not name a readable file: {path}")
     load_dotenv(dotenv_path=path, override=False)
 
 
 _load_development_dotenv()
 
-_config_logger = logging.getLogger("peregrine.config")
+_config_logger = logging.getLogger("vesper_bot.config")
 
 
 # The only environment names that get development behaviour: ephemeral secrets,
@@ -227,7 +227,7 @@ class Settings(BaseModel):
     # Tenant data lifecycle (export/deletion). The export bundle is written to
     # local object storage under this directory; a hashed, expiring signed link
     # gates download. Grace window before a confirmed deletion may hard-delete.
-    tenant_export_storage_dir: str = os.getenv("TENANT_EXPORT_STORAGE_DIR", "/tmp/peregrine_tenant_exports").rstrip("/")
+    tenant_export_storage_dir: str = os.getenv("TENANT_EXPORT_STORAGE_DIR", "/tmp/vesper_bot_tenant_exports").rstrip("/")
     tenant_export_link_ttl_seconds: int = int(os.getenv("TENANT_EXPORT_LINK_TTL_SECONDS", str(60 * 60 * 24 * 3)))
     tenant_deletion_grace_days: int = int(os.getenv("TENANT_DELETION_GRACE_DAYS", "7"))
 

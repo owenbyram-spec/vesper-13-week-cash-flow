@@ -14,6 +14,7 @@ import pytest
 @pytest.mark.parametrize(
     "scenario",
     [
+        "branding",
         "read",
         "numeric",
         "freshness",
@@ -148,7 +149,8 @@ def _exercise(scenario):
                 assert "create_journal_entry" not in names
                 assert "update_budget_line" not in names
                 assert "send_invoice_reminder" not in names
-                assert {"get_cashflow_snapshot", "update_cashflow_cells", "teach_peregrine"} <= names
+                assert {"get_cashflow_snapshot", "update_cashflow_cells", "teach_vesper_bot"} <= names
+                assert "You are Vesper Bot for " in json.dumps(kwargs, default=str)
             usage = N(
                 prompt_tokens=10, completion_tokens=5, total_tokens=15, input_tokens=10, output_tokens=5
             )
@@ -253,7 +255,38 @@ def _exercise(scenario):
             assert response.status_code == 200, response.text
             return response
 
-        if scenario in {"read", "numeric"}:
+        if scenario == "branding":
+            import io
+            import os
+            import pdfplumber
+            from openpyxl import Workbook
+            from app.agent.runtime.prompt_builder import PromptBuilder
+            from app.rate_limit import CLIENT_IP_HEADER, CLIENT_IP_SIGNATURE_HEADER
+            from app.reporting.excel_context import ExcelContext
+            from app.reporting.pdf_context import PdfContext
+            from app.reporting.pdf_renderer import render_pdf
+            from app.services.sentry_scrub import _SENSITIVE_HEADERS
+
+            policy = PromptBuilder().build_stable_policy(company_name=scope["name"])
+            assert policy.startswith("You are Vesper Bot for " + scope["name"] + ".\n")
+            assert "Never invent financial records or numbers" in policy
+            assert "Vesper Bot supplies scope server-side" in policy
+            assert os.environ["VESPER_BOT_REALM_STMT_MODE"] == "deny"
+            assert CLIENT_IP_HEADER == "x-vesper-bot-client-ip"
+            assert CLIENT_IP_SIGNATURE_HEADER == "x-vesper-bot-client-ip-signature"
+            assert {CLIENT_IP_HEADER, CLIENT_IP_SIGNATURE_HEADER} <= _SENSITIVE_HEADERS
+            assert PdfContext({}).company == "Vesper Bot Report"
+            assert ExcelContext(Workbook(), {}).company == "Vesper Bot Report"
+            content = render_pdf({"metadata": {"company_name": scope["name"]}}, {"sections": []})
+            with pdfplumber.open(io.BytesIO(content)) as document:
+                text = "\n".join(page.extract_text() or "" for page in document.pages)
+            assert "Vesper Bot · Cash Flow" in text
+            plan[:] = [("Vesper Bot can explain current authorised cash-flow evidence.", None)]
+            assert "Vesper Bot" in ask("Explain your role").json()["answer"]
+            assert physical_calls and "You are Vesper Bot for " in str(physical_calls[-1])
+            assert cashflow.financial_fingerprint(runtime, scope) == original_base
+
+        elif scenario in {"read", "numeric"}:
             from pe_platform.backend.ai import _ClientProxy
 
             compat = _ClientProxy(
@@ -372,7 +405,7 @@ def _exercise(scenario):
         elif scenario in {"proposal", "memory", "mismatch"}:
             if scenario == "memory":
                 tool = (
-                    "teach_peregrine",
+                    "teach_vesper_bot",
                     {
                         "category": "General",
                         "fact": "Synthetic customer collection dates require explicit review.",

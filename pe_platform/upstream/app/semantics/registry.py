@@ -1,4 +1,4 @@
-"""Canonical metric registry — the single vocabulary Peregrine computes today.
+"""Canonical metric registry — the single vocabulary Vesper Bot computes today.
 
 Converged (plan 20260712-semantic-layer-convergence) from two former layers: the
 FOS ``app/semantics`` registry (terse pl.*/bs.* seed + ``resolve_alias`` slug

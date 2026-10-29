@@ -34,7 +34,7 @@ figure is quantized to cents ROUND_HALF_UP):
     of its unplugged value — beyond that the schedule is wrong, not rounded.
   * SHORT-TERM EXEMPT leases (term ≤ 12 months, ASC 842-20-25-2 election —
     binding US GAAP) generate NO rows: no liability, no ROU, rent expensed
-    as incurred outside Peregrine (documented).
+    as incurred outside Vesper Bot (documented).
 """
 from __future__ import annotations
 
@@ -403,7 +403,7 @@ def commencement_state(db: Session, lease) -> str:
 
 
 def _lease_proposal_marker(db: Session, lease, proposal_id) -> tuple[str | None, dict]:
-    """(status, peregrine_lease marker) of one of the lease's proposals."""
+    """(status, vesper_bot_lease marker) of one of the lease's proposals."""
     from ..models import ProposedAction
 
     if not proposal_id:
@@ -415,7 +415,7 @@ def _lease_proposal_marker(db: Session, lease, proposal_id) -> tuple[str | None,
     )
     if proposal is None:
         return None, {}
-    return proposal.status, (proposal.payload or {}).get("peregrine_lease") or {}
+    return proposal.status, (proposal.payload or {}).get("vesper_bot_lease") or {}
 
 
 def gross_rou_booked(db: Session, lease) -> Decimal:
@@ -435,7 +435,7 @@ def gross_rou_booked(db: Session, lease) -> Decimal:
     )
     # ProposedAction.payload is generic JSON (no ->> operator): filter in Python.
     for (payload,) in executed:
-        marker = payload.get("peregrine_lease") if isinstance(payload, dict) else None
+        marker = payload.get("vesper_bot_lease") if isinstance(payload, dict) else None
         if (
             isinstance(marker, dict)
             and marker.get("kind") == "remeasurement"
@@ -690,7 +690,7 @@ def build_monthly_lease_proposals(
 
 
 def run_post_execution_lease_hook(db: Session, action, *, actor: str | None = None) -> None:
-    """After a JOURNAL_ENTRY proposal executes, apply its ``peregrine_lease``
+    """After a JOURNAL_ENTRY proposal executes, apply its ``vesper_bot_lease``
     marker. No-op for payloads without the marker. Runs INSIDE
     run_post_execution_schedule_hook's loud-failure contract — an exception
     here surfaces as a SCHEDULE_POST_HOOK_FAILED audit row + execution-result
@@ -711,7 +711,7 @@ def run_post_execution_lease_hook(db: Session, action, *, actor: str | None = No
     from ..models import LeaseSchedule, LeaseScheduleRow
     from . import audit
 
-    marker = (action.payload or {}).get("peregrine_lease")
+    marker = (action.payload or {}).get("vesper_bot_lease")
     if not marker or action.action_type != "JOURNAL_ENTRY":
         return
     kind = marker.get("kind")
@@ -725,7 +725,7 @@ def run_post_execution_lease_hook(db: Session, action, *, actor: str | None = No
     )
     if lease is None:
         raise LeaseEngineError(
-            f"peregrine_lease marker references missing lease {marker.get('lease_id')}"
+            f"vesper_bot_lease marker references missing lease {marker.get('lease_id')}"
         )
 
     if kind == "monthly":
@@ -774,7 +774,7 @@ def run_post_execution_lease_hook(db: Session, action, *, actor: str | None = No
         _finalize_termination(db, lease, marker, action, actor=actor)
         return
 
-    raise LeaseEngineError(f"unknown peregrine_lease kind {kind!r} on proposal {action.id}")
+    raise LeaseEngineError(f"unknown vesper_bot_lease kind {kind!r} on proposal {action.id}")
 
 
 def _apply_remeasurement_on_execution(

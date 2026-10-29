@@ -2,7 +2,7 @@
 app/services/stripe.py
 ────────────────────────
 Manages Stripe checkout sessions and robust webhook decoding 
-for Peregrine's B2B monetization flow.
+for Vesper Bot's B2B monetization flow.
 """
 import os
 import json
@@ -138,7 +138,7 @@ def _resolve_subscription_line_item(
     return {
         "price_data": {
             "currency": "usd",
-            "product_data": {"name": f"Peregrine CFO - {tier} Tier"},
+            "product_data": {"name": f"Vesper Bot - {tier} Tier"},
             "unit_amount": amount,
             "recurring": {"interval": "month"},
         },

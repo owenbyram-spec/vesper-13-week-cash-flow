@@ -1,4 +1,4 @@
-# PLAN-EXEMPT: ratified plan 20260711-peregrine-finance-os FOS-1 Wave A — CompanyFinanceProfile accessor service
+# PLAN-EXEMPT: ratified plan 20260711-vesper_bot-finance-os FOS-1 Wave A — CompanyFinanceProfile accessor service
 """Company finance profile — the versioned policy accessor (FOS-1 Wave A).
 
 ``CompanyFinanceProfile`` rows are APPEND-ONLY versions of a company's financial

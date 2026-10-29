@@ -1,7 +1,7 @@
 """
 app/assistant/handlers.py
 ─────────────────────────
-Tool handler functions for the Peregrine AI Assistant.
+Tool handler functions for the Vesper Bot.
 Each _handle_* function processes one tool call and returns a text summary.
 """
 import json
@@ -428,7 +428,7 @@ def _handle_create_journal_entry(db: Session, realm_id: str, params: dict) -> st
         company_id=realm_id,
         action_type="JOURNAL_ENTRY",
         payload=resolved_params,
-        reasoning="Created by Peregrine AI Assistant",
+        reasoning="Created by Vesper Bot",
         confidence_score=0.9,
         status="PENDING",
     )
@@ -1178,7 +1178,7 @@ def _handle_run_qbo_report(db: Session, realm_id: str, params: dict) -> str:
                     [txn.model_dump() for txn in cached_txns],
                     start_date=start_date,
                     end_date=end_date,
-                    source="Peregrine local GL cache",
+                    source="Vesper Bot local GL cache",
                     max_lines=page_limit,
                 )
                 page_note = (
@@ -1192,7 +1192,7 @@ def _handle_run_qbo_report(db: Session, realm_id: str, params: dict) -> str:
                         "run_qbo_report to continue where this page ended."
                     )
                 cache_note = (
-                    f"\n\nSource freshness: Peregrine local GL cache; "
+                    f"\n\nSource freshness: Vesper Bot local GL cache; "
                     f"report range {start_date} to {end_date}."
                 )
                 return raw + page_note + cache_note
@@ -3251,10 +3251,10 @@ def _handle_categorize_cashflow_actuals(db: Session, realm_id: str, params: dict
     )
 
 
-def _handle_teach_peregrine(db: Session, realm_id: str, params: dict) -> str:
+def _handle_teach_vesper_bot(db: Session, realm_id: str, params: dict) -> str:
     """Persist a taught fact through the Memory-v2 write path (agent_memory.remember).
 
-    Dead from the chat loop (ToolExecutor intercepts ``teach_peregrine`` into a
+    Dead from the chat loop (ToolExecutor intercepts ``teach_vesper_bot`` into a
     MEMORY_UPDATE PENDING proposal) — this handler is the APPROVAL-time executor:
     the internal execution core resolves it via ACTION_TYPE_TO_TOOL["MEMORY_UPDATE"]
     and its params carry the approver as ``_approved_by`` (action_tool_input,
@@ -4604,7 +4604,7 @@ def _handle_open_recon_session(db: Session, realm_id: str, params: dict) -> str 
             ),
             "execution_mode": "internal_db",
             "approval_effect": (
-                "Approving APPLIES this change to Peregrine's database (the reconciliation "
+                "Approving APPLIES this change to Vesper Bot's database (the reconciliation "
                 "session opens); rejecting discards it."
             ),
             "tool_input": tool_input,
@@ -4618,7 +4618,7 @@ def _handle_open_recon_session(db: Session, realm_id: str, params: dict) -> str 
             "required_role": "EDITOR",
         },
         reasoning=(
-            "Drafted by Peregrine assistant: open (or resume) a bank-reconciliation session. "
+            "Drafted by Vesper Bot assistant: open (or resume) a bank-reconciliation session. "
             "The open guards were checked at draft time and are re-checked at execution."
         ),
         confidence_score=0.85,
@@ -5251,7 +5251,7 @@ def _handle_propose_agent_plan(db: Session, realm_id: str, params: dict) -> str 
             "required_role": "EDITOR",
         },
         reasoning=(
-            "Drafted by Peregrine assistant: a validated multi-step plan. The DAG passed the "
+            "Drafted by Vesper Bot assistant: a validated multi-step plan. The DAG passed the "
             "validation gate; approval re-hashes the steps and refuses on any tamper, then the "
             "walker drives it through the existing proposal funnel — every write step is still "
             "individually human-approved."
@@ -6426,7 +6426,7 @@ def _resolve_item_lines(client, raw_lines: list) -> "tuple[list, str | None]":
     (case-insensitive) against the QBO product/service list (Name or
     FullyQualifiedName). Zero or multiple exact matches → the whole draft is
     REFUSED with the candidate list (``refusal_text`` set, ``resolved_lines``
-    empty) so the model corrects the name instead of Peregrine guessing an item.
+    empty) so the model corrects the name instead of Vesper Bot guessing an item.
     """
     items = None
     resolved = []
@@ -6950,7 +6950,7 @@ _CECL_SETUP_GUIDANCE = (
     "To enable the current-allowance comparison and drafting, an EDITOR must map the "
     "Allowance for Credit Losses account and the Bad Debt Expense account via "
     "PUT /cecl-config (GET /cecl-config suggests Classification-filtered candidates "
-    "from the chart of accounts). The mapping is explicit — Peregrine never infers a "
+    "from the chart of accounts). The mapping is explicit — Vesper Bot never infers a "
     "contra-asset account from account names."
 )
 
@@ -7199,7 +7199,7 @@ TOOL_HANDLERS = {
     "analyze_cashflow_position": _handle_analyze_cashflow_position,
     "get_cashflow_actuals_review": _handle_get_cashflow_actuals_review,
     "categorize_cashflow_actuals": _handle_categorize_cashflow_actuals,
-    "teach_peregrine": _handle_teach_peregrine,
+    "teach_vesper_bot": _handle_teach_vesper_bot,
     "create_macro_scenario": _handle_create_macro_scenario,
     "analyze_lbo_balance": _handle_analyze_lbo_balance,
     "get_lbo_sensitivity": _handle_get_lbo_sensitivity,             # READ (clean) — LBO sensitivity grid

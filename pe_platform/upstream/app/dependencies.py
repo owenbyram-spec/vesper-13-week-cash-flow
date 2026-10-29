@@ -83,7 +83,7 @@ def get_active_company_name(db: Session, realm_id: str = None) -> str:
     token = db.query(QBOToken).first()
     if token:
         return f"Company {token.realm_id}"
-    return "Peregrine CFO"
+    return "Vesper Bot"
 
 
 # Canonical role weights + capability mapping live in app/roles.py (single source

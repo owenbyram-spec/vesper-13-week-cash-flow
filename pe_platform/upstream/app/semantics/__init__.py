@@ -1,4 +1,4 @@
-"""Peregrine semantic core — the single canonical metric layer.
+"""Vesper Bot semantic core — the single canonical metric layer.
 
 Converged (plan 20260712-semantic-layer-convergence) from the former FOS
 ``app/semantics`` value-objects/money/compat + the former ``app/services/semantics``

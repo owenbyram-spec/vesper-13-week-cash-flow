@@ -215,6 +215,11 @@ describe("CashFlowForecastPage — exact export identity and operation barrier",
         vi.restoreAllMocks();
     });
 
+    it("names Vesper Bot in the cash-flow spread guidance", async () => {
+        render(<CashFlowForecastPage />);
+        expect(await screen.findByText(/Ask Vesper Bot something like/)).toBeInTheDocument();
+    });
+
     it("preserves the CFF feature census and renders money with exact zero/cents semantics", async () => {
         render(<CashFlowForecastPage />);
         expect(await screen.findAllByText("Acme Customer")).not.toHaveLength(0);

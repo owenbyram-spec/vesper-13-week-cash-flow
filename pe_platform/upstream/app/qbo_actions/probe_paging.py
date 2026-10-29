@@ -6,7 +6,7 @@ entity on a busy day and post it twice, so the probes read every page. A
 result set too large to read completely is itself uncertain: the probe raises
 rather than guess.
 
-The proposal stamp ``Peregrine proposal #<id>`` is written into the entity's
+The proposal stamp ``Vesper Bot proposal #<id>`` is written into the entity's
 ``PrivateNote`` by the drafting lanes (A/R) and the executor (journal entries);
 ``has_proposal_stamp`` matches it on a word boundary so #7 never matches #70.
 """
@@ -24,7 +24,7 @@ MAX_PAGES = 20
 # QBO's MetaData.CreateTime is Intuit's clock; allow for skew against ours.
 CREATE_TIME_SKEW = timedelta(minutes=5)
 
-_STAMP_PREFIX = "Peregrine proposal #"
+_STAMP_PREFIX = "Vesper Bot proposal #"
 
 
 def proposal_stamp(proposal_id: int) -> str:

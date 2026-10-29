@@ -1,2 +1,2 @@
-"""Agent runtime support for Peregrine."""
+"""Agent runtime support for Vesper Bot."""
 

@@ -36,7 +36,7 @@ CASH_TOOLS = frozenset(
         "refresh_cashflow_forecast",
         "spread_cashflow_balance",
         "get_module_context",
-        "teach_peregrine",
+        "teach_vesper_bot",
     }
 )
 _BOUND_CLIENT = ContextVar("vesper_pe_workspace_model_client", default=None)
@@ -511,7 +511,7 @@ def _registry():
     tools = []
     for tool in registry.all():
         if tool.name in CASH_TOOLS:
-            if tool.name in {"get_module_context", "teach_peregrine"}:
+            if tool.name in {"get_module_context", "teach_vesper_bot"}:
                 tool = replace(tool, allowed_intents=set(tool.allowed_intents) | {"cashflow"})
             if tool.name == "get_module_context":
                 tool = replace(
@@ -536,7 +536,7 @@ def _registry():
     class CashRegistry(ToolRegistry):
         def select_for_intent(self, intent, *, max_tools=None, pinned=None):
             selected = super().select_for_intent(intent, max_tools=max_tools, pinned=pinned)
-            for name in ("get_module_context", "teach_peregrine"):
+            for name in ("get_module_context", "teach_vesper_bot"):
                 tool = self.get(name)
                 if tool and all(item.name != name for item in selected):
                     selected.append(tool)

@@ -342,13 +342,13 @@ def _run_report_pack(db, objective: AgentObjective) -> Dict[str, Any]:
     attachments = []
     if report_format in ("pdf", "both"):
         attachments.append({
-            "filename": f"peregrine_report_{period}.pdf",
+            "filename": f"vesper_bot_report_{period}.pdf",
             "content": render_pdf(payload),
             "mime_type": "application/pdf",
         })
     if report_format in ("excel", "both"):
         attachments.append({
-            "filename": f"peregrine_report_{period}.xlsx",
+            "filename": f"vesper_bot_report_{period}.xlsx",
             "content": render_excel(payload),
             "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         })

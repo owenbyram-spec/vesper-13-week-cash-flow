@@ -1,7 +1,7 @@
 """
 app/services/sentry_scrub.py
 ────────────────────────────
-The Sentry scrub seam (Wave C / AC-C1, DIM-026). Peregrine is financial /
+The Sentry scrub seam (Wave C / AC-C1, DIM-026). Vesper Bot is financial /
 PHI-adjacent: no QBO/Stytch token or financial identifier may leave the app
 inside a Sentry event. The app already owns a battle-tested redactor
 (`redact_to_string`) used at ~30 log sites, but it was NOT on the Sentry path —
@@ -34,8 +34,8 @@ _SENSITIVE_HEADERS = {
     "x-csrf-token",
     "x-stytch-member-session",
     "x-stytch-session",
-    "x-peregrine-client-ip",
-    "x-peregrine-client-ip-signature",
+    "x-vesper-bot-client-ip",
+    "x-vesper-bot-client-ip-signature",
 }
 
 # A URL path segment survives only when it is plainly a word (lowercase, no

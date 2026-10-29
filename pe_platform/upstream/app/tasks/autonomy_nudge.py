@@ -127,7 +127,7 @@ def _create_ready_alert(db: Session, *, realm_id: str, organization_id: int,
             f"{gate.get('cycles')} activity days at {float(precision or 0.0):.1%} precision "
             f"with {gate.get('high_severity_miss_count')} high-severity misses. "
             "Review the evidence and promote the task under AI autonomy settings — "
-            "Peregrine never promotes on its own."
+            "Vesper Bot never promotes on its own."
         ),
         metric_value=precision,
         metric_unit="score",

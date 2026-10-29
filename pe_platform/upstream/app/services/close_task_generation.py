@@ -128,7 +128,7 @@ STANDARD_TASKS: list[dict[str, Any]] = [
     {
         "task_type": "REVIEW_ANOMALIES",
         "title": "Address AI Anomalies",
-        "description": "Review all open anomalies detected by Peregrine. Dismiss, investigate, or route to an action.",
+        "description": "Review all open anomalies detected by Vesper Bot. Dismiss, investigate, or route to an action.",
         "sort_order": 50,
         "priority": "normal",
     },

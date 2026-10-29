@@ -1,7 +1,7 @@
 """
 app/reporting/pdf_renderer.py
 ──────────────────────────────
-Section-driven board-pack PDF renderer for Peregrine CFO reports.
+Section-driven board-pack PDF renderer for Vesper Bot reports.
 
 `render_pdf(payload, definition=None)` builds the BaseDocTemplate cover + portrait
 + landscape page-template scaffold, then LOOPS the definition's sections: for each
@@ -99,7 +99,7 @@ def _render_with_reportlab(report_payload: Payload, definition: Optional[Payload
         canvas.rect(0, 0, pw, ctx.FOOTER_H + 4, fill=1, stroke=0)
         canvas.setFont("Helvetica", 7.5)
         canvas.setFillColor(colors.HexColor("#94a3b8"))
-        canvas.drawString(ctx.MARGIN_H, 10, "Peregrine CFO Intelligence Platform")
+        canvas.drawString(ctx.MARGIN_H, 10, "Vesper Bot · Cash Flow")
         canvas.drawRightString(pw - ctx.MARGIN_H, 10, "Confidential — For Internal Use Only")
         canvas.restoreState()
 

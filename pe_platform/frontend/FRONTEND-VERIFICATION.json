@@ -4,26 +4,29 @@
   "node": "24.16.0",
   "npm": "11.13.0",
   "next": "15.5.18",
-  "npm_ci": "passed; pinned lockfile; dependency installation scripts disabled; target-local cache",
+  "npm_ci": "passed in isolated build copy; pinned lockfile and cached public packages; dependency installation scripts disabled",
   "typecheck": "passed",
   "frontend_tests": {
-    "passed": 69,
+    "passed": 72,
     "files": 12
   },
-  "production_build": "passed; standalone output; Next telemetry disabled",
+  "production_build": "passed in the frontend writer's isolated ignored source copy with standalone output and Next telemetry disabled; that isolated build did not alter the active preview. The parent later rebuilt and restarted the managed8770 preview; see docs/VERIFICATION.md.",
   "built_production_csp": "same-origin connections and images (data images allowed); no development HMR or eval; verified in routes manifest",
-  "native_cashflow_page": "verbatim pinned source",
-  "native_assistant_panel": "verbatim pinned source",
+  "native_cashflow_page": "pinned source with Vesper Bot branding; native financial/event behavior retained",
+  "native_assistant_panel": "pinned source with Vesper Bot branding and accessible controls; native behavior retained",
   "local_adapters": [
     "workspace bootstrap/store, scope headers/CSRF, same-origin proxy, bounded shell/settings/proposal review",
     "SSE scope abort and authored local errors",
     "assistant-only financial epoch reset",
-    "production response privacy headers"
+    "production response privacy headers",
+    "Vesper Bot branding, local theme/package namespaces and explicit source adaptation records"
   ],
-  "original_app_or_data_operations": "none",
+  "original_app_or_data_operations": "none by the frontend writer; the parent-managed8770 preview restart is recorded separately in docs/VERIFICATION.md. Existing8876/data were not modified.",
   "browser_or_live_provider_checks": "not performed by frontend writer; parent agent coordinates isolated integration",
   "live_model_qbo_windows_credential_store": "unverified",
   "xero": "unimplemented",
   "license": "none added",
-  "credential_storage_notice": "passed synthetic locked-store save failure and prior OS-copy uncertainty for model/QBO; no real credential store inspected"
+  "credential_storage_notice": "passed synthetic locked-store save failure and prior OS-copy uncertainty for model/QBO; no real credential store inspected",
+  "assistant_name": "Vesper Bot",
+  "branding_regressions": "passed panel/control identity, cash-flow guidance and connection/permission error identity"
 }

@@ -1,6 +1,6 @@
 # Vesper & Co — 13-Week Cash Flow
 
-A local cash-flow workspace for **fractional CFOs**, using PE Workflow Builder's actual cash-flow and governed assistant foundation. The native platform is pinned to source commit `6667bc5b73173d83400a8d269c23f30942e4f00a`; [source manifests](pe_platform/source-manifest.json) distinguish unchanged upstream code from local adapters.
+A local cash-flow workspace for **fractional CFOs**, using PE Workflow Builder's actual cash-flow and governed assistant foundation. The assistant is **Vesper Bot**. The native platform is pinned to source commit `6667bc5b73173d83400a8d269c23f30942e4f00a`; [source manifests](pe_platform/source-manifest.json) distinguish unchanged upstream code, branding adaptations and local adapters.
 
 The native workspace includes the Friday-ending grid, source drivers, history-derived timing/cadence, actuals review, spreads, scenario/variance logic, immutable export snapshots, persistent assistant conversations, streaming, native tool policy/run evidence and proposal review. Local adapters provide device-owned workspaces and credentials; only the cash-flow/platform surface is exposed. Financial calculations remain deterministic. Live integrations remain unverified.
 

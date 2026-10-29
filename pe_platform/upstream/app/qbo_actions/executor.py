@@ -256,7 +256,7 @@ def uncertain_execution_result(execution: QBOActionExecution) -> dict:
             error_code="uncertain_external_state",
             user_message=(
                 "QuickBooks may or may not have applied this action — the connection "
-                "failed after the request was sent. Peregrine checks QuickBooks for it "
+                "failed after the request was sent. Vesper Bot checks QuickBooks for it "
                 "before any retry; do not re-draft this action."
             ),
             retryable=True,
@@ -323,7 +323,7 @@ def _mark_execution_failure(
         return action
 
     action.status = "FAILED"
-    # A typed pre-write refusal carries its own Peregrine-authored message (never
+    # A typed pre-write refusal carries its own Vesper Bot-authored message (never
     # provider text), so the reviewer sees why instead of a generic failure.
     refused = isinstance(exc, QBOActionRefused)
     action.execution_result = {
@@ -462,7 +462,7 @@ def execute_proposed_action(db: Session, action_id: int) -> ProposedAction:
                 f"({type(exc).__name__})."
             ) from exc
         if action_type in ("POST_JE", "JOURNAL_ENTRY"):
-            # Every post carries "Peregrine proposal #<id>" in its PrivateNote, so an
+            # Every post carries "Vesper Bot proposal #<id>" in its PrivateNote, so an
             # uncertain post is reconciled by identity inside the attempt's window.
             if prior_attempt_uncertain:
                 reconciled = probe_or_uncertain(

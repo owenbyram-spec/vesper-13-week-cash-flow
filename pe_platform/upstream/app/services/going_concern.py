@@ -9,7 +9,7 @@ Two clean seams (plan AC-1, E5):
    where the hand-computed goldens live.
 
 2. ``gather_signals(db, company_id, qbo_client=...)`` — DB-gather adapters that
-   READ Peregrine's already-computed substrate (covenant verdict, ratio /
+   READ Vesper Bot's already-computed substrate (covenant verdict, ratio /
    working-capital / CFO analytics, the 13-week runway) into a
    ``GoingConcernSignals``. Every substrate read honest-degrades to ``None``
    (→ ``indeterminate``) on an absent input — never a fabricated number.
@@ -431,7 +431,7 @@ def _provenance() -> dict[str, object]:
 # ── DB-gather adapters (read the substrate; honest-degrade; NEVER fabricate) ───
 
 def gather_signals(db, company_id: str, *, qbo_client: QBOClient | None = None) -> GoingConcernSignals:
-    """Read Peregrine's existing substrate into a ``GoingConcernSignals``.
+    """Read Vesper Bot's existing substrate into a ``GoingConcernSignals``.
 
     The covenant leg is pure-DB (the strongest, no-new-math signal). The
     ratio/CFO/runway legs need a live QBO client; without one — or on any read

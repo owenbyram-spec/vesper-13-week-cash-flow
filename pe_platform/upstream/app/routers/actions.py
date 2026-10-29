@@ -627,7 +627,7 @@ def _mark_review_only_approved(action: ProposedAction) -> ProposedAction:
     action.execution_result = {
         "execution_mode": payload.get("execution_mode") or "review_only",
         "approved": True,
-        "message": "This proposal was approved for manual follow-up. Peregrine did not execute a financial write automatically.",
+        "message": "This proposal was approved for manual follow-up. Vesper Bot did not execute a financial write automatically.",
     }
     return action
 
@@ -638,7 +638,7 @@ def _mark_review_only_approved(action: ProposedAction) -> ProposedAction:
 def _execute_internal_db_action(db: Session, action: ProposedAction, current_user: User):
     """Execute an approved INTERNAL_DB_EXECUTABLE_ACTION_TYPES action.
 
-    Unlike QBO writes (execute_proposed_action), these persist to Peregrine's own
+    Unlike QBO writes (execute_proposed_action), these persist to Vesper Bot's own
     DB via an assistant handler. The shared core (execute_internal_db_action_core)
     pins org+realm scope for action.company_id so the realm-keyed CashForecastActual
     read/write — and the handler's post-commit reads — pass FORCE-RLS, enforces the
@@ -1090,7 +1090,7 @@ def approve_action(
             status_code=409,
             error_code="action_expired",
             user_message=(
-                "This proposal expired and can no longer be approved. Ask Peregrine to "
+                "This proposal expired and can no longer be approved. Ask Vesper Bot to "
                 "draft it again so you review a fresh preview against current records."
             ),
         )
@@ -1116,7 +1116,7 @@ def approve_action(
             user_message=(
                 "This proposal belongs to an agent plan that is paused, cancelled, "
                 "expired, or failed — it can no longer be approved from here. Resume "
-                "the plan (or ask Peregrine to draft the change again) to proceed."
+                "the plan (or ask Vesper Bot to draft the change again) to proceed."
             ),
         )
 
@@ -1155,7 +1155,7 @@ def approve_action(
 
     # PLAN-EXEMPT: B5-1 P0 field bug (live-prod-corroborated 2026-06-24).
     # Internal-DB actions (e.g. cashflow categorization) are NOT QBO writes, so
-    # they are not in EXECUTABLE_ACTION_TYPES — but they DO mutate Peregrine's own
+    # they are not in EXECUTABLE_ACTION_TYPES — but they DO mutate Vesper Bot's own
     # DB and must run on approval. Without this branch they fell through to
     # _mark_review_only_approved (a silent no-op): the approval was recorded but
     # the categorization never persisted, so the txns stayed uncategorized.
@@ -1296,7 +1296,7 @@ def _tier2_action_or_refuse(db: Session, action: ProposedAction, current_user: U
             status_code=409,
             error_code="action_expired",
             user_message=(
-                "This proposal expired and can no longer be approved. Ask Peregrine to "
+                "This proposal expired and can no longer be approved. Ask Vesper Bot to "
                 "draft it again so you review a fresh preview against current records."
             ),
         )
@@ -2043,7 +2043,7 @@ def _confirm_summary(action: ProposedAction) -> Dict[str, Any]:
     proposer = (
         _payload_first(payload, "requester", "requested_by", "requester_email", "user_email")
         or action.source
-        or "Peregrine"
+        or "Vesper Bot"
     )
     try:
         amount_str = f"${float(amount):,.2f}" if amount not in (None, "") else "—"
@@ -2185,7 +2185,7 @@ def approve_via_token_submit(token: str, db: Session = Depends(get_db)):
             content=_token_response_page(
                 "⏰ Proposal Expired",
                 "This proposal expired and can no longer be approved from this link. "
-                "Ask Peregrine to draft it again for a fresh review.",
+                "Ask Vesper Bot to draft it again for a fresh review.",
                 "error",
             ),
             status_code=409,
@@ -2315,7 +2315,7 @@ def approve_via_token_submit(token: str, db: Session = Depends(get_db)):
         if execution_status == "uncertain":
             return HTMLResponse(content=_token_response_page("⏳ Outcome Unconfirmed",
                 "The approval was recorded, but QuickBooks did not confirm whether the change "
-                "was applied (the connection failed mid-request). Peregrine checks QuickBooks "
+                "was applied (the connection failed mid-request). Vesper Bot checks QuickBooks "
                 "for it before any retry and does not post it again if it landed; if that "
                 "cannot be confirmed, the dashboard asks you to check QuickBooks. "
                 "Check the dashboard later for the outcome.", "info"))
@@ -2413,7 +2413,7 @@ def _token_confirm_page(action: ProposedAction, token: str, decision: str) -> st
     proposer = _html.escape(str(summary["proposer"]))
     summary_text = _html.escape(str(summary["summary"]))
     return f"""<!DOCTYPE html>
-<html><head><title>{verb} Action — Peregrine</title>
+<html><head><title>{verb} Action — Vesper Bot</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>body{{font-family:Arial,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#f0f4f8;}}
 .card{{background:white;border-radius:12px;padding:40px;max-width:520px;width:90%;box-shadow:0 4px 24px rgba(0,0,0,0.1);}}
@@ -2427,7 +2427,7 @@ button{{background:{accent};color:white;border:none;padding:14px 32px;border-rad
 .note{{margin-top:16px;font-size:12px;color:#999;}}
 </style></head>
 <body><div class="card">
-  <div class="badge">🦅 Peregrine</div>
+  <div class="badge">🦅 Vesper Bot</div>
   <h1>Confirm: {verb} this action?</h1>
   <table>
     <tr><th>Type</th><td>{action_type}</td></tr>
@@ -2446,13 +2446,13 @@ button{{background:{accent};color:white;border:none;padding:14px 32px;border-rad
 def _token_response_page(title: str, message: str, status: str = "info") -> str:
     color = {"success": "#27ae60", "error": "#e74c3c", "info": "#1e3a5f"}.get(status, "#1e3a5f")
     return f"""<!DOCTYPE html>
-<html><head><title>{title} — Peregrine</title>
+<html><head><title>{title} — Vesper Bot</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>body{{font-family:Arial,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#f0f4f8;}}
 .card{{background:white;border-radius:12px;padding:40px;max-width:480px;width:90%;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.1);}}
 h1{{color:{color};font-size:22px;}} p{{color:#555;font-size:15px;line-height:1.6;}} .badge{{display:inline-block;background:{color};color:white;padding:6px 16px;border-radius:20px;font-size:12px;margin-bottom:16px;}}
 </style></head>
-<body><div class="card"><div class="badge">🦅 Peregrine</div><h1>{title}</h1><p>{message}</p></div></body></html>"""
+<body><div class="card"><div class="badge">🦅 Vesper Bot</div><h1>{title}</h1><p>{message}</p></div></body></html>"""
 
 
 # Forward-only governed recovery: no caller-supplied actor, finding, or source.

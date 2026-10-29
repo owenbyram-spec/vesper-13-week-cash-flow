@@ -114,7 +114,7 @@ def qbo_lane(lane: str) -> Iterator[None]:
 def _running_in_celery_task() -> bool:
     """True when the current call stack is inside a Celery task body.
 
-    This is the zero-touch background seam: every Peregrine background/batch QBO
+    This is the zero-touch background seam: every Vesper Bot background/batch QBO
     caller (``sync_all_data``, the objective runners in app/tasks/agent.py, the
     snapshot warm tasks) executes inside a Celery task, and no interactive
     request-thread caller does. Degrades to False (interactive — today's

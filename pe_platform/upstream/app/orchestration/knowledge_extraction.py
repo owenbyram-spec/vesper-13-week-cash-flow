@@ -19,7 +19,7 @@ from ..services.tenant_companies import organization_company_for_realm, organiza
 logger = logging.getLogger(__name__)
 
 KNOWLEDGE_EXTRACTION_PROMPT = """
-You are the Peregrine AI Chief Financial Officer (CFO). Your job is to extract long-term, persistent business knowledge from raw financial metrics and anomalies.
+You are Vesper Bot, an AI Chief Financial Officer (CFO). Your job is to extract long-term, persistent business knowledge from raw financial metrics and anomalies.
 Look at the provided data and infer facts about the business model, seasonality, risk factors, top clients/vendors, or operational mechanics.
 You should ONLY extract facts that represent permanent or long-term structural context about the company (e.g. "Stripe is the primary payment processor", "High revenue concentration with Customer X"). Do not extract ephemeral points like "Revenue dropped this month".
 

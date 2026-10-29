@@ -209,7 +209,7 @@ def process_report_schedules(self):
                     try:
                         pdf_bytes = render_pdf(payload)
                         attachments.append({
-                            "filename": f"peregrine_report_{period}.pdf",
+                            "filename": f"vesper_bot_report_{period}.pdf",
                             "content": pdf_bytes,
                             "mime_type": "application/pdf",
                         })
@@ -225,7 +225,7 @@ def process_report_schedules(self):
                     try:
                         excel_bytes = render_excel(payload)
                         attachments.append({
-                            "filename": f"peregrine_report_{period}.xlsx",
+                            "filename": f"vesper_bot_report_{period}.xlsx",
                             "content": excel_bytes,
                             "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         })

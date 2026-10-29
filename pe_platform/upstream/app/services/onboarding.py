@@ -3,7 +3,7 @@ app/services/onboarding.py
 ────────────────────────────
 Company Cold-Start Bootstrap service.
 
-Called once when a new QBO company connects to Peregrine for the first time.
+Called once when a new QBO company connects to Vesper Bot for the first time.
 Pulls 6 months of General Ledger history, analyzes it with GPT-4o, and
 pre-populates CompanyMemory + seeds ClassificationRule entries so the AI
 starts with a rich understanding of the business rather than a blank slate.

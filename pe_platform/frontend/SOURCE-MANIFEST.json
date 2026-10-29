@@ -7,8 +7,9 @@
       "source_path": "frontend/app/cash-flow-forecast/page.tsx",
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "6a1795c3d2134925dbf477785c47d4acb53806d02007c6013560616988208f06",
-      "mode": "verbatim",
-      "sha256": "6a1795c3d2134925dbf477785c47d4acb53806d02007c6013560616988208f06"
+      "mode": "adapted",
+      "sha256": "5529dfb84c9b2f9732f64afd0a0da02d3009437e2a6c82b410406a6c31f8a8e6",
+      "adaptation": "Assistant guidance names Vesper Bot; native financial and event logic is retained."
     },
     {
       "path": "app/cash-flow-forecast/unmapped-entities-banner.tsx",
@@ -31,16 +32,18 @@
       "source_path": "frontend/components/layout/AssistantPanel.tsx",
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "107f5b902317edff0f809397d6dc06c37fe2bffdd3c697dbcae63464640c365a",
-      "mode": "verbatim",
-      "sha256": "107f5b902317edff0f809397d6dc06c37fe2bffdd3c697dbcae63464640c365a"
+      "mode": "adapted",
+      "sha256": "8b2f0cf9baf0c5671689e8ac88d728eb4ca2d7b7187fad6340b1d95251866475",
+      "adaptation": "Assistant heading and accessible open/minimize controls name Vesper Bot; native presentation and stream behavior otherwise retained."
     },
     {
       "path": "components/theme-provider.tsx",
       "source_path": "frontend/components/theme-provider.tsx",
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "446878518d42a02a21d678e0268c75a306d3f17159beb5abc1622ec34ad1abe9",
-      "mode": "verbatim",
-      "sha256": "446878518d42a02a21d678e0268c75a306d3f17159beb5abc1622ec34ad1abe9"
+      "mode": "adapted",
+      "sha256": "f3145141c3432142b83f00064e42d589300638f05de679dc672e17c85a1c9648",
+      "adaptation": "Use the Vesper theme-storage namespace; source theme behavior is retained."
     },
     {
       "path": "components/ui/button.tsx",
@@ -72,8 +75,8 @@
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "3cd6faf41e0045ee8f3614f5c7130a04d36759bb77bb51fa6af07f3fe9128028",
       "mode": "adapted",
-      "sha256": "81cb4a4b40c777a422e58af1bd65368cd83ab6fb3dd1eb8b21985dad77e08c91",
-      "adaptation": "Preserve native SSE/error/completion behavior; add captured local workspace ownership, stream abort/stale-event rejection and safe authored local FastAPI error details."
+      "sha256": "f997bce9478d81125e1432b5730fc521038505d837ca98b17324d85f538455fc",
+      "adaptation": "Preserve native SSE/error/completion behavior and local workspace transport controls; use Vesper Bot in fallback error messages."
     },
     {
       "path": "lib/api/cashflow-forecast-export.ts",
@@ -112,16 +115,18 @@
       "source_path": "frontend/app/globals.css",
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "71db83d236775dc0270b833a4b05ee03c8aa5ce884bba0cad51d4adc1a5fc412",
-      "mode": "verbatim",
-      "sha256": "71db83d236775dc0270b833a4b05ee03c8aa5ce884bba0cad51d4adc1a5fc412"
+      "mode": "adapted",
+      "sha256": "dad66b01da662706033f8ae117e3a607c047a8ac231f84ccd2c664d7c4164c87",
+      "adaptation": "Vesper workspace branding in comments; design tokens and styles are unchanged."
     },
     {
       "path": "tailwind.config.ts",
       "source_path": "frontend/tailwind.config.ts",
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "bd2a0c356fa2315593786587c8219403544075ff931ad3147910206de746ab03",
-      "mode": "verbatim",
-      "sha256": "bd2a0c356fa2315593786587c8219403544075ff931ad3147910206de746ab03"
+      "mode": "adapted",
+      "sha256": "9f23d8f15ae79920f106208363e09f5a9894148fb2b1dabacbe76005846c4932",
+      "adaptation": "Neutral workspace typeface attribution in comments; style configuration is unchanged."
     },
     {
       "path": "postcss.config.mjs",
@@ -153,16 +158,18 @@
       "source_path": "frontend/package.json",
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "279f61e6195db2d6dbcaef4135f978c62e61e07bede77507642bcfda03c13e34",
-      "mode": "verbatim",
-      "sha256": "279f61e6195db2d6dbcaef4135f978c62e61e07bede77507642bcfda03c13e34"
+      "mode": "adapted",
+      "sha256": "b1d1a02cee54c62c90fa9d437710d8d27c0d48eb740f4bfb4d90beb672d9b107",
+      "adaptation": "Vesper package identity; pinned dependencies and scripts are unchanged."
     },
     {
       "path": "package-lock.json",
       "source_path": "frontend/package-lock.json",
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "1e52c1c1f4764d7af2c95154dc8787f8afce01c96a3199a0a2544204804afe34",
-      "mode": "verbatim",
-      "sha256": "1e52c1c1f4764d7af2c95154dc8787f8afce01c96a3199a0a2544204804afe34"
+      "mode": "adapted",
+      "sha256": "91d900008ecbdaef1a36ce13682d422d5bc3320577c2b439761c168a1c26ac8e",
+      "adaptation": "Vesper root package identity; pinned dependency resolutions and integrity hashes are unchanged."
     },
     {
       "path": "vitest.config.ts",
@@ -185,8 +192,9 @@
       "source_path": "frontend/app/cash-flow-forecast/page.test.tsx",
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "5a8dcfee6d45a267adb0d4bde67fffa081da84a78271a8e3163b8be82737d5fa",
-      "mode": "verbatim",
-      "sha256": "5a8dcfee6d45a267adb0d4bde67fffa081da84a78271a8e3163b8be82737d5fa"
+      "mode": "adapted",
+      "sha256": "4d646c82af2afe0c340f173eee75cf66569e058c9b18738d88382e8d0ff6bd3f",
+      "adaptation": "Retain native feature and export tests; add Vesper Bot guidance regression."
     },
     {
       "path": "app/cash-flow-forecast/unmapped-entities-banner.test.tsx",
@@ -210,8 +218,8 @@
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "55167a65f92d0b69133a1f300166149545887a6be1ed3757cd9643f770099d2f",
       "mode": "adapted",
-      "sha256": "ead152cfb7e6735cb7bbf8be0a0a617c6594c107b57d49eccb4b3ccb1a353b8b",
-      "adaptation": "Retain native verification tests with explicit synthetic local-scope fixture for the transport adapter."
+      "sha256": "6b94c95977f356d7e7a1d0368a5e15ac87d7484f0c4bc512427bbfef2b90e2df",
+      "adaptation": "Retain native verification tests and local scope fixtures; add Vesper Bot heading/control regression."
     }
   ],
   "local_adapters": [
@@ -222,12 +230,12 @@
     },
     {
       "path": "FRONTEND-VERIFICATION.json",
-      "sha256": "d5b587659a02962473935f6dfa25a6223003d68f5b1ff3a482f302a98af5790e",
+      "sha256": "fa9aa4eb19488825e48b54b53b77412b091159025643577d8114f7a28a463a58",
       "mode": "local_adapter"
     },
     {
       "path": "README.md",
-      "sha256": "1f412e9268159e39186ab719847ea7532b5cdc6132a515f4c3299b051a03d93c",
+      "sha256": "9d98ad514e8bb87d3986bfbf7dd27c5f48ee59fd939bab36389cee4922f2d421",
       "mode": "local_adapter"
     },
     {
@@ -242,7 +250,7 @@
     },
     {
       "path": "app/assistant/page.tsx",
-      "sha256": "86e49a3690f35793c6775a125c69f0fe863ac3bfa026cd5b7a6196ce7da63da6",
+      "sha256": "4c30b1bdcb31af5a76148ef62c83a9d469bef38d6c5660b7e4a8cafce7e803c1",
       "mode": "local_adapter"
     },
     {
@@ -272,7 +280,7 @@
     },
     {
       "path": "app/settings/connections/page.tsx",
-      "sha256": "51db43a5c42cf809c9d303fefa3b505b6f882d0773021a618f54548d10dc7210",
+      "sha256": "6661043cb29494d5afaa5bdc7dbb6d2b4579bd0bc81eca407a6dcd0f7b109d5c",
       "mode": "local_adapter"
     },
     {
@@ -282,12 +290,12 @@
     },
     {
       "path": "components/local-shell.tsx",
-      "sha256": "0fe6600c338ff5185cd1d7e3dadd6027ad0bb8e6548e198aab87cec93e90938e",
+      "sha256": "50904daa11d0103de38fff59ecefe1655403f5b44a59a526bbe8c5a729ab9a60",
       "mode": "local_adapter"
     },
     {
       "path": "lib/api/assistant-scope.test.ts",
-      "sha256": "6e28f4117f8d786abe36e04cc52b61fb63a600c742a09e6e71a520e2479744bd",
+      "sha256": "766d6ced754bb1f348d3fc4e452b3cc21f0cff85a85bf0c46c4ec908a773c479",
       "mode": "local_adapter"
     },
     {
@@ -331,7 +339,7 @@
       "mode": "local_adapter"
     }
   ],
-  "copied_verbatim_count": 23,
-  "adapted_source_count": 3,
-  "boundary": "Cash-flow workspace and assistant/platform foundation only. Local auth/workspace/connection/proposal adapters replace hosted organization, billing and unrelated catalog surfaces. Native cash-flow page and assistant presentation remain verbatim."
+  "copied_verbatim_count": 15,
+  "adapted_source_count": 11,
+  "boundary": "Cash-flow workspace and assistant/platform foundation only. Local auth/workspace/connection/proposal adapters replace hosted organization, billing and unrelated catalog surfaces. Native financial/event behavior is retained; assistant presentation uses Vesper Bot branding with explicit source adaptation hashes."
 }

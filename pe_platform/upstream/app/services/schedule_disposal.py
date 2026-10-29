@@ -193,7 +193,7 @@ def dispose_schedule_service(
     for e in drafts:
         e.status = "SKIPPED"
 
-    # Accumulated depreciation at disposal = pre-Peregrine accumulated + every
+    # Accumulated depreciation at disposal = pre-Vesper Bot accumulated + every
     # POSTED entry (the books' truth — the JE removes what is actually on the
     # contra account for this asset).
     accumulated = Decimal(str(s.accumulated_amount or 0)) + sum(
@@ -296,6 +296,6 @@ def dispose_schedule_service(
 
     return DisposalResult(
         proposal=proposal,
-        disposal_meta=proposal.payload["peregrine_disposal"],
+        disposal_meta=proposal.payload["vesper_bot_disposal"],
         draft_entries_skipped=len(drafts),
     )

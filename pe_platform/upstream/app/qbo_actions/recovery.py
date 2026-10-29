@@ -231,7 +231,7 @@ def _mark_exhausted(db: Session, action: ProposedAction, execution: QBOActionExe
             "error": error_envelope(
                 error_code="uncertain_external_state_unresolved",
                 user_message=(
-                    f"Peregrine could not confirm whether QuickBooks applied this action after "
+                    f"Vesper Bot could not confirm whether QuickBooks applied this action after "
                     f"{attempts} attempts and has stopped retrying. Check QuickBooks for it before "
                     "doing anything else; drafting it again could post it twice."
                 ),

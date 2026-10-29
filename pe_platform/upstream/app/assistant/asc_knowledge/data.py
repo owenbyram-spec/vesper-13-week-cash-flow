@@ -255,7 +255,7 @@ ASC_TOPICS: list[dict] = [
     _t(20, "ASC 326 - CECL for receivables", "ASC 326", "receivables_credit_losses",
         "Allowance for doubtful accounts",
         "Estimate expected credit losses (CECL), not just incurred losses, for financial "
-        "assets measured at amortized cost. Peregrine's CECL allowance engine drafts this "
+        "assets measured at amortized cost. Vesper Bot's CECL allowance engine drafts this "
         "estimate from aging-bucket historical loss rates derived from the tenant's own "
         "collection history, applied to the current A/R aging, with its limits disclosed "
         "in every output: right-censoring (open mature balances count as uncollected), "
@@ -267,7 +267,7 @@ ASC_TOPICS: list[dict] = [
         "high", True),
     _t(21, "ASC 326 - Current accounts receivable", "ASC 326", "receivables_credit_losses",
         "Short-term trade A/R under revenue contracts",
-        "Apply relevant practical expedients or elections when available for qualifying current receivables and contract assets. ASU 2025-05 adds an all-entities practical expedient (assume current conditions persist) plus a non-PBE election to consider post-balance-sheet collections. Peregrine's CECL allowance engine discloses its lack of a current-conditions adjustment under this expedient's framing as a drafted-for-CPA-review election, not an adopted one.",  # PLAN-EXEMPT: ratified plan 20260713-wave2-5-cecl-allowance chunk C AC-2 (marker RATIFICATION-2026-07-13.md); grounding fields below are byte-preserved
+        "Apply relevant practical expedients or elections when available for qualifying current receivables and contract assets. ASU 2025-05 adds an all-entities practical expedient (assume current conditions persist) plus a non-PBE election to consider post-balance-sheet collections. Vesper Bot's CECL allowance engine discloses its lack of a current-conditions adjustment under this expedient's framing as a drafted-for-CPA-review election, not an adopted one.",  # PLAN-EXEMPT: ratified plan 20260713-wave2-5-cecl-allowance chunk C AC-2 (marker RATIFICATION-2026-07-13.md); grounding fields below are byte-preserved
         "medium", True,
         effective_date="ASU 2025-05: annual periods beginning after Dec 15, 2025 (FY2026 for calendar-year cos), interim periods within; early adoption permitted",
         source_citation=_SRC_ASU_2025_05,

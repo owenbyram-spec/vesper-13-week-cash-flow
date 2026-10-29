@@ -52,7 +52,7 @@ except Exception:  # pragma: no cover - keep the module importable for unit test
 # ---------------------------------------------------------------------------
 # Entity allowlist — the ONLY table names a query may target.
 # ---------------------------------------------------------------------------
-# Derived from the QBO v3 queryable entity set actually used across Peregrine's
+# Derived from the QBO v3 queryable entity set actually used across Vesper Bot's
 # routers (Account, Purchase, Deposit, Bill, Invoice, JournalEntry, Payment,
 # SalesReceipt, BillPayment, CreditMemo, VendorCredit, Vendor, Transfer, ...) plus
 # the remaining common transaction/name-list entities, so a legitimate future

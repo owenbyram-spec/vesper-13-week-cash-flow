@@ -24,7 +24,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     // Initialize from localStorage or system preference
     useEffect(() => {
-        const stored = localStorage.getItem("peregrine-theme") as Theme | null;
+        const stored = localStorage.getItem("vesper-theme") as Theme | null;
         if (stored === "light" || stored === "dark") {
             setTheme(stored);
         } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
@@ -42,7 +42,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         } else {
             root.classList.remove("dark");
         }
-        localStorage.setItem("peregrine-theme", theme);
+        localStorage.setItem("vesper-theme", theme);
     }, [theme, mounted]);
 
     const toggleTheme = () => {

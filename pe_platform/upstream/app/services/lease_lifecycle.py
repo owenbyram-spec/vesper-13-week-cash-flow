@@ -561,7 +561,7 @@ def terminate_lease_service(
     lease.termination_proposed_action_id = proposal.id
     db.commit()
 
-    marker = proposal.payload["peregrine_lease"]
+    marker = proposal.payload["vesper_bot_lease"]
     return {
         "before": {
             "status": lease.status,

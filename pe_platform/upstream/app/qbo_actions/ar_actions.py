@@ -328,7 +328,7 @@ def find_created_ar_entity(
 
     Reads every ``entity_name`` row on the payload's TxnDate + CustomerRef (all
     pages). When the payload's PrivateNote carries this proposal's stamp
-    ("Peregrine proposal #<id>", added at draft time), the stamp is the identity:
+    ("Vesper Bot proposal #<id>", added at draft time), the stamp is the identity:
     exactly one stamped row with the same amount → adopt; a stamped row with a
     different amount, or several stamped rows → raise for a human; none → None.
     Otherwise the row must match the PrivateNote exactly. The amount is the

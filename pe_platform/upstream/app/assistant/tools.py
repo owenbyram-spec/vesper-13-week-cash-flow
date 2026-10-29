@@ -1,5 +1,5 @@
 # app/assistant/tools.py
-# Tool definitions for the Peregrine AI Assistant.
+# Tool definitions for the Vesper Bot.
 # Contains the ASSISTANT_TOOLS list (98 tool schemas) passed to Claude.
 # PLAN-EXEMPT: chunk 5 of ratified plan 20260714-wave3-2-asc606-engine (marker
 # RATIFICATION-2026-07-14.md). Header count 97 -> 98: create_revenue_contract (a SIMPLE
@@ -399,7 +399,7 @@ ASSISTANT_TOOLS = [
     {
         "name": "get_module_context",
         "description": (
-            "Inspect a Peregrine module's current context in assistant-readable form. "
+            "Inspect a Vesper Bot module's current context in assistant-readable form. "
             "Supported modules include agreements, documents, budget, cashflow, close, covenants, "
             "kpis, lbo, accounting_schedules, cap_table, alerts, knowledge, and corrections. "
             "The 'corrections' module surfaces past human corrections for THIS company as trusted "
@@ -1032,7 +1032,7 @@ ASSISTANT_TOOLS = [
         },
     },
     {
-        "name": "teach_peregrine",
+        "name": "teach_vesper_bot",
         "description": (
             "Teach the AI a new persistent fact or rule about this company. "
             "This creates a PENDING memory proposal for review instead of silently writing long-term memory. "
@@ -1136,7 +1136,7 @@ ASSISTANT_TOOLS = [
         "description": (
             "Propose changes to an LBO scenario's assumptions/drivers (e.g. revenue growth, "
             "margins, entry/exit multiple, hold period, DSO/DPO, sweep %, tax rate) for human "
-            "review. Peregrine will NOT change the model from chat — this drafts a proposal the "
+            "review. Vesper Bot will NOT change the model from chat — this drafts a proposal the "
             "user must approve; only on approval do the assumptions actually update and the model "
             "re-solve. Pass 'scenario_id' and an 'updates' object of ONLY the assumption keys you "
             "want to change (they merge onto the scenario's current assumptions). Use this when the "
@@ -1597,7 +1597,7 @@ ASSISTANT_TOOLS = [
             "Draft an edit to a debt covenant's threshold / definition (threshold, breach_direction, "
             "custom_formula, EBITDA add-backs, debt-service accounts), for review. Creates a PENDING "
             "proposal carrying the before/after covenant snapshot so the approver sees exactly how "
-            "breach detection changes. Peregrine does not change the covenant from chat. Provide "
+            "breach detection changes. Vesper Bot does not change the covenant from chat. Provide "
             "covenant_id and the fields to change; use get_covenants_status to find covenant ids."
         ),
         "input_schema": {
@@ -1625,7 +1625,7 @@ ASSISTANT_TOOLS = [
             "EBITDA covenant — DSCR and Debt/EBITDA — computes from), for review. Creates a PENDING "
             "proposal carrying the before/after add-back mapping so the approver sees how the "
             "covenant EBITDA inputs change. Add-backs are an explicit account mapping supplied "
-            "verbatim, never keyword-inferred. Peregrine does not change EBITDA from chat."
+            "verbatim, never keyword-inferred. Vesper Bot does not change EBITDA from chat."
         ),
         "input_schema": {
             "type": "object",
@@ -1649,7 +1649,7 @@ ASSISTANT_TOOLS = [
             "carrying the before/after recognition (initial liability + ROU) so the approver sees "
             "the statement impact. Activation measures the lease at the locked discount rate, "
             "persists the amortization schedule, and drafts the commencement JE — ALL at approval "
-            "time only. Peregrine does not activate the lease from chat. Provide lease_id and the "
+            "time only. Vesper Bot does not activate the lease from chat. Provide lease_id and the "
             "source accounts the commencement JE moves amounts out of."
         ),
         "input_schema": {
@@ -1672,7 +1672,7 @@ ASSISTANT_TOOLS = [
             "Draft a remeasurement of an ACTIVE ASC-842 lease (a modification: changed payment, "
             "term, escalation, or an explicit rate change), for review. Creates a PENDING proposal "
             "carrying the before/after remeasured liability + ROU so the approver sees the statement "
-            "impact. The schedule rows are rebuilt only when the proposal EXECUTES. Peregrine does "
+            "impact. The schedule rows are rebuilt only when the proposal EXECUTES. Vesper Bot does "
             "not remeasure from chat. A payment or term change is remeasured at an UPDATED rate: "
             "pass new_discount_rate_annual with new_rate_basis. Only a payment-only reassessment "
             "named by rate_unchanged_reason keeps the original locked rate; without either, approval "
@@ -1707,7 +1707,7 @@ ASSISTANT_TOOLS = [
             "Draft termination of an ACTIVE ASC-842 lease, for review. Creates a PENDING proposal "
             "carrying the before/after and the derecognition gain/loss so the approver sees the "
             "statement impact. gain/loss = remaining liability − ROU net book value − settlement. "
-            "The lease flips TERMINATED only when the proposal EXECUTES. Peregrine does not "
+            "The lease flips TERMINATED only when the proposal EXECUTES. Vesper Bot does not "
             "terminate from chat. Provide lease_id, the termination_date, and any settlement."
         ),
         "input_schema": {
@@ -1885,7 +1885,7 @@ ASSISTANT_TOOLS = [
         "name": "reclassify_transaction",
         "description": (
             "Draft a ProposedAction to reclassify a QuickBooks transaction to a different account. "
-            "Peregrine will not directly modify the transaction from chat; the reclassification "
+            "Vesper Bot will not directly modify the transaction from chat; the reclassification "
             "executes only after human approval."
         ),
         "input_schema": {
@@ -1924,7 +1924,7 @@ ASSISTANT_TOOLS = [
         "description": (
             "Draft an update to a QuickBooks vendor's details (display name, contact info, "
             "active flag, etc.) for human review. Creates a PENDING proposal through the same "
-            "vendor-update lane the admin proposals endpoint uses; Peregrine will not change "
+            "vendor-update lane the admin proposals endpoint uses; Vesper Bot will not change "
             "the vendor from chat — the update executes only after approval. Provide the QBO "
             "vendor_id (use search_finance_records with entity 'vendor' to find it) and a "
             "sparse 'updates' object containing only the QBO Vendor fields being changed."
@@ -1992,7 +1992,7 @@ ASSISTANT_TOOLS = [
         "name": "create_invoice",
         "description": (
             "Draft a new QuickBooks customer invoice for human review. Creates a PENDING "
-            "proposal — Peregrine will not create the invoice from chat; it is created in "
+            "proposal — Vesper Bot will not create the invoice from chat; it is created in "
             "QuickBooks only after the user approves it in the Actions page. Resolve the "
             "customer first with search_finance_records entity 'customer' to get the QBO "
             "customer id. Every line needs a product/service item: pass item_id if known, "
@@ -2102,7 +2102,7 @@ ASSISTANT_TOOLS = [
         "name": "create_credit_memo",
         "description": (
             "Draft a QuickBooks credit memo for a customer, for human review. Creates a "
-            "PENDING proposal — Peregrine will not create the credit memo from chat; it is "
+            "PENDING proposal — Vesper Bot will not create the credit memo from chat; it is "
             "created in QuickBooks only after the user approves it in the Actions page. "
             "Resolve the customer first with search_finance_records entity 'customer'. Lines "
             "follow the same contract as create_invoice: item_id if known, or item_name "
@@ -2170,7 +2170,7 @@ ASSISTANT_TOOLS = [
         "name": "propose_payment_batch",
         "description": (
             "Draft an accounts-payable payment batch from the company's open bills, for "
-            "human review. Creates a PENDING proposal — Peregrine will not pay any bill "
+            "human review. Creates a PENDING proposal — Vesper Bot will not pay any bill "
             "from chat; the batch executes only after the user approves it in the Actions "
             "page, and every payment is check-only from the named bank account. Bills are "
             "selected by the existing AP prioritization (due_date, discount, or "
@@ -2414,7 +2414,7 @@ ASSISTANT_TOOLS = [
         "name": "propose_agent_plan",
         "description": (
             "Compose a novel MULTI-STEP plan (a checklist of actions / 'do these steps' / a "
-            "multi-step workflow) as a small dependency DAG over Peregrine's OWN tools, and "
+            "multi-step workflow) as a small dependency DAG over Vesper Bot's OWN tools, and "
             "draft it for human review. Creates ONE PENDING proposal — NOTHING runs from "
             "chat: the whole plan is human-approved before step 1 runs, and every WRITE step "
             "still drafts its own separate proposal that needs its own approval. Steps are a "
@@ -2437,7 +2437,7 @@ ASSISTANT_TOOLS = [
                         "type": "object",
                         "properties": {
                             "step_index": {"type": "integer", "description": "Unique integer id for this step; depends_on references it"},
-                            "tool_name": {"type": "string", "description": "The Peregrine tool this step calls (must exist and be model-visible)"},
+                            "tool_name": {"type": "string", "description": "The Vesper Bot tool this step calls (must exist and be model-visible)"},
                             "tool_input": {"type": "object", "description": "The tool's arguments (NO scope keys — scope is injected server-side)"},
                             "depends_on": {
                                 "type": "array",
@@ -2505,7 +2505,7 @@ ASSISTANT_TOOLS = [
             "Estimate the allowance for credit losses (CECL / ASC 326, bad-debt allowance / "
             "allowance for doubtful accounts) from the company's OWN collection history and "
             "current AR aging, and draft the adjustment journal entry for human review. "
-            "Creates a PENDING proposal — Peregrine will not post the entry from chat; it "
+            "Creates a PENDING proposal — Vesper Bot will not post the entry from chat; it "
             "posts to QuickBooks only after the user approves it in the Actions page. The "
             "accounts come EXCLUSIVELY from the company's saved CECL mapping (set via the "
             "CECL settings page / PUT /cecl-config) and the amount is computed by the "

@@ -35,6 +35,8 @@ The local finite-spread adapter retains PE's cent allocation while preventing a 
 
 ## Assistant and review
 
+The assistant is **Vesper Bot**. Its visible presentation, prompts, error/report text and internal namespace use that identity. The manifests retain original source identities alongside hashes of the explicit branding adaptations; deterministic cash-flow modules remain unchanged. The old unexposed catalog's branded protocol markers are not migrated in existing saved records.
+
 **Connections** accepts a workspace-owned OpenAI or Anthropic key and model ID in masked fields, with explicit data-flow consent and session-only storage by default. Optional persistence uses the existing OS credential-store abstraction with no plaintext fallback. A new workspace does not inherit another's connection. Saving is separate from a small provider connection test, and both are separate from an actual scoped assistant response. Enter keys only in this app; never put them in chat, fixtures, source or input files.
 
 The local integration uses PE's native context/policy/tool/runtime, conversations, typed evidence/numeric-verification metadata, ProposedAction ledger and streaming events. The selected tools are cash-flow reads/analysis/refresh, cash-flow drafts and supporting memory. Journal entries, accounting writeback, invoice outreach, broad financial packs and unpopulated finance-search indexes are not offered. There is no implicit global-key or cross-provider fallback. Semantic embedding acquisition is not enabled; supported context/memory retrieval remains explicitly scoped.

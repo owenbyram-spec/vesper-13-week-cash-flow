@@ -1,4 +1,4 @@
-"""Canonical semantic references for Peregrine finance metrics (FOS-1 Wave A).
+"""Canonical semantic references for Vesper Bot finance metrics (FOS-1 Wave A).
 
 A number without its semantics is a trap: $1.2M "revenue" on a CASH basis is not
 comparable to $1.3M "revenue" on an ACCRUAL basis; a July 1-11 month-to-date figure

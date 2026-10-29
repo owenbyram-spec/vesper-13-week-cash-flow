@@ -63,7 +63,7 @@ logger = logging.getLogger(__name__)
 _ACTION_TYPE_BY_TOOL = {tool: action for action, tool in ACTION_TYPE_TO_TOOL.items()}
 
 _APPROVAL_EFFECT = (
-    "Approval executes this change in Peregrine immediately; the outcome is recorded "
+    "Approval executes this change in Vesper Bot immediately; the outcome is recorded "
     "honestly as EXECUTED or FAILED on the action."
 )
 
