@@ -14,6 +14,18 @@ def _month(today, months_back, day):
     return date(year, month + 1, min(day, calendar.monthrange(year, month + 1)[1]))
 
 
+def _directory_contacts(entity):
+    # These contacts evidence GL-only activity without changing the native cash
+    # history/open-item fixture or any previously saved workspace fixture bytes.
+    return {
+        "Customer": [{"Id": "201", "DisplayName": "Synthetic Beacon Services", "Active": False}],
+        "Vendor": [
+            {"Id": "303", "DisplayName": "Synthetic historical legal", "Active": False},
+            {"Id": "399", "DisplayName": "Synthetic unused master contact", "Active": True},
+        ],
+    }.get(entity, [])
+
+
 def dataset(today=None):
     today = today or date.today()
     friday = today + timedelta(days=(4 - today.weekday()) % 7)
@@ -205,6 +217,8 @@ class SyntheticQBOClient:
             raise ValueError("Unsupported synthetic accounting read")
         entity = match[1]
         rows = copy.deepcopy(self.data["rows"][entity])
+        if re.search(r"\bActive\s+IN\s*\(\s*true\s*,\s*false\s*\)", query, re.I):
+            rows.extend(copy.deepcopy(_directory_contacts(entity)))
         if re.search(r"Balance\s*>\s*'?0", query, re.I):
             rows = [row for row in rows if float(row.get("Balance", 0)) > 0]
         if re.search(r"Balance\s*=\s*'?0", query, re.I):
@@ -238,6 +252,52 @@ class SyntheticQBOClient:
 
     def get_report(self, report_name, params=None):
         params = params or {}
+        if report_name == "GeneralLedger":
+            start = params.get("start_date", self.data["observed_date"])
+            end = params.get("end_date", self.data["observed_date"])
+            lines = []
+            for entity in ("Invoice", "Bill", "Payment", "BillPayment", "Purchase"):
+                for transaction in self.data["rows"][entity]:
+                    day = transaction.get("TxnDate", "")
+                    if not start <= day <= end:
+                        continue
+                    party = transaction.get("CustomerRef") or transaction.get("VendorRef") or transaction.get("EntityRef")
+                    if party and party.get("name"):
+                        lines.append((day, party["name"], str(party.get("value", "")), entity))
+            observed = date.fromisoformat(self.data["observed_date"])
+            day = (observed - timedelta(days=30)).isoformat()
+            if start <= day <= end:
+                for entity in ("Customer", "Vendor"):
+                    party = _directory_contacts(entity)[0]
+                    lines.append((day, party["DisplayName"], party["Id"], "JournalEntry"))
+            return {
+                "Header": {
+                    "ReportName": "GeneralLedger", "ReportBasis": "Accrual", "Currency": "USD",
+                    "StartPeriod": start, "EndPeriod": end,
+                    "Option": [{"Name": "NoReportData", "Value": "false" if lines else "true"}],
+                },
+                "Columns": {"Column": [
+                    {"ColTitle": "Date", "ColType": "Date", "MetaData": [{"Name": "ColKey", "Value": "tx_date"}]},
+                    {"ColTitle": "Name", "ColType": "Name", "MetaData": [{"Name": "ColKey", "Value": "name"}]},
+                    {"ColTitle": "Transaction Type", "ColType": "String"},
+                    {"ColTitle": "Amount", "ColType": "Money"},
+                ]},
+                "Rows": {"Row": [{
+                    "type": "Section",
+                    "Header": {"ColData": [{"value": "Synthetic GL activity", "id": "100"}]},
+                    "Rows": {"Row": [{
+                        "type": "Section",
+                        "Header": {"ColData": [{"value": "Synthetic nested account"}]},
+                        "Rows": {"Row": [{
+                            "type": "Data", "ColData": [
+                                {"value": day}, {"value": name, "id": identity},
+                                {"value": entity}, {"value": "0.00"},
+                            ],
+                        } for day, name, identity, entity in sorted(lines)]},
+                        "Summary": {"ColData": [{"value": "Total"}, {"value": "Not a contact"}]},
+                    }]},
+                }]},
+            }
         if report_name in {"AgedReceivables", "AgedReceivableDetail", "AgedPayables", "AgedPayableDetail"}:
             receivable = report_name in {"AgedReceivables", "AgedReceivableDetail"}
             entity, ref = ("Invoice", "CustomerRef") if receivable else ("Bill", "VendorRef")

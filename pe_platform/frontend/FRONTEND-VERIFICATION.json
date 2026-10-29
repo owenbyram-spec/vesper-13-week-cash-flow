@@ -1,32 +1,58 @@
 {
-  "date": "2026-10-28",
+  "date": "2026-10-29",
   "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
   "node": "24.16.0",
   "npm": "11.13.0",
   "next": "15.5.18",
-  "npm_ci": "passed in isolated build copy; pinned lockfile and cached public packages; dependency installation scripts disabled",
+  "npm_ci": "Existing pinned dependency installation reused; no dependency or lockfile changes for the Drivers UI.",
   "typecheck": "passed",
   "frontend_tests": {
-    "passed": 72,
-    "files": 12
+    "passed": 137,
+    "files": 14
   },
-  "production_build": "passed in the frontend writer's isolated ignored source copy with standalone output and Next telemetry disabled; that isolated build did not alter the active preview. The parent later rebuilt and restarted the managed8770 preview; see docs/VERIFICATION.md.",
+  "production_build": "Passed in the managed local preview, including postbuild, after GL directory and conservative identity-matching changes. Previous build and consistent data backups retained under ignored local-data/gl-driver-catalog-review/20261029-4d543e23.",
   "built_production_csp": "same-origin connections and images (data images allowed); no development HMR or eval; verified in routes manifest",
-  "native_cashflow_page": "pinned source with Vesper Bot branding; native financial/event behavior retained",
+  "native_cashflow_page": "Pinned source with recorded Vesper Bot branding, local read-only Drivers overlay, scoped GL directory and contextual row inspection; native financial calculations and editing/reorder/export coordination retained.",
   "native_assistant_panel": "pinned source with Vesper Bot branding and accessible controls; native behavior retained",
   "local_adapters": [
     "workspace bootstrap/store, scope headers/CSRF, same-origin proxy, bounded shell/settings/proposal review",
     "SSE scope abort and authored local errors",
     "assistant-only financial epoch reset",
     "production response privacy headers",
-    "Vesper Bot branding, local theme/package namespaces and explicit source adaptation records"
+    "Vesper Bot branding, local theme/package namespaces and explicit source adaptation records",
+    "Read-only Drivers overlay, scoped lazy GL directory and contextual row inspection; accessible focus/dismissal, owner isolation, explicit source windows/coverage and conservative forecast associations."
   ],
-  "original_app_or_data_operations": "none by the frontend writer; the parent-managed8770 preview restart is recorded separately in docs/VERIFICATION.md. Existing8876/data were not modified.",
-  "browser_or_live_provider_checks": "not performed by frontend writer; parent agent coordinates isolated integration",
+  "original_app_or_data_operations": "Managed 8770/8771 preview rebuilt/restarted with its original data directory; financial and selection rows verified identical. Existing 8876/data remained untouched.",
+  "browser_or_live_provider_checks": "Actual synthetic GL directory showed six observed identities including inactive GL-only contacts; unused master-only contact excluded. Search, GL refresh, details, back, Escape and completed outside-click focus return passed at 785x954. Every forecast grid cell stayed identical; grid remained 537 pixels with a 420-pixel overlay. No live provider check. Smaller mobile viewports not exercised.",
   "live_model_qbo_windows_credential_store": "unverified",
   "xero": "unimplemented",
   "license": "none added",
   "credential_storage_notice": "passed synthetic locked-store save failure and prior OS-copy uncertainty for model/QBO; no real credential store inspected",
   "assistant_name": "Vesper Bot",
-  "branding_regressions": "passed panel/control identity, cash-flow guidance and connection/permission error identity"
+  "branding_regressions": "passed panel/control identity, cash-flow guidance and connection/permission error identity",
+  "drivers_drawer": {
+    "closed_by_default": true,
+    "read_only": true,
+    "component_tests": 21,
+    "page_integration_tests": 32,
+    "workspace_and_row_identity_checked": true,
+    "manual_default_provenance_excluded": true,
+    "null_zero_and_future_week_semantics_checked": true
+  },
+  "gl_driver_catalog": {
+    "lookback_days": 180,
+    "all_observed_gl_names": true,
+    "includes_inactive_contacts": true,
+    "unused_master_only_contacts_excluded": true,
+    "forecast_statuses": true,
+    "name_links_explicit": true,
+    "manual_rows_separate": true,
+    "read_only": true,
+    "lazy_scoped_read": true,
+    "same_owner_stale_data_retained_with_warning": true,
+    "helper_tests": 37,
+    "native_catalog_tests": 49,
+    "native_full_suite_tests": 96,
+    "live_gl_acquisition": "unverified"
+  }
 }

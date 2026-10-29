@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { Download, Inbox, Loader2, RefreshCw, X } from "lucide-react";
+import { Download, Inbox, Info, Loader2, RefreshCw, SlidersHorizontal, X } from "lucide-react";
 import { useAppStore } from "@/lib/store";
 import { apiClient } from "@/lib/api/client";
 import { SaveStatus } from "@/components/ui/modals";
@@ -16,6 +16,8 @@ import {
     type CashflowForecastExportFormat,
 } from "@/lib/api/cashflow-forecast-export";
 import { Button } from "@/components/ui/button";
+import { DriversDrawer, type DriverSelection } from "@/components/cashflow/DriversDrawer";
+import { fetchDriverCatalog, type DriverCatalog } from "@/lib/api/driver-catalog";
 
 function weekStatusLabel(status?: WeekStatus["status"]) {
     switch (status) {
@@ -458,8 +460,24 @@ export default function CashFlowForecastPage() {
     const [dragIdx, setDragIdx] = useState<number | null>(null);
     const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
 
-    // Sidebar collapsed state
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    // Read-only driver inspection stays outside the forecast's working canvas.
+    const [driversOpen, setDriversOpen] = useState(false);
+    const [selectedDriver, setSelectedDriver] = useState<DriverSelection | null>(null);
+    const [ownedDriverCatalog, setOwnedDriverCatalog] = useState<(OwnerToken & {
+        data: DriverCatalog | null;
+        loading: boolean;
+        error: string | null;
+    }) | null>(null);
+    const driverCatalogRef = useRef<typeof ownedDriverCatalog>(null);
+    const driverCatalogSequence = useRef(0);
+    const driverCatalogAbort = useRef<AbortController | null>(null);
+    const visibleDriverCatalog = ownedDriverCatalog && sameOwnerToken(ownedDriverCatalog, renderOwner)
+        ? ownedDriverCatalog : null;
+    const closeDrivers = useCallback(() => setDriversOpen(false), []);
+    const inspectDriver = useCallback((selection: DriverSelection) => {
+        setSelectedDriver(selection);
+        setDriversOpen(true);
+    }, []);
     const [showSpreadModal, setShowSpreadModal] = useState(false);
     const [spreadSaving, setSpreadSaving] = useState(false);
     const [spreadError, setSpreadError] = useState<string | null>(null);
@@ -501,6 +519,62 @@ export default function CashFlowForecastPage() {
         ownerRef.current.companyId === token.companyId &&
         ownerRef.current.requestGeneration === token.requestGeneration
     ), []);
+
+    const readDriverCatalog = useCallback(async (refresh = false) => {
+        const token = { ...ownerRef.current };
+        if (!token.companyId || !sameOwnerToken(uiOwner, token)) return;
+        const previous = driverCatalogRef.current && sameOwnerToken(driverCatalogRef.current, token)
+            ? driverCatalogRef.current : null;
+        if (!refresh && (previous?.data || previous?.loading)) return;
+        driverCatalogAbort.current?.abort();
+        const controller = new AbortController();
+        driverCatalogAbort.current = controller;
+        const sequence = ++driverCatalogSequence.current;
+        const publish = (data: DriverCatalog | null, loading: boolean, error: string | null) => {
+            if (!isCurrentOwner(token) || sequence !== driverCatalogSequence.current || controller.signal.aborted) return;
+            const next = { ...token, data, loading, error };
+            driverCatalogRef.current = next;
+            setOwnedDriverCatalog(next);
+        };
+        publish(previous?.data ?? null, true, null);
+        try {
+            const catalog = await fetchDriverCatalog(token.companyId, controller.signal);
+            if (catalog.coverage.status !== "complete" && previous?.data && previous.data.coverage.status !== "unavailable") {
+                const issue = catalog.coverage.issues.map((item) => item.message).join(" ");
+                publish(previous.data, false, `The latest GL read is ${catalog.coverage.status}. ${issue} Showing the last available directory; its source window and coverage are retained.`.trim());
+            } else {
+                publish(catalog, false, null);
+            }
+        } catch (caught: unknown) {
+            publish(previous?.data ?? null, false, getErrorMessage(caught, "The General Ledger directory could not be loaded. Refresh to try again."));
+        } finally {
+            if (driverCatalogAbort.current === controller) driverCatalogAbort.current = null;
+        }
+    }, [isCurrentOwner, uiOwner]);
+
+    const openDriverDirectory = useCallback(() => {
+        setSelectedDriver(null);
+        setDriversOpen(true);
+        void readDriverCatalog();
+    }, [readDriverCatalog]);
+    const selectDriver = useCallback((selection: DriverSelection | null) => {
+        setSelectedDriver(selection);
+        if (selection === null) void readDriverCatalog();
+    }, [readDriverCatalog]);
+    const refreshDriverCatalog = useCallback(() => { void readDriverCatalog(true); }, [readDriverCatalog]);
+
+    useEffect(() => {
+        driverCatalogSequence.current += 1;
+        driverCatalogAbort.current?.abort();
+        driverCatalogAbort.current = null;
+        driverCatalogRef.current = null;
+        setOwnedDriverCatalog(null);
+        return () => {
+            driverCatalogSequence.current += 1;
+            driverCatalogAbort.current?.abort();
+            driverCatalogAbort.current = null;
+        };
+    }, [companyId, renderOwner.requestGeneration]);
 
     const coordinatorFor = useCallback((token: OwnerToken) => {
         const coordinator = coordinatorRef.current;
@@ -743,6 +817,8 @@ export default function CashFlowForecastPage() {
         setDragType(null);
         setDragIdx(null);
         setDragOverIdx(null);
+        setDriversOpen(false);
+        setSelectedDriver(null);
         setShowSpreadModal(false);
         setSpreadSaving(false);
         setSpreadError(null);
@@ -1910,96 +1986,11 @@ export default function CashFlowForecastPage() {
 
     return (
         <div className="flex h-full -mx-6 -my-6" style={{ width: 'calc(100% + 3rem)', height: 'calc(100% + 3rem)' }}>
-            {/* ── Sidebar: Entity Reference Panel ────────────────────────── */}
-            {sidebarOpen && data && (
-                <div className="hidden md:block w-56 flex-shrink-0 border-r border-border bg-surface overflow-y-auto">
-                    <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-                        <h2 className="text-sm font-bold text-text">Entity Reference</h2>
-                        <button
-                            onClick={() => setSidebarOpen(false)}
-                            className="text-textMuted hover:text-text text-xs"
-                        >✕</button>
-                    </div>
-
-                    {/* Customers */}
-                    <div className="p-3">
-                        <h3 className="text-xs font-bold text-accentIndigo uppercase tracking-wider mb-2">
-                            Customers
-                        </h3>
-                        <table className="w-full text-xs">
-                            <thead>
-                                <tr className="text-textMuted">
-                                    <th className="text-left py-1">Name</th>
-                                    <th className="text-right py-1 w-10" title="Calendar day-of-month this cash activity typically lands within the Friday-ending week">Day</th>
-                                    <th className="text-right py-1 w-20" title="Average monthly cash represented by this customer">Avg/Mo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.customers.map((c) => (
-                                    <tr key={c.row_key} className="border-t border-border/50">
-                                        <td className="py-1 text-text truncate max-w-[120px]" title={c.name}>
-                                            <div className="flex items-center gap-1">
-                                                {c.source === "invoice" && <span className="text-[9px] px-1 py-0.5 rounded bg-primary/20 text-accentIndigo font-bold" title={`${c.open_invoices} open invoice(s)`}>INV</span>}
-                                                {c.source === "pattern" && <span className="text-[9px] px-1 py-0.5 rounded bg-surfaceAlt text-textMuted font-bold">PAT</span>}
-                                                {c.source === "manual" && <span className="text-[9px] px-1 py-0.5 rounded bg-accentPurple/20 text-accentPurple font-bold">MAN</span>}
-                                                <span className="truncate">{c.name}</span>
-                                            </div>
-                                        </td>
-                                        <td className="py-1 text-right text-textMuted" title="Typical calendar day-of-month this cash hits inside the Friday-ending week">
-                                            {c.effective_day ?? c.day_of_month ?? "—"}
-                                        </td>
-                                        <td className="py-1 text-right text-text font-medium" title={c.source === "invoice" ? `Open balance: ${fmt(c.total_open_balance)}` : "Average monthly cash amount"}>
-                                            {fmt(c.effective_avg ?? c.avg_amount)}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {/* Vendors */}
-                    <div className="p-3 border-t border-border">
-                        <h3 className="text-xs font-bold text-accentAmber uppercase tracking-wider mb-2">
-                            Vendors
-                        </h3>
-                        <table className="w-full text-xs">
-                            <thead>
-                                <tr className="text-textMuted">
-                                    <th className="text-left py-1">Name</th>
-                                    <th className="text-right py-1 w-10" title="Calendar day-of-month this cash activity typically lands within the Friday-ending week">Day</th>
-                                    <th className="text-right py-1 w-20" title="Average monthly cash represented by this vendor">Avg/Mo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.vendors.map((v) => (
-                                    <tr key={v.row_key} className="border-t border-border/50">
-                                        <td className="py-1 text-text truncate max-w-[120px]" title={v.name}>
-                                            <div className="flex items-center gap-1">
-                                                {v.source === "invoice" && <span className="text-[9px] px-1 py-0.5 rounded bg-accentAmber/20 text-accentAmber font-bold" title={`${v.open_invoices} open bill(s)`}>INV</span>}
-                                                {v.source === "pattern" && <span className="text-[9px] px-1 py-0.5 rounded bg-surfaceAlt text-textMuted font-bold">PAT</span>}
-                                                {v.source === "manual" && <span className="text-[9px] px-1 py-0.5 rounded bg-accentPurple/20 text-accentPurple font-bold">MAN</span>}
-                                                <span className="truncate">{v.name}</span>
-                                            </div>
-                                        </td>
-                                        <td className="py-1 text-right text-textMuted" title="Typical calendar day-of-month this cash hits inside the Friday-ending week">
-                                            {v.effective_day ?? v.day_of_month ?? "—"}
-                                        </td>
-                                        <td className="py-1 text-right text-text font-medium" title={v.source === "invoice" ? `Open balance: ${fmt(v.total_open_balance)}` : "Average monthly cash amount"}>
-                                            {fmt(v.effective_avg ?? v.avg_amount)}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
-
             {/* ── Main Content ───────────────────────────────────────────── */}
-            <div className="flex-1 overflow-hidden flex flex-col p-3">
+            <div className="min-w-0 flex-1 overflow-hidden flex flex-col p-3 sm:p-5">
                 {/* Header */}
-                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between flex-shrink-0">
-                    <div>
+                <div className="mb-4 flex min-w-0 flex-col gap-4 flex-shrink-0">
+                    <div className="min-w-0">
                         <h1 className="text-2xl font-bold text-text">Rolling 13-Week Cash Flow Forecast</h1>
                         <p className="text-textMuted text-sm mt-0.5">
                             Friday-to-Friday cash calendar with entity day-of-month triggers and average cash activity • Click any cell to override
@@ -2021,6 +2012,9 @@ export default function CashFlowForecastPage() {
                         {(["excel", "pdf"] as const).map((format) => (
                             <button
                                 key={format}
+                                aria-label={exportBusyFormat !== null
+                                    ? "Downloading…"
+                                    : `Download forecast (${format === "excel" ? "Excel" : "PDF"})`}
                                 onClick={() => handleForecastDownload(format)}
                                 disabled={exportBusyFormat !== null}
                                 title={
@@ -2039,7 +2033,7 @@ export default function CashFlowForecastPage() {
                                 )}
                                 {exportBusyFormat !== null
                                     ? "Downloading…"
-                                    : `Download forecast (${format === "excel" ? "Excel" : "PDF"})`}
+                                    : format === "excel" ? "Excel" : "PDF"}
                             </button>
                         ))}
                         <SaveStatus
@@ -2068,12 +2062,17 @@ export default function CashFlowForecastPage() {
                                 📥 Pull Transactions
                             </button>
                         )}
-                        {!sidebarOpen && data && (
+                        {data && (
                             <button
-                                onClick={() => setSidebarOpen(true)}
-                                className="px-3 py-2 border border-border rounded-lg text-sm text-textMuted hover:text-text transition"
+                                type="button"
+                                aria-haspopup="dialog"
+                                aria-expanded={driversOpen && uiIsCurrent}
+                                aria-controls="cashflow-drivers-drawer"
+                                onClick={openDriverDirectory}
+                                className="inline-flex items-center gap-2 px-3 py-2 border border-primary/20 rounded-lg bg-primary/5 text-sm font-medium text-primaryText hover:bg-primary/10 transition-colors"
                             >
-                                📊 Reference
+                                <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+                                Drivers
                             </button>
                         )}
                         <button
@@ -2372,6 +2371,19 @@ export default function CashFlowForecastPage() {
                                                 {customer.source === "manual" && <span className="text-[9px] px-1 py-0.5 rounded bg-accentPurple/20 text-accentPurple font-bold flex-shrink-0">MAN</span>}
                                                 <span className="truncate flex-1">{customer.name}</span>
                                                 <button
+                                                    type="button"
+                                                    aria-label={`Inspect customer ${customer.name} driver`}
+                                                    aria-haspopup="dialog"
+                                                    draggable={false}
+                                                    onMouseDown={(event) => event.stopPropagation()}
+                                                    onDragStart={(event) => { event.preventDefault(); event.stopPropagation(); }}
+                                                    onClick={(event) => { event.stopPropagation(); inspectDriver({ type: "customer", rowKey: customer.row_key }); }}
+                                                    className="shrink-0 rounded p-1 text-textMuted/70 hover:bg-primary/10 hover:text-primaryText focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                                    title="Inspect driver"
+                                                >
+                                                    <Info className="h-3.5 w-3.5" aria-hidden="true" />
+                                                </button>
+                                                <button
                                                     onClick={(e) => { e.stopPropagation(); void removeEntity(customer.row_key, customer.name, "customer"); }}
                                                     className="opacity-0 group-hover:opacity-100 text-danger/50 hover:text-danger text-xs px-1 transition-opacity"
                                                     title="Remove"
@@ -2469,6 +2481,19 @@ export default function CashFlowForecastPage() {
                                                 {vendor.source === "pattern" && <span className="text-[9px] px-1 py-0.5 rounded bg-surfaceAlt text-textMuted font-bold flex-shrink-0">PAT</span>}
                                                 {vendor.source === "manual" && <span className="text-[9px] px-1 py-0.5 rounded bg-accentPurple/20 text-accentPurple font-bold flex-shrink-0">MAN</span>}
                                                 <span className="truncate flex-1">{vendor.name}</span>
+                                                <button
+                                                    type="button"
+                                                    aria-label={`Inspect vendor ${vendor.name} driver`}
+                                                    aria-haspopup="dialog"
+                                                    draggable={false}
+                                                    onMouseDown={(event) => event.stopPropagation()}
+                                                    onDragStart={(event) => { event.preventDefault(); event.stopPropagation(); }}
+                                                    onClick={(event) => { event.stopPropagation(); inspectDriver({ type: "vendor", rowKey: vendor.row_key }); }}
+                                                    className="shrink-0 rounded p-1 text-textMuted/70 hover:bg-primary/10 hover:text-primaryText focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                                    title="Inspect driver"
+                                                >
+                                                    <Info className="h-3.5 w-3.5" aria-hidden="true" />
+                                                </button>
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); void removeEntity(vendor.row_key, vendor.name, "vendor"); }}
                                                     className="opacity-0 group-hover:opacity-100 text-danger/50 hover:text-danger text-xs px-1 transition-opacity"
@@ -2568,6 +2593,24 @@ export default function CashFlowForecastPage() {
                     </div>
                 )}
             </div>
+
+            {uiIsCurrent && data && (
+                <DriversDrawer
+                    key={`${renderOwner.companyId}:${renderOwner.requestGeneration}`}
+                    open={driversOpen}
+                    onClose={closeDrivers}
+                    customers={data.customers}
+                    vendors={data.vendors}
+                    weekHeaders={data.week_headers}
+                    lookback={data.lookback ?? 0}
+                    selected={selectedDriver}
+                    onSelect={selectDriver}
+                    catalog={visibleDriverCatalog?.data ?? null}
+                    catalogLoading={visibleDriverCatalog?.loading ?? false}
+                    catalogError={visibleDriverCatalog?.error ?? null}
+                    onRefreshCatalog={refreshDriverCatalog}
+                />
+            )}
 
             {/* ── Categorization Modal ──────────────────────────────────────── */}
             {showSpreadModal && data && (

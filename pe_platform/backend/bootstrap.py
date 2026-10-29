@@ -225,8 +225,9 @@ def register(app):
         with runtime.financial_lock:
             return {"workspace": create_demo(runtime)}
 
-    from . import connections, cashflow
+    from . import connections, cashflow, drivers
 
     connections.register(app, runtime)
     cashflow.register(app, runtime)
+    drivers.register(app, runtime)
     return runtime

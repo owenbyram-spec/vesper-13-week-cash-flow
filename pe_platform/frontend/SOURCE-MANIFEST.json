@@ -8,8 +8,8 @@
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "6a1795c3d2134925dbf477785c47d4acb53806d02007c6013560616988208f06",
       "mode": "adapted",
-      "sha256": "5529dfb84c9b2f9732f64afd0a0da02d3009437e2a6c82b410406a6c31f8a8e6",
-      "adaptation": "Assistant guidance names Vesper Bot; native financial and event logic is retained."
+      "sha256": "77bf447ec461ab21b73da36a1dc0040f7b1ee609cf66abf4f54de1d93256a486",
+      "adaptation": "Vesper Bot guidance; local closed-by-default Drivers overlay with a lazy scoped GL directory, forecast-status association and contextual row inspection replaces the permanent sidebar. Native financial calculations, editing, reorder and export coordination remain unchanged."
     },
     {
       "path": "app/cash-flow-forecast/unmapped-entities-banner.tsx",
@@ -193,8 +193,8 @@
       "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
       "source_sha256": "5a8dcfee6d45a267adb0d4bde67fffa081da84a78271a8e3163b8be82737d5fa",
       "mode": "adapted",
-      "sha256": "4d646c82af2afe0c340f173eee75cf66569e058c9b18738d88382e8d0ff6bd3f",
-      "adaptation": "Retain native feature and export tests; add Vesper Bot guidance regression."
+      "sha256": "19aca71ff9adbf050468f4612887f1e2235647859c21499c0c09cf476562db5f",
+      "adaptation": "Retain native feature and export tests and Vesper Bot guidance regression; add read-only GL directory/row inspection, lazy reads, stale/partial responses, workspace-switch isolation and duplicate-row identity regressions."
     },
     {
       "path": "app/cash-flow-forecast/unmapped-entities-banner.test.tsx",
@@ -230,12 +230,12 @@
     },
     {
       "path": "FRONTEND-VERIFICATION.json",
-      "sha256": "fa9aa4eb19488825e48b54b53b77412b091159025643577d8114f7a28a463a58",
+      "sha256": "1166f698b08780589c315a9961b968b20c651577eb216ce287e58937b804213a",
       "mode": "local_adapter"
     },
     {
       "path": "README.md",
-      "sha256": "9d98ad514e8bb87d3986bfbf7dd27c5f48ee59fd939bab36389cee4922f2d421",
+      "sha256": "a7b1e5cf81684e4e1bdf85e80d1ad0237f94f910e8f2bfe49a35bfee2cadb26c",
       "mode": "local_adapter"
     },
     {
@@ -289,6 +289,16 @@
       "mode": "local_adapter"
     },
     {
+      "path": "components/cashflow/DriversDrawer.test.tsx",
+      "sha256": "71191160c4900983f20ad9d37a5cf12d1ee49e94418cfce0bbd85ea8bf853c0e",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "components/cashflow/DriversDrawer.tsx",
+      "sha256": "856a95124227238196e8ee55904d2b7e1fdbec58fef003c9db983df09a8c1211",
+      "mode": "local_adapter"
+    },
+    {
       "path": "components/local-shell.tsx",
       "sha256": "50904daa11d0103de38fff59ecefe1655403f5b44a59a526bbe8c5a729ab9a60",
       "mode": "local_adapter"
@@ -301,6 +311,16 @@
     {
       "path": "lib/api/client.ts",
       "sha256": "b35a0f5d7135a0c6102f7e5022ab6b39a0bb7c4819f1c085bdc3bd0e7915a80e",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/api/driver-catalog.test.ts",
+      "sha256": "417f5fa4a10e1bd5ab317d31c1286309dafa8a7a42a0dea87af2387489a8b94e",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/api/driver-catalog.ts",
+      "sha256": "68d39e69f7fb50944f0d8c4756d35168aca4e2a6f41e8c97b65b3a034b0e7902",
       "mode": "local_adapter"
     },
     {

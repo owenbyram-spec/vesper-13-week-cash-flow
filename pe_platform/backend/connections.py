@@ -34,7 +34,7 @@ _READ_ENTITIES = {
     "Customer",
     "Vendor",
 }
-# Exact native cash/AR/AP-summary dependencies; no caller-defined report paths.
+# Default native cash/AR/AP dependencies; no caller-defined report paths.
 _READ_REPORTS = {
     "BalanceSheet",
     "AgedReceivables",
@@ -83,14 +83,17 @@ def _validate_currency_money(value, currency):
 class NativeReadOnlyClient:
     """Native QBO method names; only fixed GET reads and token refresh can reach HTTP."""
 
-    def __init__(self, runtime, scope):
+    def __init__(self, runtime, scope, *, allow_driver_catalog=False):
         self.runtime, self.scope = runtime, dict(scope)
         self.realm_id = scope["realm_id"]
+        self.allowed_reports = frozenset(_READ_REPORTS) | (
+            {"GeneralLedger"} if allow_driver_catalog is True else set()
+        )
         self.deadline, self.rows_seen = time.monotonic() + 120, 0
         self.legacy = QBOClient(runtime.settings, scope["id"], lock=runtime.financial_lock)
 
     def _request(self, endpoint, params):
-        if endpoint != "query" and endpoint not in {"reports/" + name for name in _READ_REPORTS}:
+        if endpoint != "query" and endpoint not in {"reports/" + name for name in self.allowed_reports}:
             raise QBOError("Only cash-flow accounting reads are available.")
         self.runtime.workspaces.require_current(self.scope)
         self.legacy._require_bound()
@@ -138,7 +141,7 @@ class NativeReadOnlyClient:
         return result
 
     def get_report(self, name, params=None):
-        if name not in _READ_REPORTS:
+        if name not in self.allowed_reports:
             raise QBOError("This workspace exposes only the fixed cash-flow and AR/AP summary reports.")
         result = self._request("reports/" + name, params or {})
         if result.get("Header", {}).get("Currency") != self.scope["currency"]:
@@ -194,9 +197,10 @@ class NativeReadOnlyClient:
 
 
 class RecordedClient:
-    def __init__(self, runtime, scope, client=None, *, replay=False):
+    def __init__(self, runtime, scope, client=None, *, replay=False, allow_driver_catalog=False):
         self.runtime, self.scope, self.client, self.replay = runtime, scope, client, replay
         self.realm_id = scope["realm_id"]
+        self.allow_driver_catalog = allow_driver_catalog is True
 
     def _read(self, kind, arguments):
         key = _read_key(kind, arguments)
@@ -216,6 +220,8 @@ class RecordedClient:
         return self._read("query", [query])
 
     def get_report(self, name, params=None):
+        if name == "GeneralLedger" and not self.allow_driver_catalog:
+            raise QBOError("This workspace exposes only the fixed cash-flow and AR/AP summary reports.")
         return self._read("get_report", [name, params or {}])
 
     def get_company_info(self):
@@ -241,9 +247,9 @@ def is_replaying(scope):
     return _replay_workspace.get() == scope["id"]
 
 
-def client_for_scope(runtime, scope, *, replay=False):
+def client_for_scope(runtime, scope, *, replay=False, allow_driver_catalog=False):
     if replay or _replay_workspace.get() == scope["id"]:
-        return RecordedClient(runtime, scope, replay=True)
+        return RecordedClient(runtime, scope, replay=True, allow_driver_catalog=allow_driver_catalog)
     if scope["synthetic"]:
         from .fixtures import SyntheticQBOClient, dataset
 
@@ -251,11 +257,17 @@ def client_for_scope(runtime, scope, *, replay=False):
         if not source.get("fixture"):
             source["fixture"] = dataset()
             runtime.workspaces.write_source(scope, source)
-        return RecordedClient(runtime, scope, SyntheticQBOClient(scope, source["fixture"]))
+        return RecordedClient(
+            runtime, scope, SyntheticQBOClient(scope, source["fixture"]),
+            allow_driver_catalog=allow_driver_catalog,
+        )
     bundle = runtime.settings.get(scope["id"], "qbo")
     if not bundle or not bundle.get("bound_company") or bundle["realm_id"] != scope["realm_id"]:
         raise HTTPException(409, "Save, test and explicitly confirm the QBO company in this workspace first.")
-    return RecordedClient(runtime, scope, NativeReadOnlyClient(runtime, scope))
+    return RecordedClient(
+        runtime, scope, NativeReadOnlyClient(runtime, scope, allow_driver_catalog=allow_driver_catalog),
+        allow_driver_catalog=allow_driver_catalog,
+    )
 
 
 def install_native_read_seam(runtime):

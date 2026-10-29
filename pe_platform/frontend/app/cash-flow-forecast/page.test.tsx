@@ -61,6 +61,7 @@ import { apiClient } from "@/lib/api/client";
 import { addForecastRow } from "@/lib/api/cff-integrity";
 import { downloadCashflowForecastExport } from "@/lib/api/cashflow-forecast-export";
 import CashFlowForecastPage from "./page";
+import type { DriverCatalog, DriverCatalogEntry } from "@/lib/api/driver-catalog";
 
 function deferred<T>() {
     let resolve!: (value: T | PromiseLike<T>) => void;
@@ -132,11 +133,23 @@ function companyFromConfig(config?: unknown) {
     return (config as { params?: { company_id?: string } } | undefined)?.params?.company_id;
 }
 
+function glCatalogResponse(companyId: string, entries?: DriverCatalogEntry[]): DriverCatalog {
+    const label = companyId === "realm-a" ? "Acme" : "Beta";
+    const names = entries ?? [
+        { key: "customer:200", name: `${label} Customer`, entity_type: "customer", entity_id: "200", aliases: [], active: true, first_seen: "2026-07-01", last_seen: "2026-07-30", gl_line_count: 1, identity_basis: "gl_id" },
+        { key: "vendor:300", name: `${label} Vendor`, entity_type: "vendor", entity_id: "300", aliases: [], active: true, first_seen: "2026-07-01", last_seen: "2026-07-30", gl_line_count: 1, identity_basis: "gl_id" },
+    ];
+    return { schema_version: 1, source: "GeneralLedger", company_id: companyId, start_date: "2026-02-02", end_date: "2026-07-31", observed_at: "2026-08-01T12:00:00Z", coverage: { status: "complete", issues: [], data_rows: names.length, named_rows: names.length, unattributed_rows: 0 }, entries: names };
+}
+
 function seedReadyForecasts() {
     vi.mocked(apiClient.get).mockImplementation((url: string, config?: unknown) => {
         if (url === "/cashflow-forecast/weekly") {
             const companyId = companyFromConfig(config) || "realm-a";
             return Promise.resolve({ data: forecastResponse(companyId) });
+        }
+        if (url === "/cashflow-forecast/driver-catalog") {
+            return Promise.resolve({ data: glCatalogResponse(companyFromConfig(config) || "realm-a") });
         }
         return Promise.resolve({ data: {} });
     });
@@ -218,6 +231,66 @@ describe("CashFlowForecastPage — exact export identity and operation barrier",
     it("names Vesper Bot in the cash-flow spread guidance", async () => {
         render(<CashFlowForecastPage />);
         expect(await screen.findByText(/Ask Vesper Bot something like/)).toBeInTheDocument();
+    });
+
+    it("opens driver details without editing, deleting or replacing the forecast", async () => {
+        render(<CashFlowForecastPage />);
+        await screen.findByText("Acme Customer");
+        expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+        expect(screen.queryByText("Entity Reference")).not.toBeInTheDocument();
+        const row = screen.getByText("Acme Customer").closest("tr")!;
+        const before = Array.from(row.cells, (cell) => cell.textContent);
+        const inspect = screen.getByRole("button", { name: "Inspect customer Acme Customer driver" });
+        inspect.focus();
+        fireEvent.click(inspect);
+        const drawer = await screen.findByRole("dialog", { name: "Drivers" });
+        expect(within(drawer).getByRole("heading", { name: "Acme Customer" })).toBeInTheDocument();
+        expect(vi.mocked(apiClient.get).mock.calls.some(([url]) => url === "/cashflow-forecast/driver-catalog")).toBe(false);
+        expect(within(drawer).queryByText("Acme Vendor")).not.toBeInTheDocument();
+        expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument();
+        fireEvent.keyDown(document, { key: "Escape" });
+        await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+        expect(inspect).toHaveFocus();
+        expect(Array.from(row.cells, (cell) => cell.textContent)).toEqual(before);
+        expect(apiClient.post).not.toHaveBeenCalled();
+        expect(apiClient.delete).not.toHaveBeenCalled();
+        expect(downloadCashflowForecastExport).not.toHaveBeenCalled();
+    });
+
+    it("clears an open driver directory when the workspace changes", async () => {
+        const { rerender } = render(<CashFlowForecastPage />);
+        await screen.findByText("Acme Customer");
+        fireEvent.click(screen.getByRole("button", { name: "Drivers" }));
+        const drawer = await screen.findByRole("dialog", { name: "Drivers" });
+        expect(within(drawer).getByText("Acme Vendor")).toBeInTheDocument();
+        mockStoreState.activeCompanyId = "realm-b";
+        rerender(<CashFlowForecastPage />);
+        expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+        expect(screen.queryAllByText("Acme Customer")).toHaveLength(0);
+        await screen.findByText("Beta Customer");
+        const trigger = screen.getByRole("button", { name: "Drivers" });
+        expect(trigger).toHaveAttribute("aria-expanded", "false");
+        fireEvent.click(trigger);
+        const nextDrawer = await screen.findByRole("dialog", { name: "Drivers" });
+        expect(within(nextDrawer).getByText("Beta Customer")).toBeInTheDocument();
+        expect(within(nextDrawer).queryByText("Acme Customer")).not.toBeInTheDocument();
+        expect(apiClient.post).not.toHaveBeenCalled();
+    });
+
+    it("inspects duplicate names by row identity instead of selecting the first match", async () => {
+        vi.mocked(apiClient.get).mockResolvedValue({ data: forecastResponse("realm-a", "duplicates", {
+            customers: [
+                { row_id: "customer:dup-a", name: "Duplicate Customer", day_of_month: 10, effective_day: 10, avg_amount: 111.11, effective_avg: 111.11, amounts: [111.11, 0], sort_order: 0 },
+                { row_id: "customer:dup-b", name: "Duplicate Customer", day_of_month: 20, effective_day: 20, avg_amount: 222.22, effective_avg: 222.22, amounts: [222.22, 0], sort_order: 1 },
+            ],
+        }) });
+        render(<CashFlowForecastPage />);
+        const second = await screen.findByTestId("forecast-row-customer:dup-b");
+        fireEvent.click(within(second).getByRole("button", { name: "Inspect customer Duplicate Customer driver" }));
+        const drawer = await screen.findByRole("dialog", { name: "Drivers" });
+        expect(within(drawer).getByText("$222.22")).toBeInTheDocument();
+        expect(within(drawer).queryByText("$111.11")).not.toBeInTheDocument();
+        expect(apiClient.post).not.toHaveBeenCalled();
     });
 
     it("preserves the CFF feature census and renders money with exact zero/cents semantics", async () => {
@@ -1283,5 +1356,131 @@ describe("CashFlowForecastPage — history payees not projected as recurring", (
         await screen.findAllByText("Acme Customer");
 
         expect(screen.queryByText(/not projected as recurring/)).not.toBeInTheDocument();
+    });
+});
+
+describe("CashFlowForecastPage — scoped GL driver directory", () => {
+    beforeEach(() => { vi.clearAllMocks(); mockStoreState.activeCompanyId = "realm-a"; seedReadyForecasts(); });
+    afterEach(() => { vi.restoreAllMocks(); });
+
+    function catalogWithName(company: string, name: string) {
+        return glCatalogResponse(company, [{ ...glCatalogResponse(company).entries[0], key: "customer:extra", entity_id: "extra", name }]);
+    }
+
+    it("loads GL names lazily, includes inactive GL-only contacts, and does not change financial/export state", async () => {
+        const ledger = catalogWithName("realm-a", "Inactive GL-only customer");
+        ledger.entries[0].active = false;
+        vi.mocked(apiClient.get).mockImplementation((url: string, config?: unknown) => {
+            if (url === "/cashflow-forecast/weekly") return Promise.resolve({ data: forecastResponse(companyFromConfig(config) || "realm-a") });
+            if (url === "/cashflow-forecast/driver-catalog") return Promise.resolve({ data: ledger });
+            if (url === "/cashflow-forecast/entities") return Promise.resolve({ data: { customers: [{ name: "Unused master contact" }], vendors: [] } });
+            return Promise.resolve({ data: {} });
+        });
+        render(<CashFlowForecastPage />);
+        const customer = (await screen.findByText("Acme Customer")).closest("tr")!;
+        const original = customer.textContent;
+        expect(vi.mocked(apiClient.get).mock.calls.some(([url]) => url === "/cashflow-forecast/driver-catalog")).toBe(false);
+        fireEvent.click(screen.getByRole("button", { name: "Drivers" }));
+        const drawer = await screen.findByRole("dialog", { name: "Drivers" });
+        expect(await within(drawer).findByText("Inactive GL-only customer")).toBeInTheDocument();
+        expect(within(drawer).getByText("Inactive")).toBeInTheDocument();
+        expect(within(drawer).getByText("Not in forecast")).toBeInTheDocument();
+        expect(within(drawer).queryByText("Unused master contact")).not.toBeInTheDocument();
+        fireEvent.click(within(drawer).getByRole("button", { name: "Close drivers" }));
+        expect(customer.textContent).toBe(original);
+        expect(screen.queryByText("Inactive GL-only customer")).not.toBeInTheDocument();
+        fireEvent.click(screen.getByRole("button", { name: "Download forecast (Excel)" }));
+        await waitFor(() => expect(downloadCashflowForecastExport).toHaveBeenCalledWith(expect.objectContaining({ exportId: "realm-a-export-1" })));
+        expect(apiClient.post).not.toHaveBeenCalled();
+        expect(apiClient.delete).not.toHaveBeenCalled();
+        expect(vi.mocked(apiClient.get).mock.calls.some(([url]) => url === "/cashflow-forecast/entities")).toBe(false);
+    });
+
+    it("never adopts a late directory from an older owner generation, including A to B to A", async () => {
+        const oldA = deferred<{ data: DriverCatalog }>();
+        const newA = deferred<{ data: DriverCatalog }>();
+        let aRequests = 0;
+        vi.mocked(apiClient.get).mockImplementation((url: string, config?: unknown) => {
+            const company = companyFromConfig(config) || "realm-a";
+            if (url === "/cashflow-forecast/weekly") return Promise.resolve({ data: forecastResponse(company) });
+            if (url === "/cashflow-forecast/driver-catalog") {
+                if (company === "realm-a") return ++aRequests === 1 ? oldA.promise : newA.promise;
+                return Promise.resolve({ data: catalogWithName(company, "Only B GL contact") });
+            }
+            return Promise.resolve({ data: {} });
+        });
+        const { rerender } = render(<CashFlowForecastPage />);
+        await screen.findByText("Acme Customer");
+        fireEvent.click(screen.getByRole("button", { name: "Drivers" }));
+        expect(await screen.findByText("Loading GL directory…")).toBeInTheDocument();
+        mockStoreState.activeCompanyId = "realm-b";
+        rerender(<CashFlowForecastPage />);
+        expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+        await screen.findByText("Beta Customer");
+        fireEvent.click(screen.getByRole("button", { name: "Drivers" }));
+        expect(await screen.findByText("Only B GL contact")).toBeInTheDocument();
+        mockStoreState.activeCompanyId = "realm-a";
+        rerender(<CashFlowForecastPage />);
+        expect(screen.queryByText("Only B GL contact")).not.toBeInTheDocument();
+        await screen.findByText("Acme Customer");
+        fireEvent.click(screen.getByRole("button", { name: "Drivers" }));
+        await screen.findByText("Loading GL directory…");
+        await act(async () => oldA.resolve({ data: catalogWithName("realm-a", "Old A GL contact") }));
+        expect(screen.queryByText("Old A GL contact")).not.toBeInTheDocument();
+        expect(screen.getByText("Loading GL directory…")).toBeInTheDocument();
+        await act(async () => newA.resolve({ data: catalogWithName("realm-a", "Current A GL contact") }));
+        expect(await screen.findByText("Current A GL contact")).toBeInTheDocument();
+        expect(aRequests).toBe(2);
+        expect(screen.queryByText("Only B GL contact")).not.toBeInTheDocument();
+        expect(apiClient.post).not.toHaveBeenCalled();
+    });
+
+    it("retains a same-owner successful directory after transport and partial refresh failures", async () => {
+        let catalogReads = 0;
+        const retained = catalogWithName("realm-a", "Retained GL contact");
+        const partial = catalogWithName("realm-a", "Partial replacement contact");
+        partial.coverage.status = "partial";
+        partial.coverage.issues = [{ code: "missing_page", message: "Some GL pages were unavailable" }];
+        vi.mocked(apiClient.get).mockImplementation((url: string, config?: unknown) => {
+            if (url === "/cashflow-forecast/weekly") return Promise.resolve({ data: forecastResponse(companyFromConfig(config) || "realm-a") });
+            if (url === "/cashflow-forecast/driver-catalog") {
+                catalogReads += 1;
+                if (catalogReads === 1) return Promise.resolve({ data: retained });
+                if (catalogReads === 2) return Promise.reject(new Error("GL transport failed"));
+                return Promise.resolve({ data: partial });
+            }
+            return Promise.resolve({ data: {} });
+        });
+        render(<CashFlowForecastPage />);
+        await screen.findByText("Acme Customer");
+        fireEvent.click(screen.getByRole("button", { name: "Drivers" }));
+        await screen.findByText("Retained GL contact");
+        fireEvent.click(screen.getByRole("button", { name: "Refresh GL directory" }));
+        expect(await screen.findByRole("alert")).toHaveTextContent("Showing the retained directory");
+        expect(screen.getByText("Retained GL contact")).toBeInTheDocument();
+        expect(screen.getByText("Retained GL read")).toBeInTheDocument();
+        fireEvent.click(screen.getByRole("button", { name: "Refresh GL directory" }));
+        await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("Some GL pages were unavailable"));
+        expect(screen.getByText("Retained GL contact")).toBeInTheDocument();
+        expect(screen.queryByText("Partial replacement contact")).not.toBeInTheDocument();
+        expect(catalogReads).toBe(3);
+        expect(apiClient.post).not.toHaveBeenCalled();
+        expect(apiClient.delete).not.toHaveBeenCalled();
+    });
+
+    it("shows failed initial GL acquisition as unavailable rather than a complete projected-row directory", async () => {
+        vi.mocked(apiClient.get).mockImplementation((url: string, config?: unknown) => {
+            if (url === "/cashflow-forecast/weekly") return Promise.resolve({ data: forecastResponse(companyFromConfig(config) || "realm-a") });
+            if (url === "/cashflow-forecast/driver-catalog") return Promise.reject(new Error("No source"));
+            return Promise.resolve({ data: {} });
+        });
+        render(<CashFlowForecastPage />);
+        await screen.findByText("Acme Customer");
+        fireEvent.click(screen.getByRole("button", { name: "Drivers" }));
+        const drawer = await screen.findByRole("dialog", { name: "Drivers" });
+        expect(await within(drawer).findByRole("alert")).toHaveTextContent("GL directory unavailable");
+        expect(within(drawer).queryByText("Complete read")).not.toBeInTheDocument();
+        expect(within(drawer).queryByRole("region", { name: "Customers" })).not.toBeInTheDocument();
+        expect(within(drawer).getByRole("region", { name: "Other forecast rows" })).toHaveTextContent("Acme Customer");
     });
 });
