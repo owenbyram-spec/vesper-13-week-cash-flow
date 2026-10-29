@@ -1,0 +1,11 @@
+{
+  "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+  "files": [
+    {
+      "path": "test_cashflow_recurrence_interval.py",
+      "source_path": "tests/test_cashflow_recurrence_interval.py",
+      "sha256": "f3ab380bc65ef13074481f6cf04167e5f22c8abdea6a62d4b462bc4053b4eb57",
+      "adaptation": "none"
+    }
+  ]
+}

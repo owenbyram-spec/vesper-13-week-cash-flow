@@ -1,5 +1,7 @@
 # Data, credentials and recovery
 
+This page describes legacy CLI/browser storage and backup formats. The current PE-native workspace has separate platform databases, source observations and immutable export snapshots. See [PE-native setup](PE-PLATFORM-SETUP.md) for its data, connection and review boundaries. Legacy JSON backup/restore does not apply to the native platform database.
+
 The CLI writes only to its chosen new output folder, including reports, JSON backup and a `workspace/forecast.sqlite3` snapshot. It uses no server, browser, credential store or provider connection. The optional browser tool stores financial workspaces in the operating system's application-data directory by default; a custom `--data-dir` can be supplied explicitly. Back up/export data to a location you control. Exported financial files may contain sensitive business information and are your responsibility to protect.
 
 All browser copies share that default directory. A different port alone does not isolate their data. Check the browser launcher's resolved app/data paths and Connections & setup's entity/address/directory before entering credentials; use a separate `--data-dir` for an isolated browser trial. Session-only credentials last only in that running browser backend process. Connections and persistent credential namespaces are bound to the local data directory and entity; moving a finance backup does not transfer credentials. CLI output folders are separate and contain no connections.

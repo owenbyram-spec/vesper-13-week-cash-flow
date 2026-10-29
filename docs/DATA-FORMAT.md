@@ -1,5 +1,7 @@
 # Forecast inputs and timing assumptions
 
+These are the legacy exact-money CLI/browser formats. The current PE-native workspace uses a separate Friday-ending and monthly-run-rate contract described in [PE-native setup](PE-PLATFORM-SETUP.md); it does not import or recalculate these snapshots automatically.
+
 ## CLI input and output
 
 The default source CLI accepts canonical JSON: `python3.12 forecast.py --input my-inputs.json --out ./exports/my-forecast`. Use `examples/synthetic-scenario.json` as the full shape reference, replacing its fictional names, inputs, source evidence and coverage decisions for your own work. Money must remain exact decimal strings; expected cash dates, recurring amounts per occurrence and missing coverage use the same validation and deterministic engine as the browser tool.

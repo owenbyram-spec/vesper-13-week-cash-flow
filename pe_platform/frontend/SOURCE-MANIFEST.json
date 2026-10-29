@@ -1,0 +1,337 @@
+{
+  "source_repository": "PE Workflow Builder",
+  "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+  "files": [
+    {
+      "path": "app/cash-flow-forecast/page.tsx",
+      "source_path": "frontend/app/cash-flow-forecast/page.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "6a1795c3d2134925dbf477785c47d4acb53806d02007c6013560616988208f06",
+      "mode": "verbatim",
+      "sha256": "6a1795c3d2134925dbf477785c47d4acb53806d02007c6013560616988208f06"
+    },
+    {
+      "path": "app/cash-flow-forecast/unmapped-entities-banner.tsx",
+      "source_path": "frontend/app/cash-flow-forecast/unmapped-entities-banner.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "38c9f3ac1d8744a4da50f1f65ccf043f72f6282eccd628e49afd86dc46e60997",
+      "mode": "verbatim",
+      "sha256": "38c9f3ac1d8744a4da50f1f65ccf043f72f6282eccd628e49afd86dc46e60997"
+    },
+    {
+      "path": "app/providers.tsx",
+      "source_path": "frontend/app/providers.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "9ea3f34b1d1aa73d5351f93f5f60f3287a8bb808b37dc4df89dba9ef75ce7071",
+      "mode": "verbatim",
+      "sha256": "9ea3f34b1d1aa73d5351f93f5f60f3287a8bb808b37dc4df89dba9ef75ce7071"
+    },
+    {
+      "path": "components/layout/AssistantPanel.tsx",
+      "source_path": "frontend/components/layout/AssistantPanel.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "107f5b902317edff0f809397d6dc06c37fe2bffdd3c697dbcae63464640c365a",
+      "mode": "verbatim",
+      "sha256": "107f5b902317edff0f809397d6dc06c37fe2bffdd3c697dbcae63464640c365a"
+    },
+    {
+      "path": "components/theme-provider.tsx",
+      "source_path": "frontend/components/theme-provider.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "446878518d42a02a21d678e0268c75a306d3f17159beb5abc1622ec34ad1abe9",
+      "mode": "verbatim",
+      "sha256": "446878518d42a02a21d678e0268c75a306d3f17159beb5abc1622ec34ad1abe9"
+    },
+    {
+      "path": "components/ui/button.tsx",
+      "source_path": "frontend/components/ui/button.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "ac7dcac6deae92e2f1d1627420ee23c53be5220a46e2f34218b860de515c1432",
+      "mode": "verbatim",
+      "sha256": "ac7dcac6deae92e2f1d1627420ee23c53be5220a46e2f34218b860de515c1432"
+    },
+    {
+      "path": "components/ui/modals.tsx",
+      "source_path": "frontend/components/ui/modals.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "65a8f03af173439e99d310402df85897e43c4f551de641685984772f8d7d2188",
+      "mode": "verbatim",
+      "sha256": "65a8f03af173439e99d310402df85897e43c4f551de641685984772f8d7d2188"
+    },
+    {
+      "path": "components/ui/qbo-not-connected.tsx",
+      "source_path": "frontend/components/ui/qbo-not-connected.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "d73632d8b5bfb2a46315f99d5ddd2693df692d9b9b80b7e8312913288f3ec67a",
+      "mode": "verbatim",
+      "sha256": "d73632d8b5bfb2a46315f99d5ddd2693df692d9b9b80b7e8312913288f3ec67a"
+    },
+    {
+      "path": "lib/api/assistant.ts",
+      "source_path": "frontend/lib/api/assistant.ts",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "3cd6faf41e0045ee8f3614f5c7130a04d36759bb77bb51fa6af07f3fe9128028",
+      "mode": "adapted",
+      "sha256": "81cb4a4b40c777a422e58af1bd65368cd83ab6fb3dd1eb8b21985dad77e08c91",
+      "adaptation": "Preserve native SSE/error/completion behavior; add captured local workspace ownership, stream abort/stale-event rejection and safe authored local FastAPI error details."
+    },
+    {
+      "path": "lib/api/cashflow-forecast-export.ts",
+      "source_path": "frontend/lib/api/cashflow-forecast-export.ts",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "01d48bf11d10fcc04280edd6e0a71c1abd77ecc127c81fb432d7356cd9bcd3d1",
+      "mode": "verbatim",
+      "sha256": "01d48bf11d10fcc04280edd6e0a71c1abd77ecc127c81fb432d7356cd9bcd3d1"
+    },
+    {
+      "path": "lib/api/cff-integrity.ts",
+      "source_path": "frontend/lib/api/cff-integrity.ts",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "0d8962efc68b53d26caa708e8fceb1d1c303d3af1d4095d1f1090001bd0e1a20",
+      "mode": "verbatim",
+      "sha256": "0d8962efc68b53d26caa708e8fceb1d1c303d3af1d4095d1f1090001bd0e1a20"
+    },
+    {
+      "path": "lib/api/errors.ts",
+      "source_path": "frontend/lib/api/errors.ts",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "32d1346e5550df01dd685db369235271098c28163c1a973e3a605bc4d423549e",
+      "mode": "verbatim",
+      "sha256": "32d1346e5550df01dd685db369235271098c28163c1a973e3a605bc4d423549e"
+    },
+    {
+      "path": "lib/utils.ts",
+      "source_path": "frontend/lib/utils.ts",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "f035d33545e8083891f3f0cd1b3e22f56ed587ecc4ef75209428af4a21601f90",
+      "mode": "verbatim",
+      "sha256": "f035d33545e8083891f3f0cd1b3e22f56ed587ecc4ef75209428af4a21601f90"
+    },
+    {
+      "path": "app/globals.css",
+      "source_path": "frontend/app/globals.css",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "71db83d236775dc0270b833a4b05ee03c8aa5ce884bba0cad51d4adc1a5fc412",
+      "mode": "verbatim",
+      "sha256": "71db83d236775dc0270b833a4b05ee03c8aa5ce884bba0cad51d4adc1a5fc412"
+    },
+    {
+      "path": "tailwind.config.ts",
+      "source_path": "frontend/tailwind.config.ts",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "bd2a0c356fa2315593786587c8219403544075ff931ad3147910206de746ab03",
+      "mode": "verbatim",
+      "sha256": "bd2a0c356fa2315593786587c8219403544075ff931ad3147910206de746ab03"
+    },
+    {
+      "path": "postcss.config.mjs",
+      "source_path": "frontend/postcss.config.mjs",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "ac31e2a95ef64fe27ceb4124e101675273107aae2e33bc490b01d919e7f03646",
+      "mode": "verbatim",
+      "sha256": "ac31e2a95ef64fe27ceb4124e101675273107aae2e33bc490b01d919e7f03646"
+    },
+    {
+      "path": "tsconfig.json",
+      "source_path": "frontend/tsconfig.json",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "9c7008614f6e6daa30779e846523e2df841118f4fe69dfa2be68bd0f2af84aca",
+      "mode": "verbatim",
+      "sha256": "9c7008614f6e6daa30779e846523e2df841118f4fe69dfa2be68bd0f2af84aca"
+    },
+    {
+      "path": "next.config.mjs",
+      "source_path": "frontend/next.config.mjs",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "61173d402533073de79da9b7e79b6161c3ababb23dae78fe992e0dfb0ff65f3f",
+      "mode": "adapted",
+      "sha256": "47675982bd1258de2c83cd8f242e614bbc1ed5e8e19ce7c0b34355a2fa0ec2ed",
+      "adaptation": "Keep standalone build; add local response privacy headers without altering native page or assistant presentation."
+    },
+    {
+      "path": "package.json",
+      "source_path": "frontend/package.json",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "279f61e6195db2d6dbcaef4135f978c62e61e07bede77507642bcfda03c13e34",
+      "mode": "verbatim",
+      "sha256": "279f61e6195db2d6dbcaef4135f978c62e61e07bede77507642bcfda03c13e34"
+    },
+    {
+      "path": "package-lock.json",
+      "source_path": "frontend/package-lock.json",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "1e52c1c1f4764d7af2c95154dc8787f8afce01c96a3199a0a2544204804afe34",
+      "mode": "verbatim",
+      "sha256": "1e52c1c1f4764d7af2c95154dc8787f8afce01c96a3199a0a2544204804afe34"
+    },
+    {
+      "path": "vitest.config.ts",
+      "source_path": "frontend/vitest.config.ts",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "44bfc64758d232a6957e9c63fdfbb57980e96b08661d45395ca36fb2f48fbd31",
+      "mode": "verbatim",
+      "sha256": "44bfc64758d232a6957e9c63fdfbb57980e96b08661d45395ca36fb2f48fbd31"
+    },
+    {
+      "path": "vitest.setup.ts",
+      "source_path": "frontend/vitest.setup.ts",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "78477ba3a8114abaeb104653881b51cbffbc79f83895fd8dd52633a0c2e7db9f",
+      "mode": "verbatim",
+      "sha256": "78477ba3a8114abaeb104653881b51cbffbc79f83895fd8dd52633a0c2e7db9f"
+    },
+    {
+      "path": "app/cash-flow-forecast/page.test.tsx",
+      "source_path": "frontend/app/cash-flow-forecast/page.test.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "5a8dcfee6d45a267adb0d4bde67fffa081da84a78271a8e3163b8be82737d5fa",
+      "mode": "verbatim",
+      "sha256": "5a8dcfee6d45a267adb0d4bde67fffa081da84a78271a8e3163b8be82737d5fa"
+    },
+    {
+      "path": "app/cash-flow-forecast/unmapped-entities-banner.test.tsx",
+      "source_path": "frontend/app/cash-flow-forecast/unmapped-entities-banner.test.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "e6d91836342fbf470dd2046a6fbfdf8289b02b877618ba6e74cb57dc4a9553d2",
+      "mode": "verbatim",
+      "sha256": "e6d91836342fbf470dd2046a6fbfdf8289b02b877618ba6e74cb57dc4a9553d2"
+    },
+    {
+      "path": "lib/api/cashflow-forecast-export.test.ts",
+      "source_path": "frontend/lib/api/cashflow-forecast-export.test.ts",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "f1b59956fb090d190250fa36d5b30359c56f9ca903f0aa05b97cc852d447b6b8",
+      "mode": "verbatim",
+      "sha256": "f1b59956fb090d190250fa36d5b30359c56f9ca903f0aa05b97cc852d447b6b8"
+    },
+    {
+      "path": "components/layout/AssistantPanel.test.tsx",
+      "source_path": "frontend/components/layout/AssistantPanel.test.tsx",
+      "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+      "source_sha256": "55167a65f92d0b69133a1f300166149545887a6be1ed3757cd9643f770099d2f",
+      "mode": "adapted",
+      "sha256": "ead152cfb7e6735cb7bbf8be0a0a617c6594c107b57d49eccb4b3ccb1a353b8b",
+      "adaptation": "Retain native verification tests with explicit synthetic local-scope fixture for the transport adapter."
+    }
+  ],
+  "local_adapters": [
+    {
+      "path": ".gitignore",
+      "sha256": "92ccf47395c54134a191f810bd9703581d4a033f86ebc3c9fa062c775b28b94e",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "FRONTEND-VERIFICATION.json",
+      "sha256": "d5b587659a02962473935f6dfa25a6223003d68f5b1ff3a482f302a98af5790e",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "README.md",
+      "sha256": "1f412e9268159e39186ab719847ea7532b5cdc6132a515f4c3299b051a03d93c",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/actions/page.test.tsx",
+      "sha256": "bbaf8303fa576b0e4b18a631490bdaaae5f52630233557d61412c58c35143b3a",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/actions/page.tsx",
+      "sha256": "fe2ef3322aeba4c6afff13cfbcb824b46219d5005deaccd15c1dfb2ef757e355",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/assistant/page.tsx",
+      "sha256": "86e49a3690f35793c6775a125c69f0fe863ac3bfa026cd5b7a6196ce7da63da6",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/bff/[...path]/route.test.ts",
+      "sha256": "45cd18e06c94188f8ca5d3eb003a0e830a91accbb671d4b328a11d19bc29c8ea",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/bff/[...path]/route.ts",
+      "sha256": "2db5f6d5b4a36d70b0bf83790822cc72eac1ed7942558096536118c12a0aad13",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/layout.tsx",
+      "sha256": "7569fd21f07f74bd747f07dec973c9b0538b35cd082d0657b9c3fec4fc597282",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/page.tsx",
+      "sha256": "838584ca8a5b2fcb0bd38018f6cd5817c6ebbfbe80ef4b14169e5a3afd063fbf",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/settings/connections/page.test.tsx",
+      "sha256": "9f3efb1196bbc16568272d6e1b4d8dda75a98775e7330e90a0cd0f3be72ef023",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/settings/connections/page.tsx",
+      "sha256": "51db43a5c42cf809c9d303fefa3b505b6f882d0773021a618f54548d10dc7210",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "app/settings/qbo/page.tsx",
+      "sha256": "f6642cc8aba2f803982ac4f17cc4d34319fadc27cc852d9371976dd22b21db26",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "components/local-shell.tsx",
+      "sha256": "0fe6600c338ff5185cd1d7e3dadd6027ad0bb8e6548e198aab87cec93e90938e",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/api/assistant-scope.test.ts",
+      "sha256": "6e28f4117f8d786abe36e04cc52b61fb63a600c742a09e6e71a520e2479744bd",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/api/client.ts",
+      "sha256": "b35a0f5d7135a0c6102f7e5022ab6b39a0bb7c4819f1c085bdc3bd0e7915a80e",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/api/local-bootstrap.test.ts",
+      "sha256": "b705843bd97f050832230c267db30206225ee3e9cec9fd71d3d0fb3c7306f5f9",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/api/local-client.test.ts",
+      "sha256": "bef3a0beafb6f6f30a2f43d2f490d0600e7c6c87287bef968e9cc366efad4f01",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/api/local.ts",
+      "sha256": "a44328fd4890073207ddb1d292499a57107bbf19abd9701de5eb312f23295991",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/local-headers.test.ts",
+      "sha256": "6c008404070cefd013c0102b483b2a2d4264e11e3ee42b902dfcb741021002b5",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/store.ts",
+      "sha256": "671a4fb90c3b3441eb120ea4738ea7697041589d9b6943b2e21eda6b59e1bff7",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/workspace-scope.test.ts",
+      "sha256": "6cf78755410e78370edfc0c2558ab24342e1b718ab541c5925b5f1fec89c16a6",
+      "mode": "local_adapter"
+    },
+    {
+      "path": "lib/workspace-scope.ts",
+      "sha256": "30f17fa6c3160398c469fc6e0c0afb5a8f0c05de7b540c10436b421f8491d9a7",
+      "mode": "local_adapter"
+    }
+  ],
+  "copied_verbatim_count": 23,
+  "adapted_source_count": 3,
+  "boundary": "Cash-flow workspace and assistant/platform foundation only. Local auth/workspace/connection/proposal adapters replace hosted organization, billing and unrelated catalog surfaces. Native cash-flow page and assistant presentation remain verbatim."
+}

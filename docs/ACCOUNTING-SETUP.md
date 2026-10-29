@@ -1,5 +1,7 @@
 # Set up a forecast from your accounting records
 
+This guide describes the legacy exact-money CLI/browser. For the current PE-native workspace, use [PE-native setup](PE-PLATFORM-SETUP.md). Its data directory, Friday-ending calculation contract and controls are separate; legacy inputs and backups are not automatically converted.
+
 The default workflow is a local Python script. Accounting connections are optional and separate from the assistant. **You do not need an OpenAI key to import accounting records or calculate a forecast.**
 
 ## Choose the path that exists today

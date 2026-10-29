@@ -1,5 +1,7 @@
 # Release checklist
 
+The historical publication records below cover the legacy CLI/browser. PE-native setup and verification are recorded separately in [native setup](docs/PE-PLATFORM-SETUP.md) and [verification](docs/VERIFICATION.md). Historical legacy public-ZIP checks do not establish execution of the new platform.
+
 `primary-record`: On 2026-10-28, Owen authorized public GitHub publication under `owenbyram-spec` and chose: “Publish publicly without adding a license yet.”
 
 Publication destination: [vesper-13-week-cash-flow](https://github.com/owenbyram-spec/vesper-13-week-cash-flow). No LICENSE file is added in this release. Publication authorization is not a legal ownership finding; source provenance is recorded in [the provenance note](docs/PROVENANCE.md).

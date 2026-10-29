@@ -1,5 +1,15 @@
 # Source provenance and release boundary
 
+## PE-native edition — 2026-10-28
+
+`primary-record`: Owen requested PE Workflow Builder's actual cash-flow logic and AI-native platform foundation, clarifying the scope as “Cash-flow workspace with the same platform and AI foundation,” excluding the entire module catalog.
+
+`repository-observation`: The new kernel is pinned to PE commit `6667bc5b73173d83400a8d269c23f30942e4f00a`. [The backend manifest](../pe_platform/source-manifest.json) records copied Git blobs/content hashes; [the frontend manifest](../pe_platform/frontend/SOURCE-MANIFEST.json) distinguishes verbatim files from explicit adapters. Shared transitive backend definitions remain where required by monolithic source imports, while only cash-flow and supporting platform/assistant routes and UI are exposed. PE itself remains a read-only source. Local identity, SQLite/runtime transport, workspace-bound credentials, cash-only tool selection, stream freshness and stronger preview/approval guards are adapter differences, not claims of identical hosted infrastructure.
+
+`open`: Code origin does not establish ownership, production readiness or live integrations. No new license terms are added. This local adoption is separate from the historical publication/verification records below.
+
+## Legacy extraction and publication
+
 `repository-observation`: This standalone tool was extracted/adapted from owner-supplied internal finance code. Bank reconciliation behavior references the internal PE Workflow Builder matching, statement controls and lifecycle. Cash forecast money/calculation code derives from the owner-supplied Sprint Money and 13-week forecast engine. Both use Sprint's guided-first-result idea inside the local app.
 
 Only the scoped application code and synthetic examples belong in this repository. There is no runtime dependency on the source platforms. Their SaaS identity, billing, broader module catalog, queues, hosted setup, client evidence and Git history are excluded.

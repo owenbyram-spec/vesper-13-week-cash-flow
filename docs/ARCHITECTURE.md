@@ -1,5 +1,11 @@
 # Design notes
 
+## PE-native edition
+
+Owen's clarified 2026-10-28 scope is the PE cash-flow workspace with its platform and AI foundation, excluding the broader module catalog. `pe_platform/upstream` retains pinned native backend code; `pe_platform/frontend` retains the native grid/panel and explicit local shell/transport adapters. `pe_platform/backend` supplies local identity, credentials, route scoping, source transport and preview/approval controls. The source manifest and [adoption plan](PE-PLATFORM-PLAN.md) record that boundary. Native Friday/run-rate/actuals rules are separate from the legacy exact-money input model; existing records are not recalculated. Read [native setup](PE-PLATFORM-SETUP.md) for infrastructure and verification limits.
+
+## Legacy edition
+
 This repository packages one useful finance workflow independently. Its duplicated local runtime is intentional: downloading either repository does not require the other tool, the internal factory, or Sprint. Changes to common runtime behavior need verification in each repository.
 
 AI retrieves current evidence, explains and drafts through a closed tool set. Exact decimal calculations remain in deterministic code. A model cannot select a client, approve a proposal, confirm a match, read a key, execute SQL/shell, or post to accounting. Financial figures are rendered from verified tool output; unsupported model numerical prose is rejected.

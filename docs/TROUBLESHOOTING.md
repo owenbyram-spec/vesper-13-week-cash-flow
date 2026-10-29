@@ -1,5 +1,7 @@
 # Troubleshooting
 
+For the current PE-native edition, start with [native setup](PE-PLATFORM-SETUP.md): its launcher is `start_platform.py`, environment is `.venv-platform`, browser/API defaults are 8770/8771, and data is separate. The older browser paths below refer to the legacy tool. Do not reuse its data directory for the native edition.
+
 - **Python missing/too old:** install Python 3.12+ from python.org; reopen the terminal/launcher. No system Python is modified.
 - **Package download failed:** check network/proxy access to PyPI and rerun. The private environment is reused; saved application data is separate.
 - **Port already used:** inspect the other copy's entity and data directory first. Use a free port and an explicit `--data-dir` for an isolated trial, for example `python3.12 run.py --port 8876 --data-dir ./local-data/trial`. A new port alone still shares the default directory. The launcher never kills another process.

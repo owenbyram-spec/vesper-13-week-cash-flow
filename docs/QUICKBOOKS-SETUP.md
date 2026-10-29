@@ -1,5 +1,7 @@
 # Connect QuickBooks Online
 
+The Intuit app/grant instructions below also supply credentials for the current PE-native workspace. Follow [PE-native setup](PE-PLATFORM-SETUP.md) for that workspace's launcher, Connections screen and native acquisition/review controls. The local UI names, forecast timing and refresh behavior described below belong to the legacy browser; its financial snapshots are not converted automatically.
+
 The optional **local browser tool** has a read-only QuickBooks Online connector. The default `forecast.py` CLI reads canonical JSON and has no QuickBooks connection command. No OpenAI key is needed for accounting acquisition. For initial local installation and the file-only route, start with [Accounting setup](ACCOUNTING-SETUP.md).
 
 This release uses **your own Intuit developer app** and an authorisation obtained through Intuit's OAuth Playground. It does not include a one-click OAuth callback, shared Vesper credentials or a hosted sign-in service. Live sandbox and production acquisition remain unverified; the steps below combine code inspection with official setup references checked on **2026-10-28**.

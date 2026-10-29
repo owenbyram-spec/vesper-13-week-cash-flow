@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-28",
+  "source_revision": "6667bc5b73173d83400a8d269c23f30942e4f00a",
+  "node": "24.16.0",
+  "npm": "11.13.0",
+  "next": "15.5.18",
+  "npm_ci": "passed; pinned lockfile; dependency installation scripts disabled; target-local cache",
+  "typecheck": "passed",
+  "frontend_tests": {
+    "passed": 69,
+    "files": 12
+  },
+  "production_build": "passed; standalone output; Next telemetry disabled",
+  "built_production_csp": "same-origin connections and images (data images allowed); no development HMR or eval; verified in routes manifest",
+  "native_cashflow_page": "verbatim pinned source",
+  "native_assistant_panel": "verbatim pinned source",
+  "local_adapters": [
+    "workspace bootstrap/store, scope headers/CSRF, same-origin proxy, bounded shell/settings/proposal review",
+    "SSE scope abort and authored local errors",
+    "assistant-only financial epoch reset",
+    "production response privacy headers"
+  ],
+  "original_app_or_data_operations": "none",
+  "browser_or_live_provider_checks": "not performed by frontend writer; parent agent coordinates isolated integration",
+  "live_model_qbo_windows_credential_store": "unverified",
+  "xero": "unimplemented",
+  "license": "none added",
+  "credential_storage_notice": "passed synthetic locked-store save failure and prior OS-copy uncertainty for model/QBO; no real credential store inspected"
+}

@@ -1,5 +1,7 @@
 # Use Xero records with this tool
 
+The file-input instructions here apply to the legacy exact-money CLI/browser. The [PE-native workspace](PE-PLATFORM-SETUP.md) does not acquire Xero records or automatically import legacy snapshots.
+
 **A direct Xero API connection is not implemented in this release.** There is no Xero button, credential field, OAuth callback or CLI acquisition command. Creating a Xero developer app alone will not connect it. QuickBooks is the only implemented accounting API connector, through the optional browser tool.
 
 You can use reviewed Xero exports as file inputs today. No Xero API credentials or OpenAI key are needed for that path. Start with [Accounting setup](ACCOUNTING-SETUP.md) for Python installation and CLI/browser choices.

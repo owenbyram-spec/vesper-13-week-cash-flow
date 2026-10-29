@@ -1,4 +1,11 @@
 .venv/
+.venv-platform/
+pe_platform/frontend/node_modules/
+pe_platform/frontend/.next/
+pe_platform/frontend/coverage/
+pe_platform/frontend/*.tsbuildinfo
+pe_platform/frontend/playwright-report/
+pe_platform/frontend/test-results/
 __pycache__/
 *.py[cod]
 .pytest_cache/

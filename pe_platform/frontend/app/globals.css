@@ -1,0 +1,308 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Light theme (default) — Peregrine brand palette ───
+   Mirrors the theperegrine.ai landing page design tokens
+   (white / indigo #4F46E5 / emerald #10B981, soft #E6EAF0 borders). */
+:root {
+  --color-background: #F7F8FA;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F1F3F8;
+  --color-section-header: #F1F3F8;
+  --color-text: #111827;
+  --color-text-muted: #656D7B;
+  --color-border: #E6EAF0;
+  --color-primary: #4F46E5;
+  --color-primary-text: #4F46E5;
+  --color-primary-soft: #6366F1;
+  --color-danger: #C81E1E;
+  /* --color-danger-fill: the button-FILL role of the danger hue (same fill/text role split as
+     primary vs primary-text). In light mode one hex serves both roles — #C81E1E passes as text
+     on surface (5.74:1) AND as a fill under white text (5.74:1) — so the fill token aliases the
+     danger value; the split only diverges in the dark theme (see the .dark block comment). */
+  --color-danger-fill: #C81E1E;
+  --color-success: #10B981;
+  --color-success-deep: #059669;
+  --color-success-text: #047857;
+  --color-warning: #D97706;
+  --color-warning-text: #B45309;
+
+  /* RGB triplets — let Tailwind opacity modifiers (bg-primary/10, etc.) work on tokens */
+  --color-background-rgb: 247 248 250;
+  --color-surface-rgb: 255 255 255;
+  --color-surface-alt-rgb: 241 243 248;
+  --color-text-rgb: 17 24 39;
+  --color-text-muted-rgb: 101 109 123;
+  --color-border-rgb: 230 234 240;
+  --color-primary-rgb: 79 70 229;
+  --color-primary-text-rgb: 79 70 229;
+  --color-primary-soft-rgb: 99 102 241;
+  --color-danger-rgb: 200 30 30;
+  --color-danger-fill-rgb: 200 30 30;
+  --color-success-rgb: 16 185 129;
+  --color-success-deep-rgb: 5 150 105;
+  --color-success-text-rgb: 4 120 87;
+  --color-warning-rgb: 217 119 6;
+  --color-warning-text-rgb: 180 83 9;
+  --color-accent-emerald-rgb: 4 120 87;
+  --color-accent-amber-rgb: 180 83 9;
+  --color-accent-indigo-rgb: 67 56 202;
+  --color-accent-purple-rgb: 124 58 237;
+  --color-accent-cyan-rgb: 14 116 144;
+  --color-accent-rose-rgb: 190 18 60;
+
+  /* Accent text colors — tuned for LIGHT background contrast (darkened 2026-07-03 for AA on white; see AUDIT.md) */
+  --color-accent-emerald: #047857;
+  --color-accent-amber: #B45309;
+  --color-accent-indigo: #4338CA;
+  --color-accent-purple: #7C3AED;
+  --color-accent-cyan: #0E7490;
+  --color-accent-rose: #BE123C;
+
+  /* Chart colors */
+  --color-chart-grid: #E2E8F0;
+  --color-chart-axis: #64748B;
+  --color-chart-tooltip-bg: #FFFFFF;
+  --color-chart-tooltip-border: #E2E8F0;
+  --color-chart-tooltip-text: #0F172A;
+
+  /* Subtle backgrounds behind accent badges */
+  --color-accent-emerald-bg: rgba(4, 120, 87, 0.08);
+  --color-accent-amber-bg: rgba(180, 83, 9, 0.08);
+  --color-accent-indigo-bg: rgba(67, 56, 202, 0.08);
+  --color-accent-purple-bg: rgba(124, 58, 237, 0.08);
+
+  /* KPI card accents — bg + border pairs (token opacity modifiers don't apply to var() colors) */
+  --color-primary-bg: rgba(79, 70, 229, 0.06);
+  --color-primary-border: rgba(79, 70, 229, 0.22);
+  --color-danger-bg: rgba(200, 30, 30, 0.06);
+  --color-danger-border: rgba(200, 30, 30, 0.22);
+  --color-accent-emerald-border: rgba(4, 120, 87, 0.22);
+  --color-accent-amber-border: rgba(180, 83, 9, 0.22);
+  --color-accent-indigo-border: rgba(67, 56, 202, 0.22);
+  --color-accent-purple-border: rgba(124, 58, 237, 0.22);
+
+  /* LBO spreadsheet section tints (row body) */
+  --grid-sec-revenue: rgba(59, 130, 246, 0.06);
+  --grid-sec-cogs: rgba(234, 179, 8, 0.06);
+  --grid-sec-opex: rgba(168, 85, 247, 0.06);
+  --grid-sec-da: rgba(239, 68, 68, 0.06);
+  --grid-sec-is: rgba(100, 100, 100, 0.04);
+  --grid-sec-bs: rgba(16, 185, 129, 0.04);
+  --grid-sec-bs_asset: rgba(16, 185, 129, 0.06);
+  --grid-sec-bs_fixed: rgba(34, 197, 94, 0.06);
+  --grid-sec-bs_liability: rgba(245, 158, 11, 0.06);
+  --grid-sec-debt: rgba(236, 72, 153, 0.06);
+  --grid-sec-equity: rgba(99, 102, 241, 0.06);
+  --grid-sec-cf: rgba(20, 184, 166, 0.06);
+  --grid-sec-other_income: rgba(59, 130, 246, 0.04);
+  --grid-sec-other_expense: rgba(239, 68, 68, 0.04);
+  /* LBO spreadsheet section tints (section header) */
+  --grid-hdr-revenue: rgba(59, 130, 246, 0.15);
+  --grid-hdr-cogs: rgba(234, 179, 8, 0.15);
+  --grid-hdr-opex: rgba(168, 85, 247, 0.15);
+  --grid-hdr-da: rgba(239, 68, 68, 0.15);
+  --grid-hdr-is: rgba(100, 100, 100, 0.12);
+  --grid-hdr-bs: rgba(16, 185, 129, 0.12);
+  --grid-hdr-bs_asset: rgba(16, 185, 129, 0.15);
+  --grid-hdr-bs_fixed: rgba(34, 197, 94, 0.15);
+  --grid-hdr-bs_liability: rgba(245, 158, 11, 0.15);
+  --grid-hdr-debt: rgba(236, 72, 153, 0.15);
+  --grid-hdr-equity: rgba(99, 102, 241, 0.15);
+  --grid-hdr-cf: rgba(20, 184, 166, 0.15);
+  --grid-hdr-other_income: rgba(59, 130, 246, 0.12);
+  --grid-hdr-other_expense: rgba(239, 68, 68, 0.12);
+
+  /* Shadows — landing-page style: ink-tinted (#111827), soft and diffuse */
+  --shadow-card: 0 1px 3px rgba(17, 24, 39, 0.06), 0 1px 2px rgba(17, 24, 39, 0.04);
+  --shadow-card-hover: 0 4px 16px rgba(17, 24, 39, 0.08), 0 2px 4px rgba(17, 24, 39, 0.04);
+}
+
+/* ─── Dark theme ─── */
+.dark {
+  --color-background: #050816;
+  --color-surface: #0B1220;
+  --color-surface-alt: #111827;
+  --color-section-header: #1a2332;
+  --color-text: #F9FAFB;
+  --color-text-muted: #9CA3AF;
+  --color-border: #1F2937;
+  /* --color-primary darkened 2026-07-03 (#818CF8 -> #5F62EF): the old value failed white-on-fill
+     button contrast (2.98:1, AUDIT.md L47). #5F62EF is the button-FILL role: white text on it is
+     4.687:1 (>=4.5 normal text) and it holds 3.994:1 as a non-text (border/icon) fg against dark
+     surface (>=3). --color-primary-text keeps the OLD value (#818CF8, 6.28:1 as text-on-surface,
+     already-passing per AUDIT.md L46) because the two roles pull in opposite directions — no
+     single indigo hex clears >=4.5 on both "white text on this fill" and "this as text on dark
+     surface" simultaneously (see AUDIT.md P-1 token-surgery notes). */
+  --color-primary: #5F62EF;
+  --color-primary-text: #818CF8;
+  --color-primary-soft: #6366F1;
+  --color-danger: #F97373;
+  /* --color-danger-fill added 2026-07-10: #F97373 is the danger TEXT role (6.30:1 on dark
+     surface) but failed white-on-fill button contrast (2.72:1) — the same two-roles-pull-apart
+     problem the primary/primary-text split above solves. #DC2626 is the danger-FILL role: white
+     text on it is 4.829:1 (>=4.5 normal text) and it holds 3.877:1 as a non-text (border/icon)
+     fg against dark surface (>=3). --color-danger keeps #F97373 for text-on-surface use; no
+     single red hex clears >=4.5 on both "white text on this fill" and "this as text on dark
+     surface" simultaneously. */
+  --color-danger-fill: #DC2626;
+  --color-success: #10B981;
+  --color-success-deep: #059669;
+  --color-success-text: #34D399;
+  --color-warning: #FACC15;
+  --color-warning-text: #FACC15;
+
+  /* RGB triplets — dark-theme values for token opacity modifiers */
+  --color-background-rgb: 5 8 22;
+  --color-surface-rgb: 11 18 32;
+  --color-surface-alt-rgb: 17 24 39;
+  --color-text-rgb: 249 250 251;
+  --color-text-muted-rgb: 156 163 175;
+  --color-border-rgb: 31 41 55;
+  --color-primary-rgb: 95 98 239;
+  --color-primary-text-rgb: 129 140 248;
+  --color-primary-soft-rgb: 99 102 241;
+  --color-danger-rgb: 249 115 115;
+  --color-danger-fill-rgb: 220 38 38;
+  --color-success-rgb: 16 185 129;
+  --color-success-deep-rgb: 5 150 105;
+  --color-success-text-rgb: 52 211 153;
+  --color-warning-rgb: 250 204 21;
+  --color-warning-text-rgb: 250 204 21;
+  --color-accent-emerald-rgb: 52 211 153;
+  --color-accent-amber-rgb: 251 191 36;
+  --color-accent-indigo-rgb: 165 180 252;
+  --color-accent-purple-rgb: 196 181 253;
+  --color-accent-cyan-rgb: 34 211 238;
+  --color-accent-rose-rgb: 251 113 133;
+
+  /* Accent text colors — tuned for DARK background contrast */
+  --color-accent-emerald: #34D399;
+  --color-accent-amber: #FBBF24;
+  --color-accent-indigo: #A5B4FC;
+  --color-accent-purple: #C4B5FD;
+  --color-accent-cyan: #22D3EE;
+  --color-accent-rose: #FB7185;
+
+  /* Chart colors */
+  --color-chart-grid: #1F2937;
+  --color-chart-axis: #9CA3AF;
+  --color-chart-tooltip-bg: #111827;
+  --color-chart-tooltip-border: #1F2937;
+  --color-chart-tooltip-text: #F9FAFB;
+
+  /* Subtle backgrounds behind accent badges */
+  --color-accent-emerald-bg: rgba(52, 211, 153, 0.1);
+  --color-accent-amber-bg: rgba(251, 191, 36, 0.1);
+  --color-accent-indigo-bg: rgba(165, 180, 252, 0.1);
+  --color-accent-purple-bg: rgba(196, 181, 253, 0.1);
+
+  /* KPI card accents — bg + border pairs (dark-tuned) */
+  --color-primary-bg: rgba(129, 140, 248, 0.1);
+  --color-primary-border: rgba(129, 140, 248, 0.3);
+  --color-danger-bg: rgba(249, 115, 115, 0.1);
+  --color-danger-border: rgba(249, 115, 115, 0.3);
+  --color-accent-emerald-border: rgba(52, 211, 153, 0.3);
+  --color-accent-amber-border: rgba(251, 191, 36, 0.3);
+  --color-accent-indigo-border: rgba(165, 180, 252, 0.3);
+  --color-accent-purple-border: rgba(196, 181, 253, 0.3);
+
+  /* LBO spreadsheet section tints (row body) — higher alpha for dark bg */
+  --grid-sec-revenue: rgba(96, 165, 250, 0.1);
+  --grid-sec-cogs: rgba(250, 204, 21, 0.1);
+  --grid-sec-opex: rgba(192, 132, 252, 0.1);
+  --grid-sec-da: rgba(248, 113, 113, 0.1);
+  --grid-sec-is: rgba(148, 163, 184, 0.08);
+  --grid-sec-bs: rgba(52, 211, 153, 0.07);
+  --grid-sec-bs_asset: rgba(52, 211, 153, 0.1);
+  --grid-sec-bs_fixed: rgba(74, 222, 128, 0.1);
+  --grid-sec-bs_liability: rgba(251, 191, 36, 0.1);
+  --grid-sec-debt: rgba(244, 114, 182, 0.1);
+  --grid-sec-equity: rgba(129, 140, 248, 0.1);
+  --grid-sec-cf: rgba(45, 212, 191, 0.1);
+  --grid-sec-other_income: rgba(96, 165, 250, 0.07);
+  --grid-sec-other_expense: rgba(248, 113, 113, 0.07);
+  /* LBO spreadsheet section tints (section header) — higher alpha for dark bg */
+  --grid-hdr-revenue: rgba(96, 165, 250, 0.22);
+  --grid-hdr-cogs: rgba(250, 204, 21, 0.22);
+  --grid-hdr-opex: rgba(192, 132, 252, 0.22);
+  --grid-hdr-da: rgba(248, 113, 113, 0.22);
+  --grid-hdr-is: rgba(148, 163, 184, 0.18);
+  --grid-hdr-bs: rgba(52, 211, 153, 0.18);
+  --grid-hdr-bs_asset: rgba(52, 211, 153, 0.22);
+  --grid-hdr-bs_fixed: rgba(74, 222, 128, 0.22);
+  --grid-hdr-bs_liability: rgba(251, 191, 36, 0.22);
+  --grid-hdr-debt: rgba(244, 114, 182, 0.22);
+  --grid-hdr-equity: rgba(129, 140, 248, 0.22);
+  --grid-hdr-cf: rgba(45, 212, 191, 0.22);
+  --grid-hdr-other_income: rgba(96, 165, 250, 0.18);
+  --grid-hdr-other_expense: rgba(248, 113, 113, 0.18);
+
+  /* Shadows — subtle on dark */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--color-text);
+  background: var(--color-background);
+  font-family: var(--font-inter, 'Inter'), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overscroll-behavior-y: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+button,
+a,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+.safe-area-page {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+.mobile-scroll-x {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-dialog {
+  max-height: min(90vh, 90dvh);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}

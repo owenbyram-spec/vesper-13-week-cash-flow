@@ -1,5 +1,7 @@
 # Set up the embedded assistant
 
+This page describes the legacy browser's OpenAI Responses connection. For the current native PE assistant, including workspace-scoped OpenAI/Anthropic connections and proposal review, follow [PE-native setup](PE-PLATFORM-SETUP.md). These are separate runtimes and connections.
+
 This is an optional connection in the local browser tool. The default CLI needs no model setup and makes no provider requests. The browser assistant sends your prompt and selected workflow evidence to OpenAI when you explicitly ask it to use the real model. The model does not run on your computer. Synthetic rehearsal is clearly labelled and makes no model call.
 
 1. Use your organization's approved OpenAI API account. Open the [API dashboard](https://platform.openai.com/) and its [project API keys](https://platform.openai.com/api-keys) page.

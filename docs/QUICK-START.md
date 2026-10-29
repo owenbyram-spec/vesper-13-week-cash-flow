@@ -1,6 +1,10 @@
 # Start here
 
-## Default: local Python script
+## PE-native cash-flow workspace
+
+The current platform path uses PE Workflow Builder's native workspace and AI foundation. Run `python3.12 start_platform.py --data-dir ./local-data/pe-platform` after installing Python 3.12+ and Node.js 20+. It uses separate platform dependencies/data and defaults to browser port 8770/API 8771. Follow [PE-native setup](PE-PLATFORM-SETUP.md). The older CLI/browser instructions below remain available for legacy snapshots; they use a different engine/input contract and do not silently migrate into the new platform.
+
+## Legacy: local Python script
 
 1. Extract the repository into a folder you control.
 2. Install Python 3.12 or newer from [python.org](https://www.python.org/downloads/) if needed. On Windows, enable the Python launcher when offered.
@@ -18,7 +22,7 @@ Use `--input my-inputs.json` for your own [canonical JSON inputs](DATA-FORMAT.md
 
 For a step-by-step installation and client-data checklist, see [Accounting setup](ACCOUNTING-SETUP.md). QuickBooks API acquisition is an optional browser feature; Xero API acquisition is not implemented. Both systems can supply reviewed file inputs. Neither path requires an OpenAI key.
 
-## Optional: local browser interface
+## Legacy: optional local browser interface
 
 Choose this path for interactive editing, CSV imports, version comparison, explicit scenario approval, Excel export or an optional assistant. On macOS open `start.command`; on Windows open `start.bat`. Unlike the CLI, first browser launch creates a private `.venv` and downloads pinned packages from PyPI. No administrator access or global package installation is required.
 
@@ -28,7 +32,7 @@ Keep this launcher open while using the browser tool or optional refresh. Press 
 
 On macOS, if Finder treats the command file as text, use Terminal: `cd` into the extracted folder and run `python3.12 run.py`. Only run scripts from the source you reviewed. Windows terminal alternative: `py -3.12 run.py`.
 
-## Check which browser copy you are using
+## Check which legacy browser copy you are using
 
 The default address is `http://127.0.0.1:8766`. If it is occupied, inspect the existing app's entity and Local data & privacy directory before deciding which copy to use. The launcher refuses an occupied port before preparing packages and never stops the other process.
 
