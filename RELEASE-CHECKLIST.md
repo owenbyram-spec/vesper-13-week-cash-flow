@@ -2,6 +2,16 @@
 
 The historical publication records below cover the legacy CLI/browser. PE-native setup and verification are recorded separately in [native setup](docs/PE-PLATFORM-SETUP.md) and [verification](docs/VERIFICATION.md). Historical legacy public-ZIP checks do not establish execution of the new platform.
 
+## PE-native publication
+
+- [x] Source commit `82486782eaef0c9c4e7d580ae1c1b3fffd43c907` pushed to public main without force or a new license.
+- [x] Fresh unauthenticated ZIP: all 541 file contents match that commit; no runtime data/environments/exports/license files included.
+- [x] Actual fresh package installation/build and no-key synthetic browser workflow on isolated 8780/8781; 8876/data preserved.
+- [x] Extracted source: 45 native tests, 69 frontend tests, type checking, dependency consistency and numeric export reconciliation passed.
+- [ ] Live model/QBO, actual OS credential storage, Windows and broad accounting formats remain unverified; Xero acquisition is unimplemented.
+
+This records the runtime code archive; subsequent documentation-only commits do not repeat that installation. Full evidence and boundaries are in [Verification](docs/VERIFICATION.md).
+
 `primary-record`: On 2026-10-28, Owen authorized public GitHub publication under `owenbyram-spec` and chose: “Publish publicly without adding a license yet.”
 
 Publication destination: [vesper-13-week-cash-flow](https://github.com/owenbyram-spec/vesper-13-week-cash-flow). No LICENSE file is added in this release. Publication authorization is not a legal ownership finding; source provenance is recorded in [the provenance note](docs/PROVENANCE.md).
